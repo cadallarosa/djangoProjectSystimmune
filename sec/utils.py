@@ -46,11 +46,11 @@ def query_system_information(conn, system_name):
 # Plotting function
 def plot_time_series_data(conn, dataframes, mode="overlay", channel_plot_logic=None):
     """
-    Plots time-series data based on channel boolean logic using actual channel names.
+    Plots time-series sec based on channel boolean logic using actual channel names.
 
     Parameters:
     - conn: Database connection.
-    - dataframes: List of dataframes containing time-series data.
+    - dataframes: List of dataframes containing time-series sec.
     - mode: Plotting mode ("overlay" or "panel").
     - channel_plot_logic: Dictionary with generic channel names as keys and booleans as values.
       Example: {"Channel 1": True, "Channel 2": False, "Channel 3": True}
@@ -135,11 +135,11 @@ def main_workflow(db_name, sample_name_range, mode="overlay", channel_plot_logic
         conn.close()
         return
 
-    # Fetch and process time series data for each sample
+    # Fetch and process time series sec for each sample
     dataframes = []
     for result_id, sample_name in samples:
         print(f"Processing time series for {sample_name} (Result ID: {result_id})")
-        # Fetch time series data for this result_id
+        # Fetch time series sec for this result_id
         df = query_time_series_data(conn, result_id)
         # Add sample name to the dataframe
         df["sample_name"] = sample_name

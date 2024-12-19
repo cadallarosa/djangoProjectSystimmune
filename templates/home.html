@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Process Development Sample Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column; /* this makes the boxes stack vertically */
+            align-items: center;
+            padding: 20px;
+        }
+        .box {
+            width: 70%; /* this makes box width 70% of its container width */
+            height: 100px;
+            margin: 10px;
+            border: 3px solid #0047b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: #0047b3;
+            transition: all 0.2s ease;
+            background-color: #f4f4f4;
+            font-size: 24px; // added this line to increase font size;
+            font-weight: bold; // added this line to make text bold;
+        }
+        .box:hover {
+            background-color: #0047b3;
+            color: white;
+        }
+        header {
+            background-color: #0047b3;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        footer {
+            background-color: #0047b3;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Process Development Sample Analysis</h1>
+    </header>
+    <main>
+        <div class="container">
+            <a href="http://localhost:8000/sec/plot_data/" target="_blank" class="box">SEC</a>
+            <a href="http://example.com/titer" target="_blank" class="box">Titer</a>
+            <a href="http://example.com/ce-sds" target="_blank" class="box">CE-SDS</a>
+            <a href="http://example.com/iex" target="_blank" class="box">IEX</a>
+        </div>
+    </main>
+    <footer>
+        <p>PD Sample Analysis</p>
+    </footer>
+</body>
+</html>
