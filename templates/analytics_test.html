@@ -25,11 +25,19 @@
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.5);
         }
+        /* Style the table container */
+        .table-container {
+            width: 100%;
+            max-height: 500px;  /* Fixed height for the table container */
+            overflow-y: auto;   /* Enable vertical scrolling */
+            margin-top: 20px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
+
         table, th, td {
             border: 1px solid black;
         }
@@ -47,6 +55,62 @@
         }
         button:hover {
             background-color: #002b80;
+        }
+
+        /* Increased font size for form fields and aligned labels */
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+            display: inline-block;
+            width: 180px;
+        }
+
+        input, select {
+            font-size: 18px;
+            padding: 10px;
+            width: 320px; /* Set all form fields to same width */
+            margin-bottom: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Form container alignment */
+        .form-container {
+            margin-bottom: 15px;
+        }
+
+        /* Centered table headers */
+        th {
+            text-align: center;
+        }
+
+        /* Adjust width of the select all column */
+        th:first-child, td:first-child {
+            width: 100px;
+        }
+
+        /* Style the DataTable search bar */
+        #sample-table_filter {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        #sample-table_filter input {
+            font-size: 18px;  /* Increased font size */
+            padding: 10px;
+            width: 320px;
+        }
+
+        /* Style the show entries dropdown */
+        #sample-table_length {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #sample-table_length select {
+            font-size: 18px;
+            padding: 10px;
         }
     </style>
 
@@ -67,53 +131,63 @@
 
 <main>
     <form id="report-form">
-        <label for="report-name">Report Name:</label>
-        <input type="text" id="report-name" name="report_name" placeholder="Enter report name">
-        <br><br>
+        <div class="form-container">
+            <label for="report-name">Report Name:</label>
+            <input type="text" id="report-name" name="report_name" placeholder="Enter report name">
+        </div>
 
-        <label for="project-id">Project ID:</label>
-        <select id="project-id" name="project_id">
-            <option value="">Select a Project</option>
-            <!-- Options will be populated dynamically -->
-        </select>
-        <br><br>
+        <div class="form-container">
+            <label for="project-id">Project ID:</label>
+            <select id="project-id" name="project_id">
+                <option value="">Select a Project</option>
+                <!-- Options will be populated dynamically -->
+            </select>
+        </div>
 
-        <label for="sample-type">Sample Type:</label>
-        <select id="sample-type" name="sample_type">
-            <option value="UP">UP</option>
-            <option value="FB">FB</option>
-            <option value="PD">PD</option>
-        </select>
-        <br><br>
+        <div class="form-container">
+            <label for="sample-type">Sample Type:</label>
+            <select id="sample-type" name="sample_type">
+                <option value="UP">UP</option>
+                <option value="FB">FB</option>
+                <option value="PD">PD</option>
+            </select>
+        </div>
 
-        <label for="analysis-type">Analysis Type:</label>
-        <select id="analysis-type" name="analysis_type">
-            <option value="SEC">SEC</option>
-            <option value="Titer">Titer</option>
-            <option value="CE-SDS">CE-SDS</option>
-        </select>
+        <div class="form-container">
+            <label for="analysis-type">Analysis Type:</label>
+            <select id="analysis-type" name="analysis_type">
+                <option value="SEC">SEC</option>
+                <option value="Titer">Titer</option>
+                <option value="CE-SDS">CE-SDS</option>
+            </select>
+        </div>
     </form>
 
-    <table id="sample-table">
-        <thead>
-            <tr>
-                <th><input type="checkbox" id="select-all"> Select All</th>
-                <th>Sample Name</th>
-                <th>Description</th>
-                <th>Analyst</th>
-                <th>Harvest Date</th>
-            </tr>
-        </thead>
-        <tbody id="sample-table-body">
-            <!-- Rows will be dynamically populated -->
-        </tbody>
-    </table>
+    <!-- Table container -->
+    <div class="table-container">
+        <table id="sample-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"> Select All</th>
+                    <th>Sample Name</th>
+                    <th>Description</th>
+                    <th>Analyst</th>
+                    <th>Harvest Date</th>
+                </tr>
+            </thead>
+            <tbody id="sample-table-body">
+                <!-- Rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
 
     <button id="submit-button">Submit Report</button>
 </main>
 
 <script>
 $(document).ready(function() {
+    let tableInitialized = false;
+
     // Fetch unique project IDs and populate the dropdown
     $.getJSON(window.location.href, { action: 'get_project_ids' }, function(data) {
         let projectDropdown = $("#project-id");
@@ -128,6 +202,9 @@ $(document).ready(function() {
         const projectId = $("#project-id").val();
         const sampleType = $("#sample-type").val();
         const analysisType = $("#analysis-type").val();
+
+        // Uncheck "Select All" when project ID changes
+        $("#select-all").prop("checked", false);
 
         $.ajax({
             url: window.location.href,
@@ -153,8 +230,15 @@ $(document).ready(function() {
                     `);
                 });
 
-                // Initialize or refresh DataTable
-                $('#sample-table').DataTable();  // Add DataTable functionality
+                // Initialize DataTable if it hasn't been initialized yet
+                if (!tableInitialized) {
+                    $('#sample-table').DataTable({
+                        paging: true,  // Enable pagination
+                        pageLength: 10,  // Show 10 rows per page
+                        ordering: false // Disable ordering by default
+                    });
+                    tableInitialized = true;  // Set flag to prevent re-initialization
+                }
             }
         });
     }
