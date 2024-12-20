@@ -77,8 +77,7 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR,
-                             'C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db'),
+        'NAME': os.path.join('C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db'),
     }
 }
 

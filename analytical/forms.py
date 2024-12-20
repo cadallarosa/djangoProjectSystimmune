@@ -27,14 +27,14 @@ SAMPLE_TYPES = [
 ]
 
 
-class ProjectForm(forms.Form):
-    report_name = forms.CharField(label='Report Name', max_length=100)
-    project_id = forms.ChoiceField(
-        choices=[(name, name) for name in Project.get_unique_names(
-            db_name='C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db',
-            table_name='project_id', column_name="project_name")]
-    )
-    sample_type = forms.ChoiceField(choices=SAMPLE_TYPES)
+# class ProjectForm(forms.Form):
+#     report_name = forms.CharField(label='Report Name', max_length=100)
+#     project_id = forms.ChoiceField(
+#         choices=[(name, name) for name in Project.get_unique_names(
+#             db_name='C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db',
+#             table_name='project_id', column_name="project_name")]
+#     )
+#     sample_type = forms.ChoiceField(choices=SAMPLE_TYPES)
 
 
 class SampleForm(forms.Form):
@@ -42,3 +42,8 @@ class SampleForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=[]
     )
+
+# class ProjectForm(forms.Form):
+#     # project_name = forms.ChoiceField(
+    #     choices=[(name, name) for name in Project.get_unique_names()]
+    # )

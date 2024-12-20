@@ -1,8 +1,7 @@
 from django.db import models
-
-# Create your models here.
 from django.db import models
 import sqlite3
+import re
 
 
 class Project(models.Model):
@@ -29,9 +28,18 @@ class Project(models.Model):
         conn.close()
 
         # Convert the list of tuples into a list of strings
-        unique_names = [name[0] for name in unique_names]
+        unique_names = [name[0] for name in unique_names if name is not None]
+
+        def get_sort_key(a):
+            if a is None:
+                return 0
+            num = re.findall(r'\d+', a)  # find all groups of numbers in the name
+            return int(num[0]) if num else 0
+
+        unique_names = sorted(unique_names, key=get_sort_key)
 
         return unique_names
+
 
 class Sample(models.Model):
     name = models.CharField(max_length=200)
@@ -61,3 +69,6 @@ class Sample(models.Model):
         sample_names = [name[0] for name in sample_names]
 
         return sample_names
+
+from django.db import models
+

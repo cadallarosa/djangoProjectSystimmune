@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #0047b3;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        main {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.5);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        button {
+            background-color: #0047b3;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #002b80;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Sample Analysis Report</h1>
+</header>
+
+<main>
+    <form id="report-form">
+        <label for="report-name">Report Name:</label>
+        <input type="text" id="report-name" name="report_name" placeholder="Enter report name">
+        <br><br>
+
+        <label for="project-id">Project ID:</label>
+        <select id="project-id" name="project_id">
+            <option value="">Select a Project</option>
+            <!-- Options will be populated dynamically -->
+        </select>
+        <br><br>
+
+        <label for="sample-type">Sample Type:</label>
+        <select id="sample-type" name="sample_type">
+            <option value="UP">UP</option>
+            <option value="FB">FB</option>
+            <option value="PD">PD</option>
+        </select>
+        <br><br>
+
+        <label for="analysis-type">Analysis Type:</label>
+        <select id="analysis-type" name="analysis_type">
+            <option value="SEC">SEC</option>
+            <option value="Titer">Titer</option>
+            <option value="CE-SDS">CE-SDS</option>
+        </select>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all"> Select All</th>
+                <th>Sample Name</th>
+                <th>Description</th>
+                <th>Analyst</th>
+                <th>Harvest Date</th>
+            </tr>
+        </thead>
+        <tbody id="sample-table-body">
+            <!-- Rows will be dynamically populated -->
+        </tbody>
+    </table>
+
+    <button id="submit-button">Submit Report</button>
+</main>
+
+<script>
+$(document).ready(function() {
+    // Fetch unique project IDs and populate the dropdown
+    $.getJSON(window.location.href, { action: 'get_project_ids' }, function(data) {
+        let projectDropdown = $("#project-id");
+        data.forEach(function(project) {
+            projectDropdown.append(`<option value="${project}">${project}</option>`);
+        });
+    });
+
+    // Function to load the table data based on selected filters
+    function loadTableData() {
+        const reportName = $("#report-name").val();
+        const projectId = $("#project-id").val();
+        const sampleType = $("#sample-type").val();
+        const analysisType = $("#analysis-type").val();
+
+        $.ajax({
+            url: window.location.href,
+            data: {
+                action: 'filter_samples',
+                report_name: reportName,
+                project_id: projectId,
+                sample_type: sampleType,
+                analysis_type: analysisType
+            },
+            success: function(data) {
+                let tableBody = $("#sample-table-body");
+                tableBody.empty(); // Clear the table before appending new rows
+                data.forEach(function(sample) {
+                    tableBody.append(`
+                        <tr>
+                            <td><input type="checkbox" class="sample-select"></td>
+                            <td>${sample.sample_name}</td>
+                            <td>${sample.description}</td>
+                            <td>${sample.analyst}</td>
+                            <td>${sample.harvest_date}</td>
+                        </tr>
+                    `);
+                });
+            }
+        });
+    }
+
+    // Trigger table reload when dropdowns or report name changes
+    $("#report-name, #project-id, #sample-type, #analysis-type").change(loadTableData);
+
+    // Toggle select all checkbox
+    $("#select-all").click(function() {
+        const isChecked = $(this).prop("checked");
+        $(".sample-select").prop("checked", isChecked);
+    });
+
+    // Handle submit button click
+    $("#submit-button").click(function() {
+        // Collect selected sample names
+        const selectedSamples = [];
+        $(".sample-select:checked").each(function() {
+            selectedSamples.push($(this).closest("tr").find("td:nth-child(2)").text());
+        });
+
+        alert("Submitting report for samples: " + selectedSamples.join(", "));
+    });
+});
+</script>
+
+</body>
+</html>
