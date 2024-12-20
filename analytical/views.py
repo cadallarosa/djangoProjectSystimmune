@@ -163,13 +163,13 @@ def analytics_page(request):
                 sql_query += " AND project_name = %s"
                 params.append(project_id)
 
-            if sample_type:
-                sql_query += " AND description LIKE %s"
-                params.append(f"%{sample_type}%")
+            # if sample_type:
+            #     sql_query += " AND description LIKE %s"
+            #     params.append(f"%{sample_type}%")
 
-            if analysis_type:
-                sql_query += " AND description LIKE %s"
-                params.append(f"%{analysis_type}%")
+            # if analysis_type:
+            #     sql_query += " AND description LIKE %s"
+            #     params.append(f"%{analysis_type}%")
 
             with connection.cursor() as cursor:
                 cursor.execute(sql_query, params)

@@ -49,7 +49,15 @@
             background-color: #002b80;
         }
     </style>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
 
@@ -86,7 +94,7 @@
         </select>
     </form>
 
-    <table>
+    <table id="sample-table">
         <thead>
             <tr>
                 <th><input type="checkbox" id="select-all"> Select All</th>
@@ -144,6 +152,9 @@ $(document).ready(function() {
                         </tr>
                     `);
                 });
+
+                // Initialize or refresh DataTable
+                $('#sample-table').DataTable();  // Add DataTable functionality
             }
         });
     }
