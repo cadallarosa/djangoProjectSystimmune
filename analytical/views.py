@@ -1,11 +1,14 @@
-from django.shortcuts import render
 from .forms import PlotValuesForm
 import matplotlib.pyplot as plt
 from django.http import HttpResponse
-
-
-def new_page(request):
-    return render(request, 'data_view.html')
+from .forms import DatabaseSampleForm
+import io
+import base64
+from .utils import main_workflow
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.db import connection
+import re
 
 
 def plot_view(request):
@@ -31,16 +34,6 @@ def plot_view(request):
     # Render form
     return render(request, 'plot.html', {'form': form})
 
-
-from .forms import DatabaseSampleForm
-
-# Add this where you have your other imports
-import os
-import io
-import urllib
-import base64
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from .utils import main_workflow
 
 db_name = 'C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db'
 
@@ -73,56 +66,7 @@ def database_sample_view(request):
     return render(request, "database_sample.html", {'form': form})
 
 
-# from .forms import ProjectForm
-# from django.http import HttpResponseRedirect
-#
-#
-# def analytics(request):
-#     if request.method == 'POST':
-#         form = AnalyticsForm(request.POST)
-#         if form.is_valid():
-#             # Process the form data
-#
-#             # If needed, save the data to the database
-#             # Redirect to a new URL:
-#             return HttpResponseRedirect('/analytics/')
-#     else:
-#         form = AnalyticsForm()
-#
-#     return render(request, 'analytics.html', {'form': form})
-#
-# from django.shortcuts import render
-# from .forms import ProjectForm, SampleForm  # Adjust the import statement to match your project structure
-# from .models import Sample  # Adjust the import statement to match your project structure
-#
-#
-# def view(request):
-#     project_form = ProjectForm()
-#     sample_form = SampleForm()
-#     if request.method == "POST":
-#         if 'update_samples' in request.POST:
-#             project_form = ProjectForm(request.POST)
-#             if project_form.is_valid():
-#                 project_id = project_form.cleaned_data['project_id']
-#                 sample_choices = [(name, name) for name in Sample.get_sample_names_by_project(
-#                     db_name='C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db',
-#                     project_name=project_id)]
-#                 sample_form = SampleForm()
-#                 sample_form.fields['sample_selection'].choices = sample_choices
-#         elif 'submit_form' in request.POST:
-#             sample_form = SampleForm(request.POST)
-#             if sample_form.is_valid():
-#                 pass
-#     return render(request, 'analytics.html', {'project_form': project_form, 'sample_form': sample_form})
-
-
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.db import connection
-import re
-
-
-def analytics_page(request):
+def reports_page(request):
     if request.method == 'GET':
         action = request.GET.get('action', None)
 
@@ -186,4 +130,4 @@ def analytics_page(request):
             return JsonResponse(sample_data, safe=False)
 
     # Render the initial page when the user accesses the URL
-    return render(request, 'analytics_test.html')
+    return render(request, 'analytics_report.html')

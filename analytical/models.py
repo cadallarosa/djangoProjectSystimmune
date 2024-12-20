@@ -70,5 +70,5 @@ class Sample(models.Model):
 
         return sample_names
 
-from django.db import models
+
 

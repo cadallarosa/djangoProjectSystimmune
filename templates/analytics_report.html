@@ -28,7 +28,7 @@
         /* Style the table container */
         .table-container {
             width: 100%;
-            max-height: 500px;  /* Fixed height for the table container */
+            max-height: 600px;  /* Fixed height for the table container */
             overflow-y: auto;   /* Enable vertical scrolling */
             margin-top: 20px;
         }
@@ -43,7 +43,7 @@
         }
         th, td {
             padding: 10px;
-            text-align: left;
+            text-align: center;
         }
         button {
             background-color: #0047b3;
@@ -111,6 +111,9 @@
         #sample-table_length select {
             font-size: 18px;
             padding: 10px;
+        }
+        .text-center {
+            text-align: center !important;
         }
     </style>
 
@@ -220,15 +223,15 @@ $(document).ready(function() {
                 tableBody.empty(); // Clear the table before appending new rows
                 data.forEach(function(sample) {
                     tableBody.append(`
-                        <tr>
-                            <td><input type="checkbox" class="sample-select"></td>
-                            <td>${sample.sample_name}</td>
-                            <td>${sample.description}</td>
-                            <td>${sample.analyst}</td>
-                            <td>${sample.harvest_date}</td>
-                        </tr>
-                    `);
-                });
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="sample-select"></td>
+                                <td class="text-center">${sample.sample_name}</td>
+                                <td class="text-center">${sample.description}</td>
+                                <td class="text-center">${sample.analyst}</td>
+                                <td class="text-center">${sample.harvest_date}</td>
+                            </tr>
+                        `);
+                    });
 
                 // Initialize DataTable if it hasn't been initialized yet
                 if (!tableInitialized) {

@@ -8,9 +8,5 @@ urlpatterns = [
     # path('new/', views.new_page, name='new_page'),
     # path('plot/', plot_view, name='plot_view'),
     # path('plot_data/', database_sample_view, name='plot_data_view'),
-
-    path('', views.analytics_page, name='analytics'),
-
-    path('analytical/', views.analytics_page, name='analytics_page'),
-
+    path('', views.reports_page, name='analytics'),
 ]
