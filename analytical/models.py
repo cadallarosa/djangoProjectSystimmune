@@ -71,4 +71,9 @@ class Sample(models.Model):
         return sample_names
 
 
-
+class Report(models.Model):
+    report_name = models.CharField(max_length=200)
+    project_id = models.IntegerField()
+    sample_type = models.CharField(max_length=2)
+    analysis_type = models.CharField(max_length=5)
+    selected_samples = models.TextField()  # assumed to hold csv of sample names

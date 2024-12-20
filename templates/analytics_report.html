@@ -134,6 +134,7 @@
 
 <main>
     <form id="report-form">
+        {% csrf_token %}
         <div class="form-container">
             <label for="report-name">Report Name:</label>
             <input type="text" id="report-name" name="report_name" placeholder="Enter report name">
@@ -189,6 +190,37 @@
 
 <script>
 $(document).ready(function() {
+    // This function gets cookie with a given name
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            let cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    let csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    // This sets up every ajax call with necessary settings
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
     let tableInitialized = false;
 
     // Fetch unique project IDs and populate the dropdown
@@ -255,16 +287,44 @@ $(document).ready(function() {
         $(".sample-select").prop("checked", isChecked);
     });
 
-    // Handle submit button click
-    $("#submit-button").click(function() {
-        // Collect selected sample names
-        const selectedSamples = [];
-        $(".sample-select:checked").each(function() {
-            selectedSamples.push($(this).closest("tr").find("td:nth-child(2)").text());
-        });
-
-        alert("Submitting report for samples: " + selectedSamples.join(", "));
+    
+    
+    $("#submit-button").click(function (e) {
+    e.preventDefault();
+    var selectedSamples = [];
+    $(".sample-select:checked").each(function () {
+        selectedSamples.push($(this).closest("tr").find("td:nth-child(2)").text());
     });
+    var reportName = $("#report-name").val();
+    var projectId = $("#project-id").val();
+    var sampleType = $("#sample-type").val();
+    var analysisType = $("#analysis-type").val();
+    $.ajax({
+        url: "submit-report/",
+        method: 'POST',
+        data: {
+            'report_name': reportName,
+            'project_id': projectId,
+            'sample_type': sampleType,
+            'analysis_type': analysisType,
+            'selected_samples': selectedSamples.join(",")
+        },
+        success: function (response) {
+        alert(response.message);
+        // Clear form inputs and selections
+        $("#report-name").val(''); // Clear report name input
+        $("#project-id").val(''); // Clear project id selection
+        $("#sample-type").val(''); // Clear sample type selection
+        $("#analysis-type").val(''); // Clear analysis type selection
+        $(".sample-select:checked").each(function () {
+            $(this).prop("checked", false); // Clear all sample selections
+        }); 
+        },
+        error: function (error) {
+            alert('There was an error submitting the report.');
+        },
+    })
+});
 });
 </script>
 

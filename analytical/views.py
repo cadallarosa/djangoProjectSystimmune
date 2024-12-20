@@ -6,10 +6,9 @@ import io
 import base64
 from .utils import main_workflow
 from django.shortcuts import render
-from django.http import JsonResponse
-from django.db import connection
 import re
-
+from django.http import JsonResponse
+from django.db import connection, Error
 
 def plot_view(request):
     # Check if form is submitted
@@ -131,3 +130,26 @@ def reports_page(request):
 
     # Render the initial page when the user accesses the URL
     return render(request, 'analytics_report.html')
+
+
+def handle_submit(request):
+    if request.method == 'POST':
+        report_name = request.POST.get('report_name')
+        project_id = request.POST.get('project_id')
+        sample_type = request.POST.get('sample_type')
+        analysis_type = request.POST.get('analysis_type')
+        selected_samples = request.POST.get('selected_samples')
+
+        sql = """
+        INSERT INTO report (report_name, project_id, sample_type, analysis_type, selected_samples)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(sql, [report_name, project_id, sample_type, analysis_type, selected_samples])
+                return JsonResponse({'status': 'success', 'message': 'Report successfully saved.'})
+            except Error as e:
+                return JsonResponse({'status': 'fail', 'message': 'Could not save the report due to a database error.'})
+    else:
+        return JsonResponse({'status': 'fail', 'message': 'Invalid request.'})
