@@ -4,11 +4,12 @@ from django.http import HttpResponse
 from .forms import DatabaseSampleForm
 import io
 import base64
-from .utils import main_workflow
+from .utils import plot_time_series_data, query_system_information
 from django.shortcuts import render
 import re
 from django.http import JsonResponse
 from django.db import connection, Error
+
 
 def plot_view(request):
     # Check if form is submitted
@@ -23,10 +24,14 @@ def plot_view(request):
 
             # Plot entered values
             plt.plot(x_values, y_values)
-            plt.savefig('myplot.png')
 
-            with open('myplot.png', 'rb') as f:
-                return HttpResponse(f.read(), content_type='image/png')
+            # Create a buffer to save the figure in memory
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png')
+            buf.seek(0)
+
+            # Return the plot as an HTTP response
+            return HttpResponse(buf.read(), content_type='image/png')
     else:
         form = PlotValuesForm()
 
@@ -44,21 +49,32 @@ def database_sample_view(request):
             sample_name = form.cleaned_data['sample_name']
             channels = form.cleaned_data['channels']
 
-            fig = main_workflow(
-                db_name,
-                sample_name,
-                mode="overlay",
-                channel_plot_logic={channel: True for channel in channels}
-            )
+            try:
+                # Use the new function name
+                fig = plot_time_series_data(  # Updated function name
+                    sample_name_range=sample_name,
+                    mode="overlay",
+                    channel_plot_logic={channel: True for channel in channels}
+                )
 
-            buf = io.BytesIO()
-            fig.savefig(buf, format='png')  # adjust this line
-            buf.seek(0)
-            string = base64.b64encode(buf.read())
-            image_base64 = string.decode('utf-8')
-            plt.close(fig)
+                if fig is None:
+                    return render(request, "database_sample.html",
+                                  {'form': form, 'error': "No data available for plotting."})
 
-            return render(request, "database_sample.html", {'form': form, 'image_base64': image_base64})
+                # Create a buffer to save the figure in memory
+                buf = io.BytesIO()
+                fig.savefig(buf, format='png')
+                buf.seek(0)
+
+                # Encode the image as base64 for rendering in HTML
+                image_base64 = base64.b64encode(buf.read()).decode('utf-8')
+                plt.close(fig)
+
+                return render(request, "database_sample.html", {'form': form, 'image_base64': image_base64})
+
+            except Exception as e:
+                print(f"Error processing request: {e}")
+                return render(request, "database_sample.html", {'form': form, 'error': str(e)})
     else:
         form = DatabaseSampleForm()
 
@@ -129,7 +145,7 @@ def reports_page(request):
             return JsonResponse(sample_data, safe=False)
 
     # Render the initial page when the user accesses the URL
-    return render(request, 'analytics_report.html')
+    return render(request, 'analytics_report_submission.html')
 
 
 def handle_submit(request):
@@ -153,3 +169,10 @@ def handle_submit(request):
                 return JsonResponse({'status': 'fail', 'message': 'Could not save the report due to a database error.'})
     else:
         return JsonResponse({'status': 'fail', 'message': 'Invalid request.'})
+
+
+from django.shortcuts import render
+
+
+def plotly_dash_view(request):
+    return render(request, 'plot.html')
