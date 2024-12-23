@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, Sample
+# from .models import Project, Sample
 
 
 class PlotValuesForm(forms.Form):

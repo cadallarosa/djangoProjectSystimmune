@@ -73,8 +73,11 @@ class Sample(models.Model):
 
 
 
+from django.db import models
+
 class SampleMetadata(models.Model):
-    result_id = models.IntegerField(unique=True)
+    id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
+    result_id = models.IntegerField()
     system_name = models.TextField()
     project_name = models.TextField(null=True, blank=True)
     sample_prefix = models.TextField(null=True, blank=True)
@@ -103,6 +106,7 @@ class SampleMetadata(models.Model):
 
 
 class PeakResults(models.Model):
+    id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
     channel_name = models.TextField(null=True, blank=True)
     peak_name = models.TextField(null=True, blank=True)
@@ -123,6 +127,7 @@ class PeakResults(models.Model):
 
 
 class ChromMetadata(models.Model):
+    id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
     system_name = models.TextField()
     sample_name = models.TextField(null=True, blank=True)
@@ -139,6 +144,7 @@ class ChromMetadata(models.Model):
 
 
 class TimeSeriesData(models.Model):
+    id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
     system_name = models.TextField()
     time = models.FloatField()
@@ -178,6 +184,7 @@ class ProjectID(models.Model):
 
 
 class Report(models.Model):
+    report_id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
     report_name = models.TextField(null=True, blank=True)
     project_id = models.TextField(null=True, blank=True)
     analysis_type = models.TextField(null=True, blank=True)
@@ -202,6 +209,7 @@ class Users(models.Model):
 
 
 class Method(models.Model):
+    method_id = models.AutoField(primary_key=True)
     method_type = models.IntegerField(null=True, blank=True)
     new_column_1 = models.IntegerField(null=True, blank=True)
     new_column_2 = models.IntegerField(null=True, blank=True)
@@ -213,6 +221,7 @@ class Method(models.Model):
 
 
 class ReportInstance(models.Model):
+    report_instance_id = models.AutoField(primary_key=True)
     exclusions = models.TextField(null=True, blank=True)
     report_id = models.IntegerField(null=True, blank=True)
 
@@ -222,6 +231,8 @@ class ReportInstance(models.Model):
 
 
 class Results(models.Model):
+    id = models.AutoField(primary_key=True)
+    result_id = models.IntegerField()
     system_name = models.TextField(null=True, blank=True)
     project_name = models.IntegerField(null=True, blank=True)
     sample_set_id = models.IntegerField(null=True, blank=True)

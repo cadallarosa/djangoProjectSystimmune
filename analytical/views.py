@@ -11,33 +11,6 @@ from django.http import JsonResponse
 from django.db import connection, Error
 
 
-def plot_view(request):
-    # Check if form is submitted
-    if request.method == 'POST':
-        form = PlotValuesForm(request.POST)
-
-        # Check if form input is valid
-        if form.is_valid():
-            x_values = list(map(int, form.cleaned_data['x_values'].split(',')))
-            y_values = list(map(int, form.cleaned_data['y_values'].split(',')))
-            z_values = list(map(int, form.cleaned_data['z_values'].split(',')))
-
-            # Plot entered values
-            plt.plot(x_values, y_values)
-
-            # Create a buffer to save the figure in memory
-            buf = io.BytesIO()
-            plt.savefig(buf, format='png')
-            buf.seek(0)
-
-            # Return the plot as an HTTP response
-            return HttpResponse(buf.read(), content_type='image/png')
-    else:
-        form = PlotValuesForm()
-
-    # Render form
-    return render(request, 'plot.html', {'form': form})
-
 
 db_name = 'C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db'
 
@@ -171,8 +144,5 @@ def handle_submit(request):
         return JsonResponse({'status': 'fail', 'message': 'Invalid request.'})
 
 
-from django.shortcuts import render
 
 
-def plotly_dash_view(request):
-    return render(request, 'plot.html')

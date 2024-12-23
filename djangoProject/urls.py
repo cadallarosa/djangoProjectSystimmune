@@ -24,6 +24,14 @@ urlpatterns = [
     path('analytical/', include('analytical.urls')),
 
     path('plotly_integration/', include('plotly_integration.urls')),
-    # path('django_plotly_dash/', include('django_plotly_dash.urls')),
+
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+# Serve static files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
