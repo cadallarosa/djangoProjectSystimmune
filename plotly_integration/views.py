@@ -63,3 +63,12 @@ def plot_time_series(request):
         'plot_html': plot_html,
         'sample_names': sample_list,  # Pass the sample names to the template
     })
+
+
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'dashboard.html')
+
+def dashboard(request):
+    return render(request, 'dashboard.html')

@@ -134,6 +134,8 @@
 from pathlib import Path
 import os
 
+import home.apps
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-vv7v88x+dqlx+*^-&5#9ws7gcqx@ss#xgq&w@swn%g68t!jj08'
@@ -146,13 +148,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # Keep only this occurrence
     'analytical.apps.DataConfig',
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'homepage',
     'plotly_integration',
     'corsheaders',
-    'crispy_forms'
+    'channels',
+    'channels_redis',
+    'home.apps.HomeConfig',
+    'django_plotly_dash',
 ]
 
 MIDDLEWARE = [
@@ -164,6 +169,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_plotly_dash.middleware.BaseMiddleware',
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'djangoProject.urls'
@@ -213,22 +221,52 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# ASGI_APPLICATION = 'plotly_django_tutorial.routing.application'
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [('127.0.0.1', 6379),],
+#         }
+#     }
+# }
 
-DPD_STATIC_SERVE = False
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder'
+]
+
+PLOTLY_COMPONENTS = [
+
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+
+    'dpd_components'
+]
+
+# PLOTLY_COMPONENTS = None  # Let django-plotly-dash use default CDNs
+
+
+# DPD_STATIC_SERVE = False
+STATICFILES_LOCATION = 'static'
+# STATIC_URL = '/static/'
+# STATIC_ROOT = 'static'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'djangoProject/static')
+# ]
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Change to 'staticfiles'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Your project's static files directory
+    os.path.join(BASE_DIR, 'staticfiles'),
 ]
-STATICFILES_DIRS = [
-    # You can leave this empty or add custom static files, but don't include Plotly resources here
-]
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 CORS_ALLOW_ALL_ORIGINS = True
-
 
 # Use the CDN for Plotly resources instead of local static files
 PLOTLY_COMPONENTS = {
@@ -246,4 +284,4 @@ PLOTLY_COMPONENTS = {
     }
 }
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
