@@ -1,291 +1,10 @@
-from dash import dcc, html, Dash
 import plotly.graph_objs as go
-import pandas as pd
-from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
-from .models import SampleMetadata, TimeSeriesData
-import plotly.express as px
-
-# views.py
-from django.shortcuts import render
+import dash
+from dash import dcc, html, Input, Output, State, dash_table, Dash
 import plotly.graph_objects as go
 import pandas as pd
-from .models import SampleMetadata, TimeSeriesData
-
-
-def plot_time_series(request):
-    # Sample name and channel selection
-    sample_name_range = 'PD2360'  # Modify this as per user input
-    selected_channels = ['channel_1', 'channel_2', 'channel_3']  # Modify this as per user input
-
-    # Retrieve samples based on the input (adjust as necessary)
-    if '-' in sample_name_range:
-        start, end = sample_name_range.split('-')
-        samples = SampleMetadata.objects.filter(sample_name__range=(start, end))
-    else:
-        samples = SampleMetadata.objects.filter(sample_name=sample_name_range)
-
-    # Initialize the figure
-    fig = go.Figure()
-
-    # Loop over samples and add traces
-    for sample in samples:
-        time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
-        df = pd.DataFrame(list(time_series.values()))
-
-        # Assuming 'time' column is in seconds (no need to convert to datetime)
-        if 'time' in df.columns:
-            df['time'] = pd.to_timedelta(df['time'], unit='s')
-        else:
-            continue  # Skip if 'time' column is missing
-
-        # Add traces for each selected channel
-        for channel in selected_channels:
-            if channel in df.columns:
-                fig.add_trace(go.Scatter(
-                    x=df['time'],
-                    y=df[channel],
-                    mode='lines',
-                    name=f"{sample.sample_name} - {channel}"
-                ))
-
-    # Update layout
-    fig.update_layout(
-        title='Time Series Data',
-        xaxis_title='Time (seconds)',
-        yaxis_title='Intensity',
-        xaxis=dict(tickformat='%H:%M:%S'),  # Format as hours:minutes:seconds
-        template='plotly_white'
-    )
-
-    # Convert the plot to HTML for rendering
-    plot_html = fig.to_html(full_html=False)
-
-    # Pass the plot HTML to the template
-    return render(request, 'your_template.html', {'plot_html': plot_html})
-
-
-import dash
-from dash import html, dcc
-import plotly.express as px
-import pandas as pd
-from django_plotly_dash import DjangoDash
-
-import logging
-
-# Set up logging for debugging
-logger = logging.getLogger(__name__)
-
-# Initialize Dash app
-app = DjangoDash('TimeSeriesPlot123')
-
-# Define layout
-app.layout = html.Div([
-    html.Div([
-        dcc.Input(
-            id='sample_name_input',
-            type='text',
-            placeholder='Enter sample name or range (e.g., S1-S5)',
-            style={'width': '300px'}
-        ),
-        html.Button('Submit', id='submit_button', n_clicks=0),
-    ], style={'margin-bottom': '20px'}),
-
-    dcc.Checklist(
-        id='channel_selection',
-        options=[
-            {'label': 'Channel 1', 'value': 'channel_1'},
-            {'label': 'Channel 2', 'value': 'channel_2'},
-            {'label': 'Channel 3', 'value': 'channel_3'},
-        ],
-        value=['channel_1', 'channel_2', 'channel_3'],
-        labelStyle={'display': 'inline-block', 'margin-right': '10px'}
-    ),
-
-    dcc.Graph(
-        id='time_series_plot',
-        figure=go.Figure().update_layout(title='Waiting for input...')
-    )
-])
-
-
-# Define callback for updating the graph
-@app.callback(
-    Output('time_series_plot', 'figure'),
-    Input('submit_button', 'n_clicks'),
-    Input('sample_name_input', 'value'),
-    Input('channel_selection', 'value')
-)
-def update_graph(n_clicks, sample_name_range, selected_channels):
-    # Return an empty figure if no input is provided
-    if n_clicks == 0 or not sample_name_range or not selected_channels:
-        logger.info("Returning empty figure due to missing inputs.")
-        return go.Figure().update_layout(title='Waiting for valid inputs.')
-
-    try:
-        # Parse the sample name range
-        if '-' in sample_name_range:
-            start, end = sample_name_range.split('-')
-            samples = SampleMetadata.objects.filter(sample_name__range=(start.strip(), end.strip()))
-        else:
-            samples = SampleMetadata.objects.filter(sample_name=sample_name_range.strip())
-    except ValueError:
-        logger.error("Invalid sample range.")
-        return go.Figure().update_layout(title='Invalid sample range')
-
-    fig = go.Figure()
-
-    # Process data for each sample
-    for sample in samples:
-        time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
-        df = pd.DataFrame(list(time_series.values()))
-
-        if 'time' in df.columns:
-            # Convert 'time' column to datetime and handle invalid times
-            df['time'] = pd.to_datetime(df['time'], errors='coerce')
-            df = df.dropna(subset=['time'])
-
-            # Add traces for each selected channel
-            for channel in selected_channels:
-                if channel in df.columns:
-                    fig.add_trace(go.Scatter(
-                        x=df['time'],
-                        y=df[channel],
-                        mode='lines',
-                        name=f"{sample.sample_name} - {channel}"
-                    ))
-
-    # Handle case with no data
-    if not fig.data:
-        logger.info("No data found for the selected channels.")
-        return go.Figure().update_layout(title='No data found for the selected channels.')
-
-    # Update figure layout
-    fig.update_layout(
-        title='Time Series Data',
-        xaxis_title='Time',
-        yaxis_title='Intensity',
-        template='plotly_white'
-    )
-
-    logger.info(f"Returning figure with {len(fig.data)} traces.")
-    return fig
-
-
-from dash import dcc, html  # Modern import
-import plotly.express as px
-import pandas as pd
-
-# Sample data
-df = pd.DataFrame({
-    "Category": ["A", "B", "C", "A", "B", "C", "A", "B", "C"],
-    "Value": [10, 15, 20, 25, 30, 35, 40, 45, 50]
-})
-
-fig = px.bar(df, x="Category", y="Value")
-
-app = DjangoDash('TimeSeriesPlot1234')
-
-app.layout = html.Div(
-    style={
-        "display": "flex",
-        "flexDirection": "column",
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": "100%",
-        "height": "100vh",  # Take up full viewport height
-        "backgroundColor": "#f4f7f6",  # Soft background color for a sleek look
-        "fontFamily": "Arial, sans-serif",  # Sleek font
-    },
-    children=[
-        html.H1(
-            "Responsive Dash App with Filters",
-            style={
-                "textAlign": "center",
-                "marginBottom": "20px",
-                "color": "#333",  # Darker text color for better contrast
-            }
-        ),
-
-        # Buttons to filter data (using html.Button now)
-        html.Div(
-            children=[
-                html.Button("Show Category A", id="btn-a", n_clicks=0, className="filter-btn"),
-                html.Button("Show Category B", id="btn-b", n_clicks=0, className="filter-btn"),
-                html.Button("Show Category C", id="btn-c", n_clicks=0, className="filter-btn"),
-                html.Button("Show All", id="btn-all", n_clicks=0, className="filter-btn"),  # New Show All button
-            ],
-            style={
-                "display": "flex",
-                "justifyContent": "center",
-                "gap": "10px",  # Spacing between buttons
-                "marginBottom": "20px",
-            }
-        ),
-
-        # Graph that will update based on button clicks
-        dcc.Graph(
-            id="example-graph",
-            figure=fig,
-            style={
-                "width": "80%",  # Reduced width for a cleaner look
-                "height": "80%",  # Reduced height to fit the page better
-                "maxWidth": "900px",  # Max width to prevent excessive stretching
-                "marginBottom": "40px",  # Margin for space at the bottom
-            },
-            config={"responsive": True},  # Ensure the graph is responsive
-        ),
-    ]
-)
-
-
-# Callback to update the figure based on button clicks
-@app.callback(
-    dash.dependencies.Output("example-graph", "figure"),
-    [dash.dependencies.Input("btn-a", "n_clicks"),
-     dash.dependencies.Input("btn-b", "n_clicks"),
-     dash.dependencies.Input("btn-c", "n_clicks"),
-     dash.dependencies.Input("btn-all", "n_clicks")],  # Include the Show All button
-)
-def update_graph(btn_a, btn_b, btn_c, btn_all):
-    ctx = dash.callback_context
-
-    # Check which button was clicked
-    if not ctx.triggered:
-        return fig  # Default figure (no filter)
-    else:
-        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-    if button_id == "btn-a":
-        # Filter for Category A
-        filtered_df = df[df["Category"] == "A"]
-    elif button_id == "btn-b":
-        # Filter for Category B
-        filtered_df = df[df["Category"] == "B"]
-    elif button_id == "btn-c":
-        # Filter for Category C
-        filtered_df = df[df["Category"] == "C"]
-    elif button_id == "btn-all":
-        # Show all data
-        filtered_df = df
-    else:
-        filtered_df = df  # Show all data if no filter is selected
-
-    # Create a new figure based on filtered data
-    return px.bar(filtered_df, x="Category", y="Value")
-
-
-# Add CSS for styling buttons
-app.css.append_css({
-    'external_url': 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap'
-})
-
-import dash
-from dash import dcc, html, Input, Output, State, dash_table
-import plotly.graph_objects as go
-import pandas as pd
-from django_plotly_dash import DjangoDash
-from .models import Report
+from .models import Report, SampleMetadata, PeakResults, TimeSeriesData
 
 # Initialize the Dash app
 app = DjangoDash('TimeSeriesApp')
@@ -296,27 +15,6 @@ for report in Report.objects.all():
     if report.project_id not in projects:
         projects[report.project_id] = []
     projects[report.project_id].append({'name': report.report_name, 'samples': report.selected_samples})
-
-# Dummy HMW data
-hmw_data = pd.DataFrame({
-    "Sample Name": ["Sample 1", "Sample 2", "Sample 3"],
-    "HMW": [10, 15, 20],
-    "Main": [70, 60, 55],
-    "LMW": [20, 25, 25]
-})
-
-# Dummy plot data
-dummy_time_series_data = {
-    "Sample Name": ["Sample 1", "Sample 2", "Sample 3"],
-    "Time": [1, 2, 3],
-    "Value": [10, 15, 20]
-}
-
-dummy_time_series_data2 = {
-    "Sample Name": ["Sample 1", "Sample 2", "Sample 3"],
-    "Time": [1, 2, 3, 4],
-    "Value": [10, 15, 20, 50]
-}
 
 
 # Sidebar content generator
@@ -430,22 +128,23 @@ app.layout = html.Div([
                 }
             ),
             html.Div([  # Plot and settings
+                dcc.Store(id='selected-report', data={}),  # Add this line for state persistence
                 html.Div(  # Plot area
                     id='plot-area',
                     children=[
-                        html.H4("Plot", style={'text-align': 'center', 'color': '#0056b3'}),
+                        html.H4("SEC Results", style={'text-align': 'center', 'color': '#0056b3'}),
                         dcc.Graph(
                             id='time-series-graph',
                             figure=go.Figure(
                                 data=[go.Scatter(
-                                    x=dummy_time_series_data["Time"],
-                                    y=dummy_time_series_data["Value"],
-                                    mode='lines+markers'
+                                    x=[],
+                                    y=[],
+                                    mode='lines'
                                 )],
                                 layout=go.Layout(
                                     title="Sample Plot",
                                     xaxis_title="Time",
-                                    yaxis_title="Value"
+                                    yaxis_title="UV280"
                                 )
                             )
                         )
@@ -453,9 +152,10 @@ app.layout = html.Div([
                     style={
                         'width': '70%',
                         'padding': '10px',
-                        'border': '1px solid #0056b3',
+                        'border': '2px solid #0056b3',
                         'border-radius': '5px',
-                        'background-color': '#f7f9fc'
+                        'background-color': '#f7f9fc',
+                        'margin-bottom': '10px'
                     }
                 ),
                 html.Div(  # Plot settings
@@ -470,15 +170,27 @@ app.layout = html.Div([
                             ],
                             value=['channel_1']
                         ),
+                        html.Div([
+                            html.Label("Select Plot Type:", style={'color': '#0056b3'}),
+                            dcc.Dropdown(
+                                id='plot-type-dropdown',
+                                options=[
+                                    {'label': 'Plotly Graph', 'value': 'plotly'},
+                                    {'label': 'Subplots', 'value': 'subplots'}
+                                ],
+                                value='plotly',  # Default value
+                                style={'width': '100%'}
+                            )
+                        ], style={'margin-top': '10px'}),
                         html.P("Shade Areas"),
                         html.P("Estimated Size"),
-                        html.P("Peak Retention Time")
+                        html.P("Peak Retention Time"),
                     ],
                     style={
                         'width': '30%',
                         'padding': '10px',
                         'background-color': '#f7f9fc',
-                        'border-left': '1px solid #0056b3',
+                        'border-left': '2px solid #0056b3',
                         'border-radius': '5px'
                     }
                 )
@@ -486,20 +198,26 @@ app.layout = html.Div([
             html.Div(  # HMW Data area
                 id='hmw-data',
                 children=[
-                    html.H4("HMW Data", style={'text-align': 'center', 'color': '#0056b3'}),
+                    html.H4("Peak Results", style={'text-align': 'center', 'color': '#0056b3'}),
                     dash_table.DataTable(
                         id='hmw-table',
-                        columns=[{"name": col, "id": col} for col in hmw_data.columns],
-                        data=hmw_data.to_dict('records'),
+                        columns=[
+                            {"name": "Sample Name", "id": "Sample Name"},
+                            {"name": "HMW", "id": "HMW"},
+                            {"name": "Main Peak", "id": "Main Peak"},
+                            {"name": "LMW", "id": "LMW"}
+                        ],
+                        data=[],
                         style_table={'overflowX': 'auto'},
                         style_cell={'textAlign': 'center', 'padding': '5px'},
                         style_header={'fontWeight': 'bold', 'backgroundColor': '#e9f1fb'}
                     )
                 ],
                 style={
-                    'margin': '10px',
+                    # 'margin': '10px',
+                    'width': '68%',
                     'padding': '10px',
-                    'border': '1px solid #0056b3',
+                    'border': '2px solid #0056b3',
                     'border-radius': '5px',
                     'background-color': '#f7f9fc'
                 }
@@ -527,60 +245,99 @@ import logging
 logging.basicConfig(filename='app_logs.log', level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+
+def generate_subplots(sample_list, channels):
+    num_samples = len(sample_list)
+    cols = 4  # Number of columns in the subplot grid
+    rows = (num_samples // cols) + (num_samples % cols > 0)
+
+    # Create a subplot figure
+    fig = make_subplots(rows=rows, cols=cols, start_cell="top-left")
+
+    # Populate subplots with data
+    for i, sample_name in enumerate(sample_list):
+        row = (i // cols) + 1
+        col = (i % cols) + 1
+        sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+        if not sample:
+            continue
+        time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
+        df = pd.DataFrame(list(time_series.values()))
+
+        for channel in channels:
+            if channel in df.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df['time'],
+                        y=df[channel],
+                        mode='lines',
+                        name=f"{sample_name} - {channel}"
+                    ),
+                    row=row,
+                    col=col
+                )
+
+    # Update the layout
+    fig.update_layout(
+        height=400 * rows,  # Dynamically adjust height based on rows
+        title="Sample Subplots",
+        showlegend=False,
+    )
+    return fig
+
+
+import json
+
 
 @app.callback(
-    Output('time-series-graph', 'figure'),
-    Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
+    [Output('time-series-graph', 'figure'),
+     Output('time-series-graph', 'style'),
+     Output('selected-report', 'data')],  # Persist the selected report
+    [Input('plot-type-dropdown', 'value'),
+     Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks')],
+    [State('selected-report', 'data'),
+     State('channel-checklist', 'value')],
     prevent_initial_call=True
 )
-def update_graph(n_clicks):
+def update_graph(plot_type, report_clicks, selected_report, selected_channels):
     ctx = dash.callback_context
 
-    if not ctx.triggered:
-        return go.Figure()  # Default figure
+    # If no trigger, return an empty figure
+    if not ctx.triggered or not selected_channels:
+        return go.Figure(), {'display': 'block'}, selected_report
 
-    # Get the triggered report name from the ID
+    # Determine the triggered input
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
-    triggered_data = eval(triggered_id)  # Convert string back to dictionary
+    report_name = None
 
-    if 'report_name' in triggered_data:
-        report_name = triggered_data['report_name']
-        print("Triggered Report Name:", report_name)  # Debugging output
-    else:
-        report_name = None
+    if 'report_name' in triggered_id:  # If a report was selected
+        triggered_data = eval(triggered_id)
+        report_name = triggered_data.get('report_name', None)
+    elif selected_report:  # Use the stored report if switching modes
+        report_name = selected_report.get('report_name', None)
 
     if not report_name:
-        return go.Figure().update_layout(title="Invalid Report Name")
-    selected_report = report_name
-    print(selected_report)
+        return go.Figure().update_layout(title="No Report Selected"), {'display': 'block'}, selected_report
 
-    # Fetch the report
-    report = Report.objects.filter(report_name=selected_report).first()
+    # Fetch the report from the database
+    report = Report.objects.filter(report_name=report_name).first()
     if not report:
-        return go.Figure()  # Return an empty figure if the report is not found
+        return go.Figure(), {'display': 'block'}, selected_report
 
     # Parse the selected samples from the report
-    selected_samples = report.selected_samples
-    sample_list = [sample.strip() for sample in selected_samples.split(",") if sample.strip()]
-    print(sample_list)
-    if not sample_list:
-        return go.Figure()  # Return an empty figure if there are no samples
+    sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
 
-        # Proceed with the plotting logic if sample_list is populated
-    if sample_list:
-        sample_names = sample_list
-        selected_channels = ['channel_1']  # Modify as needed
-        filtered_samples = SampleMetadata.objects.filter(sample_name__in=sample_names)
-
-        # Initialize the figure
+    if plot_type == 'plotly':
         fig = go.Figure()
-
-        # Loop over samples and add traces
-        for sample in filtered_samples:
+        for sample_name in sample_list:
+            sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+            if not sample:
+                continue
             time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
             df = pd.DataFrame(list(time_series.values()))
-
-            # Add traces for each selected channel
             for channel in selected_channels:
                 if channel in df.columns:
                     fig.add_trace(go.Scatter(
@@ -590,12 +347,76 @@ def update_graph(n_clicks):
                         name=f"{sample.sample_name} - {channel}"
                     ))
 
-        # Update layout
         fig.update_layout(
             title='Time Series Data',
-            xaxis_title='Time (seconds)',
-            yaxis_title='Intensity',
-            template='plotly_white'
+            xaxis_title='Time',
+            yaxis_title='UV280',
+            template='plotly_white',
+            height=400
         )
+        return fig, {'display': 'block'}, {'report_name': report_name}
 
-    return fig
+    elif plot_type == 'subplots':
+        fig = generate_subplots(sample_list, selected_channels)
+        return fig, {'display': 'block'}, {'report_name': report_name}
+
+
+@app.callback(
+    Output('hmw-table', 'data'),
+    Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
+    prevent_initial_call=True
+)
+def update_hmw_table(report_clicks):
+    ctx = dash.callback_context
+
+    if not ctx.triggered:
+        return []
+
+    triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    triggered_data = eval(triggered_id)
+
+    if 'report_name' not in triggered_data:
+        return []
+
+    report_name = triggered_data['report_name']
+    report = Report.objects.filter(report_name=report_name).first()
+
+    if not report:
+        return []
+
+    sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
+    summary_data = []
+
+    for sample_name in sample_list:
+        sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+        if not sample:
+            continue
+
+        peak_results = PeakResults.objects.filter(result_id=sample.result_id)
+        if not peak_results.exists():
+            continue
+
+        df = pd.DataFrame.from_records(peak_results.values())
+        print(df)
+
+        if 'peak_retention_time' not in df.columns or 'percent_area' not in df.columns:
+            continue
+
+        df['peak_retention_time'] = df['peak_retention_time'].astype(float)
+        df['percent_area'] = df['percent_area'].astype(float)
+
+        main_peak_rt = 5.10
+        closest_index = (df['peak_retention_time'] - main_peak_rt).abs().idxmin()
+        main_peak_area = round(df.loc[closest_index, 'percent_area'], 2)
+
+        hmw_value = round(df[df['peak_retention_time'] < main_peak_rt]['percent_area'].sum(), 2)
+        lmw_value = round(100 - hmw_value - main_peak_area, 2)
+
+        summary_data.append({
+            'Sample Name': sample.sample_name,
+            'HMW': hmw_value,
+            'Main Peak': main_peak_area,
+            'LMW': lmw_value
+        })
+
+    return summary_data
