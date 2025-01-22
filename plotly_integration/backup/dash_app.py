@@ -5,6 +5,7 @@ import dash
 from dash import dcc, html, Input, Output, State, dash_table, Dash
 import pandas as pd
 from scipy.stats import linregress
+
 from .models import Report, SampleMetadata, PeakResults, TimeSeriesData
 import json
 import logging
@@ -17,11 +18,11 @@ app = DjangoDash('TimeSeriesApp')
 # Molecular weight mapping
 MW_MAPPING = {
     'Peak1-Thyroglobulin': 1400000,
-    'Peak2-Thyroglobulin': 660000,
+    'Peak2- Thyroglobulin': 660000,
     'Peak3-IgG': 150000,
     'Peak4-BSA': 66400,
     'Peak5-Myoglobin': 17000,
-    'Peak6-Uracil': 112
+    'Peak7-Uracil': 112
 }
 
 # Fetch available projects and reports
@@ -99,11 +100,6 @@ def generate_sidebar(projects):
 # Layout for the Dash app
 app.layout = html.Div([
     dcc.Store(id='selected-report', data=None),
-    dcc.Store(id="std-result-id-store"),
-    dcc.Store(id='regression-parameters', data={'slope': 0, 'intercept': 0}),
-    dcc.Store(id='main-peak-rt-store', data=5.10),  # Default value for main peak RT
-    dcc.Store(id='low-mw-cutoff-store', data=18),  # Default value for low MW cutoff
-    dcc.Store(id='hmw-table-store', data=[]),
 
     # Top-left Home Button
     html.Div(
@@ -226,15 +222,6 @@ app.layout = html.Div([
                                 style={'width': '100%'}
                             )
                         ], style={'margin-top': '10px'}),
-                        html.Div([
-                            html.Label("LMW Cutoff Time:", style={'color': '#0056b3'}),
-                            dcc.Input(
-                                id='low-mw-cutoff-input',
-                                type='number',
-                                value=18,  # Default value
-                                style={'width': '100%'}
-                            )
-                        ], style={'margin-top': '10px'}),
 
                         dcc.Checklist(
                             id='peak-label-checklist',
@@ -256,41 +243,19 @@ app.layout = html.Div([
                     }
                 )
             ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'}),
-            html.Div(
+            html.Div(  # HMW Data area
                 id='hmw-data',
                 children=[
                     html.H4("Peak Results", style={'text-align': 'center', 'color': '#0056b3'}),
-                    dcc.Dropdown(
-                        id='hmw-column-selector',
-                        options=[
-                            {"label": "Sample Name", "value": "Sample Name"},
-                            {"label": "Main Peak Start", "value": "Main Peak Start"},
-                            {"label": "Main Peak End", "value": "Main Peak End"},
-                            {"label": "HMW Start", "value": "HMW Start"},
-                            {"label": "HMW End", "value": "HMW End"},
-                            {"label": "LMW Start", "value": "LMW Start"},
-                            {"label": "LMW End", "value": "LMW End"},
-                            {"label": "HMW Area", "value": "HMW Area"},
-                            {"label": "Main Peak Area", "value": "Main Peak Area"},
-                            {"label": "LMW Area", "value": "LMW Area"},
-                            {"label": "HMW %", "value": "HMW"},
-                            {"label": "Main Peak %", "value": "Main Peak"},
-                            {"label": "LMW %", "value": "LMW"}
-                        ],
-                        value=["Sample Name", "HMW", "Main Peak", "LMW"],  # Default columns
-                        multi=True,
-                        placeholder="Select columns to display",
-                        style={'margin-bottom': '10px'}
-                    ),
                     dash_table.DataTable(
                         id='hmw-table',
-                        columns=[  # Default columns for initialization
+                        columns=[
                             {"name": "Sample Name", "id": "Sample Name"},
-                            {"name": "HMW %", "id": "HMW"},
-                            {"name": "Main Peak %", "id": "Main Peak"},
-                            {"name": "LMW %", "id": "LMW"}
+                            {"name": "HMW", "id": "HMW"},
+                            {"name": "Main Peak", "id": "Main Peak"},
+                            {"name": "LMW", "id": "LMW"}
                         ],
-                        data=[],  # Dynamically updated by the callback
+                        data=[],
                         style_table={'overflowX': 'auto'},
                         style_cell={'textAlign': 'center', 'padding': '5px'},
                         style_header={'fontWeight': 'bold', 'backgroundColor': '#e9f1fb'}
@@ -308,6 +273,7 @@ app.layout = html.Div([
                     dcc.Download(id="download-hmw-data")
                 ],
                 style={
+                    # 'margin': '10px',
                     'width': '68%',
                     'padding': '10px',
                     'border': '2px solid #0056b3',
@@ -352,6 +318,23 @@ app.layout = html.Div([
                     html.Div(
                         id='standard-analysis-content',
                         children=[
+                            html.P("Regression Equation: ", id="regression-equation"),
+                            html.P("R² Value: ", id="r-squared-value"),
+                            html.P("Estimated MW for RT: ", id="estimated-mw"),
+                            dcc.Input(
+                                id="rt-input",
+                                type="number",
+                                placeholder="Enter Retention Time",
+                                style={'width': '80%', 'margin-top': '10px'}
+                            ),
+                            html.Button("Calculate MW", id="calculate-mw-button", style={
+                                'background-color': '#0056b3',
+                                'color': 'white',
+                                'border': 'none',
+                                'padding': '10px',
+                                'cursor': 'pointer',
+                                'border-radius': '5px'
+                            }),
                             dcc.Graph(id='regression-plot', style={'margin-top': '20px'}),
                             dash_table.DataTable(
                                 id="standard-table",
@@ -366,8 +349,6 @@ app.layout = html.Div([
                                     {"name": "Pass/Fail", "id": "pass/fail"},
                                 ],
                                 data=[],
-                                row_selectable='multi',  # Allow multiple rows to be selected
-                                selected_rows=[i for i in range(6)],  # Default: select all rows in `data`
                                 style_table={'overflowX': 'auto'},
                                 style_cell={'textAlign': 'center', 'padding': '5px'},
                                 style_header={'fontWeight': 'bold', 'backgroundColor': '#e9f1fb'}
@@ -379,24 +360,7 @@ app.layout = html.Div([
                             'border-radius': '5px',
                             'background-color': '#f7f9fc',
                         }
-                    ),
-                    html.P("Regression Equation: ", id="regression-equation"),
-                    html.P("R² Value: ", id="r-squared-value"),
-                    html.P("Estimated MW for RT: ", id="estimated-mw"),
-                    dcc.Input(
-                        id="rt-input",
-                        type="number",
-                        placeholder="Enter Retention Time",
-                        style={'width': '80%', 'margin-top': '10px'}
-                    ),
-                    html.Button("Calculate MW", id="calculate-mw-button", style={
-                        'background-color': '#0056b3',
-                        'color': 'white',
-                        'border': 'none',
-                        'padding': '10px',
-                        'cursor': 'pointer',
-                        'border-radius': '5px'
-                    }),
+                    )
                 ],
                 style={
                     'width': '68%',  # Match the width of the Sample Details box
@@ -410,84 +374,6 @@ app.layout = html.Div([
         ], style={'width': '80%', 'padding': '10px', 'overflow-y': 'auto'})
     ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'})
 ])
-
-
-def get_std_result_id(sample_set_name=None, system_name=None):
-    """
-    Determine the standard result ID dynamically based on sample set and system name.
-
-    Args:
-        sample_set_name (str): The sample set name for filtering (optional).
-        system_name (str): The system name for filtering (optional).
-
-    Returns:
-        Tuple: (std_result_id, std_sample) where std_result_id is the result ID or "No STD Found",
-        and std_sample is the SampleMetadata object for the standard.
-    """
-    try:
-        # Primary STD search: Check for an STD in the same sample set and system
-        std_sample = SampleMetadata.objects.filter(
-            sample_set_name=sample_set_name,
-            sample_prefix="STD",
-            system_name=system_name
-        ).first()
-
-        # Secondary STD search: Broad search if no specific match found
-        if not std_sample:
-            std_sample = SampleMetadata.objects.filter(sample_prefix="STD").first()
-
-        std_result_id = std_sample.result_id if std_sample else "No STD Found"
-        return std_result_id, std_sample
-
-    except Exception as e:
-        print(f"Error determining standard result ID: {e}")
-        return "No STD Found", None
-
-
-@app.callback(
-    Output("std-result-id-store", "data"),
-    [
-        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks')
-    ],
-    prevent_initial_call=True
-)
-def store_std_result_id(report_clicks):
-    ctx = dash.callback_context
-
-    if not ctx.triggered:
-        return None
-
-    # Determine the triggering report
-    triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
-    triggered_data = eval(triggered_id)
-
-    if 'report_name' not in triggered_data:
-        return None
-
-    report_name = triggered_data['report_name']
-    report = Report.objects.filter(report_name=report_name).first()
-
-    if not report:
-        return None
-
-    # Fetch the first sample name from the report's selected samples
-    sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
-    if not sample_list:
-        return None
-
-    first_sample_name = sample_list[0]
-    sample_metadata = SampleMetadata.objects.filter(sample_name=first_sample_name).first()
-
-    if not sample_metadata:
-        return None
-
-    # Retrieve the `std_result_id` using the centralized logic
-    std_result_id, _ = get_std_result_id(
-        sample_set_name=sample_metadata.sample_set_name,
-        system_name=sample_metadata.system_name
-    )
-
-    return std_result_id
 
 
 # Callbacks for folder toggle functionality
@@ -570,8 +456,21 @@ def update_sample_and_std_details(report_clicks):
         sample_set_name=sample_set_name, sample_prefix="STD"
     ).first()
 
-    # Use centralized function to determine the STD ID
-    std_result_id, _ = get_std_result_id(sample_set_name=sample_set_name, system_name=system_name)
+    # Secondary STD search: Simplified to ensure results
+    if not std_sample:
+        std_sample = (
+            SampleMetadata.objects.filter(
+                sample_prefix="STD "  # Only filter by sample_prefix for now
+            )
+
+        )
+
+    # Determine the STD ID or fallback value
+    std_result_id = std_sample.result_id if std_sample else "No STD Found"
+
+    # Debug output
+    print(f"STD Result: {std_sample}")
+    print(f"STD Result ID: {std_result_id}")
 
     # Return formatted details for display
     return (
@@ -581,6 +480,49 @@ def update_sample_and_std_details(report_clicks):
         f"Instrument Method Name: {instrument_method_name}",
         f"STD Result ID: {std_result_id}"
     )
+
+
+def compute_regression(std_sample):
+    """
+    Compute regression parameters for the standard sample.
+
+    Args:
+        std_sample: A SampleMetadata object for the standard.
+
+    Returns:
+        Tuple containing slope, intercept, r_squared, and peak results DataFrame.
+    """
+    from scipy.stats import linregress
+
+    # Query the database for peak results
+    peak_results = PeakResults.objects.filter(result_id=std_sample.result_id).values(
+        "peak_name", "peak_retention_time", "asym_at_10", "plate_count", "res_hh"
+    )
+    df = pd.DataFrame(list(peak_results))
+
+    # Add MW column dynamically using MW_MAPPING
+    MW_MAPPING = {
+        'Peak1-Thyroglobulin': 1400000,
+        'Peak2- Thyroglobulin': 660000,
+        'Peak3-IgG': 150000,
+        'Peak4-BSA': 66400,
+        'Peak5-Myoglobin': 17000,
+        'Peak7-Uracil': 112
+    }
+    df["MW"] = df["peak_name"].map(MW_MAPPING)
+
+    # Exclude invalid or missing values
+    df.dropna(subset=["MW", "peak_retention_time"], inplace=True)
+
+    # Exclude Uracil from the regression
+    df = df[df["peak_name"] != "Peak7-Uracil"]
+
+    # Perform regression
+    slope, intercept, r_value, _, _ = linregress(
+        df["peak_retention_time"], np.log(df["MW"])
+    )
+
+    return slope, intercept, r_value ** 2, df
 
 
 import pandas as pd
@@ -594,53 +536,24 @@ import numpy as np
         Output("regression-plot", "figure"),
         Output("estimated-mw", "children"),
         Output("standard-table", "data"),
-        Output("regression-parameters", "data"),  # Store slope and intercept
     ],
     [
-        Input("std-result-id-store", "data"),  # Use the stored std_result_id
-        Input("standard-table", "selected_rows"),  # Selected rows for regression
-        State("standard-table", "data"),
+        Input("standard-id", "children"),
         State("rt-input", "value"),
     ],
-    prevent_initial_call=True
+    prevent_initial_call=False  # Allow initial execution
 )
-def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
-    # print(std_result_id)
-    if not std_result_id or std_result_id == "No STD Found":
-        return "No STD Selected", "N/A", {}, "N/A", [], {'slope': 0, 'intercept': 0}
+def standard_analysis(standard_id, rt_input):
+    if not standard_id or "N/A" in standard_id:
+        return "No STD Selected", "N/A", {}, "N/A", []
 
-    # Query peak results
+    # Query data
+    std_result_id = 36704  # Replace with dynamic retrieval if necessary
     peak_results = PeakResults.objects.filter(result_id=std_result_id).values(
         "peak_name", "peak_retention_time", "asym_at_10", "plate_count", "res_hh"
     )
     df = pd.DataFrame(list(peak_results))
-    if df.empty:
-        return "No Peak Results Found", "N/A", {}, "N/A", [], {'slope': 0, 'intercept': 0}
-    # Define the ordered peak names
-    ordered_peak_names = [
-        "Peak1-Thyroglobulin",
-        "Peak2-Thyroglobulin",
-        "Peak3-IgG",
-        "Peak4-BSA",
-        "Peak5-Myoglobin",
-        "Peak6-Uracil"
-    ]
-
-    # Sort the DataFrame by retention time
-    df = df.sort_values(by="peak_retention_time", ascending=True).reset_index(drop=True)
-
-    # Drop any rows beyond the first 6
-    if len(df) > 6:
-        df = df.iloc[:6]
-
-    # Assign peak names to the DataFrame
-    df["peak_name"] = ordered_peak_names[:len(df)]  # Ensure names match the number of rows
     df["MW"] = df["peak_name"].map(MW_MAPPING)
-
-    # Handle missing MW values
-    df["MW"] = df["MW"].fillna("N/A")  # Replace with a default value if necessary
-    df["MW"] = df["peak_name"].map(MW_MAPPING)
-    # print(df)
 
     if df.empty:
         return "No Peak Results Found", "N/A", {}, "N/A", []
@@ -648,11 +561,11 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
     # Molecular weight mapping
     PERFORMANCE_MAPPING = {
         'Peak1-Thyroglobulin': 1000,
-        'Peak2-Thyroglobulin': 1000,
+        'Peak2- Thyroglobulin': 1000,
         'Peak3-IgG': 1000,
         'Peak4-BSA': 1000,
         'Peak5-Myoglobin': 1000,
-        'Peak6-Uracil': 1000
+        'Peak7-Uracil': 1000
     }
 
     # Add Performance column
@@ -679,59 +592,41 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
         return "Fail"
 
     df["pass/fail"] = df.apply(determine_pass_fail, axis=1)
-    # print(df)
-    # Prepare table data
-    table_data = df.to_dict("records")
-    # print("Table Data for Display:", table_data)
-
-    # Validate selected_rows
-    if not selected_rows or not table_data:
-        print("No rows selected or table data is empty.")
-        return "No Points Selected for Regression", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
-
-    # Safely retrieve selected rows
-    try:
-        selected_data = [table_data[i] for i in selected_rows if i < len(table_data)]
-    except IndexError as e:
-        print(f"IndexError: {e}")
-        selected_data = []
-
-    if not selected_data:
-        print("No valid data for selected rows.")
-        return "No Points Selected for Regression", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
-
+    print(df)
     # Perform regression
-    regression_df = pd.DataFrame(selected_data).dropna(subset=["MW", "peak_retention_time"])
-    if regression_df.empty:
-        return "Regression Data is Empty", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
-
-    try:
-        slope, intercept, r_value, _, _ = linregress(
-            regression_df["peak_retention_time"], np.log(regression_df["MW"])
-        )
-    except Exception as e:
-        print(f"Regression error: {e}")
-        return "Regression Failed", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
+    regression_data = df.dropna(subset=["MW", "peak_retention_time"])
+    slope, intercept, r_value, _, _ = linregress(
+        regression_data["peak_retention_time"], np.log(regression_data["MW"])
+    )
 
     # Regression plot
     x_vals = np.linspace(
-        regression_df["peak_retention_time"].min(),
-        regression_df["peak_retention_time"].max(),
+        regression_data["peak_retention_time"].min(),
+        regression_data["peak_retention_time"].max(),
         100,
     )
     y_vals = slope * x_vals + intercept
     fig = go.Figure()
+
+    # Add data points with labels
     fig.add_trace(go.Scatter(
-        x=regression_df["peak_retention_time"],
-        y=np.log(regression_df["MW"]),
+        x=regression_data["peak_retention_time"],
+        y=np.log(regression_data["MW"]),
         mode="markers+text",
-        text=regression_df["peak_name"],
+        text=regression_data["peak_name"],
         textposition="top center",
         name="Data Points"
     ))
-    fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode="lines", name="Regression Line"))
+
+    # Add regression line
+    fig.add_trace(go.Scatter(
+        x=x_vals,
+        y=y_vals,
+        mode="lines",
+        name="Regression Line"
+    ))
     fig.update_layout(
-        title="Retention Time vs Log(MW)",
+        title="Retention Time vs Log(MW) with Labels",
         xaxis_title="Retention Time",
         yaxis_title="Log(MW)",
         template="plotly_white"
@@ -748,13 +643,12 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
         f"R² = {r_value ** 2:.4f}",
         fig,
         estimated_mw,
-        table_data,
-        {'slope': slope, 'intercept': intercept}
+        df.to_dict("records")
     )
 
 
 def generate_subplots_with_shading(sample_list, channels, enable_shading, enable_peak_labeling, main_peak_rt, slope,
-                                   intercept, hmw_table_data):
+                                   intercept):
     num_samples = len(sample_list)
     cols = 2
     rows = (num_samples // cols) + (num_samples % cols > 0)
@@ -787,26 +681,10 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
         if not sample:
             continue
         time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
+        peak_results = PeakResults.objects.filter(result_id=sample.result_id)
+
         df = pd.DataFrame(list(time_series.values()))
-
-        # Get HMW Table row for the current sample
-        hmw_row = next((row for row in hmw_table_data if row['Sample Name'] == sample_name), None)
-        if not hmw_row:
-            continue
-
-        # Extract values from HMW Table
-        main_peak_start = hmw_row.get("Main Peak Start", None)
-        main_peak_end = hmw_row.get("Main Peak End", None)
-        hmw_start = hmw_row.get("HMW Start", None)
-        hmw_end = hmw_row.get("HMW End", None)
-        lmw_start = hmw_row.get("LMW Start", None)
-        lmw_end = hmw_row.get("LMW End", None)
-
-        percentages = {
-            "HMW": hmw_row.get("HMW", 0),
-            "MP": hmw_row.get("Main Peak", 0),
-            "LMW": hmw_row.get("LMW", 0)
-        }
+        peaks_df = pd.DataFrame(list(peak_results.values()))
 
         for channel in channels:
             if channel in df.columns:
@@ -822,44 +700,56 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
                     col=col
                 )
 
-                if enable_shading:
-                    # Define shading regions using HMW Table data
+                if enable_shading and 'peak_retention_time' in peaks_df.columns and 'percent_area' in peaks_df.columns:
+                    peaks_df['peak_retention_time'] = peaks_df['peak_retention_time'].astype(float)
+                    peaks_df['percent_area'] = peaks_df['percent_area'].astype(float)
+
+                    closest_index = (peaks_df['peak_retention_time'] - main_peak_rt).abs().idxmin()
+                    main_peak_start = peaks_df.loc[closest_index, 'peak_start_time']
+                    main_peak_end = peaks_df.loc[closest_index, 'peak_end_time']
+
+                    hmw_start = peaks_df[peaks_df['peak_retention_time'] < main_peak_start]['peak_start_time'].min()
+                    hmw_end = main_peak_start
+                    lmw_start = main_peak_end
+                    lmw_end = peaks_df[peaks_df['peak_retention_time'] > main_peak_end]['peak_end_time'].max()
+
                     shading_regions = {
                         "HMW": (hmw_start, hmw_end),
                         "MP": (main_peak_start, main_peak_end),
                         "LMW": (lmw_start, lmw_end)
                     }
 
+                    percentages = {
+                        "HMW": round(peaks_df[peaks_df['peak_retention_time'] < main_peak_start]['percent_area'].sum(),
+                                     2) if pd.notna(hmw_start) else 0,
+                        "MP": round(peaks_df.loc[closest_index, 'percent_area'], 2) if closest_index is not None else 0,
+                        "LMW": 0
+                    }
+
+                    if percentages["HMW"] + percentages["MP"] <= 100:
+                        percentages["LMW"] = round(100 - percentages["HMW"] - percentages["MP"], 2)
+
                     for region, (start_time, end_time) in shading_regions.items():
-                        try:
-                            # Ensure numeric comparison
-                            start_time = float(start_time) if pd.notna(start_time) else None
-                            end_time = float(end_time) if pd.notna(end_time) else None
-                        except ValueError:
-                            start_time = end_time = None
+                        if pd.notna(start_time) and pd.notna(end_time):
+                            # Filter data within the shading region
+                            shading_region = df[(df['time'] >= start_time) & (df['time'] <= end_time)]
+                            if not shading_region.empty:
+                                fig.add_trace(
+                                    go.Scatter(
+                                        x=shading_region['time'],
+                                        y=shading_region[channel],
+                                        fill='tozeroy',
+                                        mode='none',
+                                        fillcolor=region_colors[region],
+                                        opacity=0.05,
+                                        name=f"{region} ({sample_name})"
+                                    ),
+                                    row=row,
+                                    col=col
+                                )
 
-                        if start_time is None or end_time is None:
-                            continue  # Skip invalid regions
-
-                        shading_region = df[(df['time'] >= start_time) & (df['time'] <= end_time)]
-                        if not shading_region.empty:
-                            fig.add_trace(
-                                go.Scatter(
-                                    x=shading_region['time'],
-                                    y=shading_region[channel],
-                                    fill='tozeroy',
-                                    mode='none',
-                                    fillcolor=region_colors[region],
-                                    opacity=0.05,
-                                    name=f"{region} ({sample_name})"
-                                ),
-                                row=row,
-                                col=col
-                            )
-
-                            if enable_peak_labeling:
-                                # Annotate peaks using max value in the region
-                                try:
+                                if enable_peak_labeling:
+                                    # Find the max peak retention time and corresponding max value in the region
                                     max_peak_row = shading_region.loc[shading_region[channel].idxmax()]
                                     max_retention_time = max_peak_row['time']
                                     max_peak_value = max_peak_row[channel]
@@ -868,27 +758,23 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
                                     log_mw = slope * max_retention_time + intercept
                                     mw = round(np.exp(log_mw) / 1000, 2)
 
-                                    # Debug MW calculation
-                                    # print(f"Sample: {sample_name}, Region: {region}, Max Retention Time: {max_retention_time}, MW: {mw}")
-
-                                    # Apply offsets for labels
+                                    # Apply offsets
                                     x_offset = label_offsets[region]["x_offset"] + max_retention_time
                                     y_offset = label_offsets[region]["y_offset"] + max_peak_value
 
+                                    # Add annotation at max retention time
                                     fig.add_annotation(
-                                        x=x_offset,
-                                        y=y_offset,
+                                        x=x_offset,  # Use max retention time + x_offset
+                                        y=y_offset,  # Use max peak value + y_offset
                                         text=f"{region}:{percentages[region]}%<br>MW:{mw} kD",
                                         showarrow=False,
                                         font=dict(size=12, color="black"),
                                         align="center",
-                                        bgcolor="rgba(255, 255, 255, 0.8)",
-                                        bordercolor="black",
+                                        bgcolor="rgba(255, 255, 255, 0.8)",  # Add background color for readability
+                                        bordercolor="black",  # Optional border for better contrast
                                         row=row,
                                         col=col
                                     )
-                                except Exception as e:
-                                    print(f"Error annotating MW for {sample_name}, {region}: {e}")
 
         fig.update_xaxes(
             title_text="Time (min)",
@@ -905,6 +791,7 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
     fig.update_layout(
         height=350 * rows,
         margin=dict(l=10, r=10, t=50, b=10),
+        # title="Sample Subplots with MW Labels",
         title_x=0.5,
         showlegend=False,
         plot_bgcolor="white"
@@ -921,15 +808,13 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
      Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
      Input('shading-checklist', 'value'),
      Input('peak-label-checklist', 'value'),
-     Input('main-peak-rt-input', 'value'),
-     Input('regression-parameters', 'data'),  # Input for regression parameters
-     Input('hmw-table-store', 'data')],  # Access stored HMW Table data
+     Input('main-peak-rt-input', 'value')],
     [State('selected-report', 'data'),
      State('channel-checklist', 'value')],
     prevent_initial_call=True
 )
-def update_graph(plot_type, report_clicks, shading_options, peak_label_options, main_peak_rt, regression_params,
-                 hmw_table_data, selected_report, selected_channels):
+def update_graph(plot_type, report_clicks, shading_options, peak_label_options, main_peak_rt, selected_report,
+                 selected_channels):
     ctx = dash.callback_context
 
     # Determine which input triggered the callback
@@ -953,7 +838,7 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options, 
 
     # Retrieve the list of selected samples
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
-    # print(sample_list)
+    print(sample_list)
 
     if plot_type == 'plotly':
         # Generate the Plotly graph
@@ -984,30 +869,23 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options, 
         return fig, {'display': 'block'}, report_name  # Show Plotly graph and persist report
 
 
-
-
-
     elif plot_type == 'subplots':
+        # Compute regression details
+        std_sample = SampleMetadata.objects.filter(sample_prefix="STD").first()
+        slope, intercept, r_squared, std_df = compute_regression(std_sample)
 
-        if not hmw_table_data:
-            return go.Figure(), {'display': 'block'}, report_name
-
-        # Extract slope and intercept from regression parameters
-        slope = regression_params.get('slope', 0)
-        intercept = regression_params.get('intercept', 0)
-        # print(f"Using slope: {slope}, intercept: {intercept}")  # Debugging output
         enable_shading = 'enable_shading' in shading_options
+
         enable_peak_labeling = 'enable_peak_labeling' in peak_label_options
 
         fig = generate_subplots_with_shading(
             sample_list,
             selected_channels,
-            enable_shading=enable_shading,
-            enable_peak_labeling=enable_peak_labeling,
+            enable_shading='enable_shading' in shading_options,
+            enable_peak_labeling='enable_peak_labeling' in peak_label_options,
             main_peak_rt=main_peak_rt,
             slope=slope,
-            intercept=intercept,
-            hmw_table_data=hmw_table_data
+            intercept=intercept
         )
 
         return fig, {'display': 'block'}, report_name
@@ -1033,35 +911,27 @@ def export_to_xlsx(n_clicks, table_data):
 
 
 @app.callback(
-    [Output('hmw-table', 'columns'), Output('hmw-table', 'data'), Output('hmw-table-store', 'data')],
-    [
-        Input('hmw-column-selector', 'value'),  # User-selected columns
-        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
-        Input('main-peak-rt-store', 'data'),
-        Input('low-mw-cutoff-store', 'data')
-    ],
+    Output('hmw-table', 'data'),
+    Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
     prevent_initial_call=True
 )
-def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutoff):
+def update_hmw_table(report_clicks):
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        return [], [], []
+        return []
 
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
-    try:
-        triggered_data = json.loads(triggered_id.replace("'", '"'))
-    except json.JSONDecodeError:
-        triggered_data = {}
+    triggered_data = eval(triggered_id)
 
     if 'report_name' not in triggered_data:
-        return [], [], []
+        return []
 
     report_name = triggered_data['report_name']
     report = Report.objects.filter(report_name=report_name).first()
 
     if not report:
-        return [], [], []
+        return []
 
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
     summary_data = []
@@ -1076,101 +946,26 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
             continue
 
         df = pd.DataFrame.from_records(peak_results.values())
+        print(df)
 
-        if 'peak_retention_time' not in df.columns or 'area' not in df.columns or 'peak_start_time' not in df.columns or 'peak_end_time' not in df.columns:
+        if 'peak_retention_time' not in df.columns or 'percent_area' not in df.columns:
             continue
 
         df['peak_retention_time'] = df['peak_retention_time'].astype(float)
-        df['area'] = df['area'].astype(float)
-        df['peak_start_time'] = df['peak_start_time'].astype(float)
-        df['peak_end_time'] = df['peak_end_time'].astype(float)
+        df['percent_area'] = df['percent_area'].astype(float)
 
+        main_peak_rt = 5.10
         closest_index = (df['peak_retention_time'] - main_peak_rt).abs().idxmin()
-        main_peak_area = round(df.loc[closest_index, 'area'], 2)
-        main_peak_start = df.loc[closest_index, 'peak_start_time']
-        main_peak_end = df.loc[closest_index, 'peak_end_time']
+        main_peak_area = round(df.loc[closest_index, 'percent_area'], 2)
 
-        hmw_start = df[df['peak_retention_time'] < main_peak_start]['peak_start_time'].min()
-        hmw_end = main_peak_start
-
-        lmw_start = main_peak_end
-        lmw_end = df[df['peak_retention_time'] > main_peak_end]['peak_end_time'].max()
-
-        df_excluding_main_peak = df.drop(index=closest_index)
-
-        hmw_area = round(
-            df_excluding_main_peak[df_excluding_main_peak['peak_retention_time'] < main_peak_rt]['area'].sum(),
-            2
-        )
-
-        lmw_area = round(
-            df_excluding_main_peak[
-                (df_excluding_main_peak['peak_retention_time'] > main_peak_rt) &
-                (df_excluding_main_peak['peak_retention_time'] <= low_mw_cutoff)
-            ]['area'].sum(),
-            2
-        )
-
-        total_area = main_peak_area + hmw_area + lmw_area
-        hmw_percent = round((hmw_area / total_area) * 100, 2) if total_area > 0 else 0
-        main_peak_percent = round((main_peak_area / total_area) * 100, 2) if total_area > 0 else 0
-        lmw_percent = round((lmw_area / total_area) * 100, 2) if total_area > 0 else 0
+        hmw_value = round(df[df['peak_retention_time'] < main_peak_rt]['percent_area'].sum(), 2)
+        lmw_value = round(100 - hmw_value - main_peak_area, 2)
 
         summary_data.append({
             'Sample Name': sample.sample_name,
-            'Main Peak Start': main_peak_start if pd.notna(main_peak_start) else "N/A",
-            'Main Peak End': main_peak_end if pd.notna(main_peak_end) else "N/A",
-            'HMW Start': hmw_start if pd.notna(hmw_start) else "N/A",
-            'HMW End': hmw_end if pd.notna(hmw_end) else "N/A",
-            'LMW Start': lmw_start if pd.notna(lmw_start) else "N/A",
-            'LMW End': lmw_end if pd.notna(lmw_end) else "N/A",
-            'HMW': hmw_percent,
-            'Main Peak': main_peak_percent,
-            'LMW': lmw_percent
+            'HMW': hmw_value,
+            'Main Peak': main_peak_area,
+            'LMW': lmw_value
         })
 
-    # Define the desired column order
-    desired_order = [
-        'Sample Name',
-        'HMW',
-        'HMW Start',
-        'HMW End',
-        'Main Peak',
-        'Main Peak Start',
-        'Main Peak End',
-        'LMW',
-        'LMW Start',
-        'LMW End'
-    ]
-
-    # Default columns to display
-    default_columns = ['Sample Name', 'HMW', 'Main Peak', 'LMW']
-
-    # Ensure selected_columns is not None
-    selected_columns = selected_columns if selected_columns else []
-
-    # Combine default and user-selected columns
-    all_columns = list(set(default_columns + selected_columns))
-
-    # Order columns based on desired_order
-    ordered_columns = [col for col in desired_order if col in all_columns]
-
-    # Create table columns dynamically
-    table_columns = [{"name": col, "id": col} for col in ordered_columns]
-
-    # Filter summary_data for selected columns
-    filtered_data = [
-        {col: row[col] for col in ordered_columns if col in row} for row in summary_data
-    ]
-
-    return table_columns, filtered_data, summary_data
-
-
-@app.callback(
-    [Output('main-peak-rt-store', 'data'), Output('low-mw-cutoff-store', 'data')],
-    [Input('main-peak-rt-input', 'value'), Input('low-mw-cutoff-input', 'value')],
-    prevent_initial_call=True
-)
-def update_cutoff_values(main_peak_rt, low_mw_cutoff):
-    print(f"Updated Main Peak RT: {main_peak_rt}, LMW Cutoff: {low_mw_cutoff}")
-    return main_peak_rt, low_mw_cutoff
+    return summary_data

@@ -134,7 +134,7 @@
 from pathlib import Path
 import os
 
-import home.apps
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -149,14 +149,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',  # Keep only this occurrence
-    'analytical.apps.DataConfig',
-    # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    'homepage',
     'plotly_integration',
     'corsheaders',
     'channels',
     'channels_redis',
-    'home.apps.HomeConfig',
     'django_plotly_dash',
 ]
 

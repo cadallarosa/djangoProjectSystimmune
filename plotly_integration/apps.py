@@ -7,3 +7,5 @@ class PlotlyIntegrationConfig(AppConfig):
 
     def ready(self):
         import plotly_integration.dash_app
+        import plotly_integration.database_manager
+        import plotly_integration.report_app

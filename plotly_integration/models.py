@@ -12,7 +12,7 @@ class SampleMetadata(models.Model):
     sample_name = models.TextField(null=True, blank=True)
     sample_set_id = models.IntegerField(null=True, blank=True)
     sample_set_name = models.TextField(null=True, blank=True)
-    date_acquired = models.DateField(null=True, blank=True)
+    date_acquired = models.DateTimeField(null=True, blank=True)
     acquired_by = models.TextField(null=True, blank=True)
     run_time = models.FloatField(null=True, blank=True)
     processing_method = models.TextField(null=True, blank=True)
