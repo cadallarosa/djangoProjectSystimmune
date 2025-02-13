@@ -26316,3 +26316,97 @@ ValueError: NaTType does not support strftime
 2025-02-12 20:07:39,288 - INFO - Watching for file changes with StatReloader
 2025-02-12 20:09:01,857 - INFO - Watching for file changes with StatReloader
 2025-02-12 20:10:25,579 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:28:26,426 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\column_analysis_app.py changed, reloading.
+2025-02-12 20:28:28,980 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:30:35,594 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:41:09,904 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 20:41:12,335 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:48:34,511 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 20:48:36,692 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:48:48,195 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:49:26,743 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:51:14,642 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 20:51:16,916 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:53:56,435 - INFO - Watching for file changes with StatReloader
+2025-02-12 20:54:42,630 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 20:54:44,821 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:02:25,351 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:04:56,748 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:10:58,226 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\models.py changed, reloading.
+2025-02-12 21:11:00,598 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:15:05,455 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 21:15:07,754 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:22:11,287 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 21:22:13,547 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:23:43,434 - INFO - Watching for file changes with StatReloader
+2025-02-12 21:25:20,634 - ERROR - Internal Server Error: /plotly_integration/dash-app/app/ReportApp/_dash-update-component
+Traceback (most recent call last):
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django_plotly_dash\views.py", line 75, in update
+    return _update(request, ident, stateless, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django_plotly_dash\views.py", line 95, in _update
+    resp = app.dispatch_with_args(request_body, arg_map)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django_plotly_dash\dash_wrapper.py", line 705, in dispatch_with_args
+    res = callback(*args, **{k: v for k, v in argMap.items() if k in parameters_to_inject})
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\.venv\Lib\site-packages\django_plotly_dash\_callback.py", line 82, in add_context
+    output_value = func(*func_args, **func_kwargs)  # %% callback invoked %%
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py", line 346, in update_table
+    data = sorted(data, key=lambda x: x["date_acquired"] or datetime.min, reverse=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py", line 346, in <lambda>
+    data = sorted(data, key=lambda x: x["date_acquired"] or datetime.min, reverse=True)
+                                      ~^^^^^^^^^^^^^^^^^
+KeyError: 'date_acquired'
+2025-02-12 22:25:16,176 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\migrations\0001_initial.py changed, reloading.
+2025-02-12 22:25:19,268 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:26:09,097 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:28:43,000 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:31:24,878 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:32:40,293 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\migrations\0001_initial.py changed, reloading.
+2025-02-12 22:32:48,452 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:33:52,800 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:44:01,493 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:47:02,645 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\migrations\0001_initial.py changed, reloading.
+2025-02-12 22:47:05,290 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:50:23,809 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:53:00,716 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:54:27,418 - INFO - Watching for file changes with StatReloader
+2025-02-12 22:56:22,876 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:00:08,301 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:02:58,893 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:04:49,789 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 23:04:52,444 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:05:23,308 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 23:05:26,158 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:05:41,449 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:06:03,140 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:06:47,249 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:07:20,704 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:08:41,601 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:13:07,770 - INFO - Watching for file changes with StatReloader
+2025-02-12 23:13:15,128 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-12 23:13:17,817 - INFO - Watching for file changes with StatReloader
+2025-02-13 11:43:30,917 - INFO - Watching for file changes with StatReloader
+2025-02-13 11:43:35,851 - WARNING - Not Found: /favicon.ico
+2025-02-13 11:48:51,750 - INFO - Watching for file changes with StatReloader
+2025-02-13 11:54:27,143 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\create_report_app.py changed, reloading.
+2025-02-13 11:54:29,671 - INFO - Watching for file changes with StatReloader
+2025-02-13 11:57:18,796 - INFO - Watching for file changes with StatReloader
+2025-02-13 11:57:57,077 - INFO - C:\Users\cdallarosa\DataAlchemy\djangoProject\plotly_integration\database_manager.py changed, reloading.
+2025-02-13 11:57:59,502 - INFO - Watching for file changes with StatReloader
+2025-02-13 11:59:09,990 - INFO - Watching for file changes with StatReloader
+2025-02-13 12:02:40,977 - INFO - Watching for file changes with StatReloader
+2025-02-13 12:20:55,926 - INFO - Watching for file changes with StatReloader
+2025-02-13 12:22:31,235 - WARNING - Not Found: /favicon.ico

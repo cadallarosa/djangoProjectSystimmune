@@ -121,6 +121,8 @@ class Report(models.Model):
     comments = models.TextField(null=True, blank=True)
     user_id = models.TextField(null=True, blank=True)
     date_created = models.TextField(null=True, blank=True)
+    selected_result_ids = models.TextField(null=True, blank=True)
+
 
     class Meta:
         db_table = 'report'

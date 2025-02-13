@@ -1,8 +1,10 @@
+import pytz
 from dash import dcc, html, Input, Output, State, dash_table
 from django_plotly_dash import DjangoDash
 from .models import SampleMetadata, Report
 from datetime import datetime
-
+import re
+import pandas as pd
 
 # Initialize the Dash app
 app = DjangoDash("ReportApp")
@@ -10,19 +12,34 @@ app = DjangoDash("ReportApp")
 
 # Fetch default data for initialization
 def get_default_columns_and_data():
-    default_columns = ["sample_name", "date_acquired", "sample_set_name", "column_name"]
+    default_columns = ["sample_name", "result_id", "date_acquired", "sample_set_name", "column_name"]
     samples = SampleMetadata.objects.all()  # Fetch all rows
     columns = [{"name": col.replace("_", " ").title(), "id": col} for col in default_columns]
+
     data = []
     for sample in samples:
         row = {}
         for col in default_columns:
             value = getattr(sample, col, "")
-            # Format date_acquired to a readable string format if it's a DateField
-            # if col == "date_acquired" and value:
-                # value = value.strftime("%Y-%m-%d")  # Format as YYYY-MM-DD
+
+            # ✅ Convert `date_acquired` from text to a sortable datetime
+            if col == "date_acquired" and value:
+                try:
+                    value = datetime.strptime(value, "%Y-%m-%d %H:%M:%S%z")  # Convert SQLite format
+                except ValueError:
+                    value = None  # Handle invalid dates
+
             row[col] = value
         data.append(row)
+
+    # ✅ Sort data by `date_acquired` (Most Recent First)
+    data = sorted(data, key=lambda x: x["date_acquired"] or datetime.min, reverse=True)
+
+    # ✅ Convert `date_acquired` back to string for display
+    for row in data:
+        if row["date_acquired"]:
+            row["date_acquired"] = row["date_acquired"].strftime("%Y-%m-%d %H:%M:%S")
+
     return columns, data
 
 
@@ -108,7 +125,7 @@ app.layout = html.Div(
                         {"label": "Instrument Method ID", "value": "instrument_method_id"},
                         {"label": "Instrument Method Name", "value": "instrument_method_name"}
                     ],
-                    value=["sample_name", "date_acquired", "sample_set_name", "column_name"],
+                    value=["sample_name", "result_id", "date_acquired", "sample_set_name", "column_name"],
                     multi=True,
                     placeholder="Select columns to display",
                     style={
@@ -301,7 +318,7 @@ app.layout = html.Div(
 def update_table(sample_types, sample_set_names, selected_columns):
     # Default columns
     if not selected_columns:
-        selected_columns = ["sample_name", "date_acquired", "sample_set_name", "column_name"]
+        selected_columns = ["sample_name", "result_id", "date_acquired", "sample_set_name", "column_name"]
 
     columns = [{"name": col.replace("_", " ").title(), "id": col} for col in selected_columns]
 
@@ -315,14 +332,23 @@ def update_table(sample_types, sample_set_names, selected_columns):
     data = []
     for sample in query:
         row = {col: getattr(sample, col, "") for col in selected_columns}
+
+        # ✅ Convert `date_acquired` from text to datetime for sorting
         if "date_acquired" in row and row["date_acquired"]:
-            if isinstance(row["date_acquired"], str):
-                pass  # Already a string, no need to convert
-            elif row["date_acquired"]:
-                row["date_acquired"] = row["date_acquired"].strftime("%Y-%m-%d")
-            else:
-                row["date_acquired"] = ""
+            try:
+                row["date_acquired"] = datetime.strptime(row["date_acquired"], "%Y-%m-%d %H:%M:%S%z")
+            except ValueError:
+                row["date_acquired"] = None  # Handle invalid dates
+
         data.append(row)
+
+    # ✅ Sort by `date_acquired` (most recent first)
+    data = sorted(data, key=lambda x: x["date_acquired"] or datetime.min, reverse=True)
+
+    # ✅ Convert back to string for display
+    for row in data:
+        if row["date_acquired"]:
+            row["date_acquired"] = row["date_acquired"].strftime("%Y-%m-%d %H:%M:%S")
 
     return columns, data
 
@@ -365,17 +391,34 @@ def select_all_rows(n_clicks, data):
     return []  # Deselect all rows
 
 
-# Callbacks
-
-# Populate Project ID options and toggle new Project ID input
 @app.callback(
     [Output("project_id_dropdown", "options"),
      Output("new_project_id_input", "style")],
     [Input("project_id_dropdown", "value")]
 )
 def populate_project_ids(selected_project_id):
-    project_ids = Report.objects.values_list("project_id", flat=True).distinct()
-    options = [{"label": pid, "value": pid} for pid in project_ids if pid]
+    # Fetch distinct project IDs
+    project_ids = list(Report.objects.values_list("project_id", flat=True).distinct())
+
+    # Function to extract sorting components
+    def extract_sort_key(pid):
+        """
+        Extract numeric and letter components from project ID.
+        Example: 'SI-11a11' -> (11, 'a', 11)
+        """
+        match = re.match(r"SI-(\d+)([a-zA-Z]?)(\d*)", pid)
+        if match:
+            num_part = int(match.group(1)) if match.group(1) else 0
+            letter_part = match.group(2) if match.group(2) else ""
+            suffix_part = int(match.group(3)) if match.group(3) else 0
+            return (num_part, letter_part, suffix_part)
+        return (float("inf"), "", float("inf"))  # Default for invalid formats
+
+    # Sort the project IDs using extracted components
+    sorted_project_ids = sorted(project_ids, key=extract_sort_key)
+
+    # Generate dropdown options
+    options = [{"label": pid, "value": pid} for pid in sorted_project_ids if pid]
     options.append({"label": "Enter New Project ID", "value": "new_project_id"})
 
     if selected_project_id == "new_project_id":
@@ -399,7 +442,6 @@ def populate_user_ids(selected_user_id):
     return options, {"display": "none"}
 
 
-# Submit Report
 @app.callback(
     Output("submission_status", "children"),
     Input("submit_button", "n_clicks"),
@@ -414,7 +456,59 @@ def populate_user_ids(selected_user_id):
         State("sample_table", "selected_rows")
     ]
 )
-def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, new_user_id, comments, table_data, selected_rows):
+def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, new_user_id, comments, table_data,
+                  selected_rows):
+    if n_clicks > 0:
+        if not selected_rows:
+            return "No rows selected. Please select rows to include in the report."
+
+        # Validate required fields
+        if not report_name or (not project_id and not new_project_id) or (not user_id and not new_user_id):
+            return "Please provide all required fields."
+
+        final_project_id = new_project_id if project_id == "new_project_id" else project_id
+        final_user_id = new_user_id if user_id == "new_user_id" else user_id
+
+        # Collect selected rows into DataFrame
+        data = []
+        for i in selected_rows:
+            row = table_data[i]
+            sample_name = row.get("sample_name")
+            result_id = table_data[i].get("result_id")
+            if result_id:
+                data.append((sample_name, str(result_id)))
+
+        if not data:
+            return "No matching result IDs found for selected samples."
+
+        # Sort by sample name and extract lists
+        df = pd.DataFrame(data, columns=["sample_name", "result_id"])
+        df = df.sort_values(by="sample_name", ascending=True)
+        sorted_samples = df["sample_name"].tolist()
+        sorted_result_ids = df["result_id"].tolist()
+
+        sample_names_str = ",".join(sorted_samples)
+        result_ids_str = ",".join(sorted_result_ids)
+
+        # Store report with timestamp
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        Report.objects.create(
+            report_name=report_name,
+            project_id=final_project_id,
+            user_id=final_user_id,
+            comments=comments,
+            selected_samples=sample_names_str,
+            selected_result_ids=result_ids_str,
+            date_created=timestamp
+        )
+
+        return f"Report '{report_name}' created successfully with {len(sorted_samples)} samples."
+
+    return "No action performed."
+
+
+def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, new_user_id, comments, table_data,
+                  selected_rows):
     if n_clicks > 0:
         # Ensure required fields are provided
         if not report_name or (not project_id and not new_project_id) or (not user_id and not new_user_id):
@@ -426,29 +520,46 @@ def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, ne
         # Resolve final User ID
         final_user_id = new_user_id if user_id == "new_user_id" else user_id
 
-        # Build selected samples by querying the database for sample_prefix and sample_number
-        selected_samples = []
+        # Extract selected sample names and result IDs into a DataFrame
+        data = []
         for i in selected_rows:
             sample_name = table_data[i].get("sample_name", "")
-            if sample_name:
-                selected_samples.append(sample_name)
+            result_id = table_data[i].get("result_id", None)
+            if result_id:
+                data.append((sample_name, str(result_id)))
 
-        if not selected_samples:
+        if not data:
             return "No rows selected. Please select rows to include in the report."
 
-        # **Sort the selected samples**
-        selected_samples.sort()  # Sorting the list in ascending order
+        # ✅ Create DataFrame and sort by sample name
+        df = pd.DataFrame(data, columns=["sample_name", "result_id"])
+        df = df.sort_values(by="sample_name", ascending=True)
 
-        # Save the report to the database
+        # ✅ Extract sorted lists
+        sorted_samples = df["sample_name"].tolist()
+        sorted_result_ids = df["result_id"].tolist()
+
+        # ✅ Convert lists to comma-separated strings for storage
+        sample_names_str = ",".join(sorted_samples)
+        result_ids_str = ",".join(sorted_result_ids)
+
+        # Capture the current timestamp and format it for SQLite storage
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # YYYY-MM-DD HH:MM:SS format
+
+        # Save the report to the database with the date_created field
         Report.objects.create(
             report_name=report_name,
             project_id=final_project_id,
             user_id=final_user_id,
             comments=comments,
-            selected_samples=",".join(selected_samples)  # Join sorted sample names
+            selected_samples=sample_names_str,  # Store sorted sample names
+            date_created=timestamp,  # Store as text
+            selected_result_ids=result_ids_str  # Store sorted result IDs
         )
+        # ✅ Convert UTC to PST and format it
+        pst_tz = pytz.timezone("US/Pacific")  # Pacific Time Zone
+        timestamp_pst = datetime.now(pytz.utc).astimezone(pst_tz).strftime("%Y-%m-%d %H:%M:%S")  # PST format
 
-        return f"Report '{report_name}' created successfully with sorted samples!"
+        return f"Report '{report_name}' created successfully on {timestamp_pst}!"
 
     return "No action performed."
-

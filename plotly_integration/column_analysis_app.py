@@ -108,26 +108,24 @@ app.layout = html.Div([
     ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'})
 ])
 
-
 def get_date_acquired_by_result_id(result_id):
     """
-    Fetch the `date_acquired` for a given result_id using Django ORM.
-    Preserves the original DateTime format.
+    Fetch the `date_acquired` for a given result_id.
+    SQLite stores it as TEXT, so we need to parse and format it.
+    Returns it in MM/DD/YYYY HH:MM:SS AM/PM format.
     """
     raw_date = SampleMetadata.objects.filter(result_id=result_id).values_list("date_acquired", flat=True).first()
 
     if not raw_date or raw_date.strip() == "":
         return "Unknown"  # Default if missing
 
-    raw_date = raw_date.strip()  # Remove any spaces
-
-    # ✅ Step 1: Remove timezone info like "PST"
-    clean_date = re.sub(r"\s?[A-Z]{2,}$", "", raw_date)
-
-    # ✅ Step 2: Ensure the date remains in "MM/DD/YYYY HH:MM:SS AM/PM" format
     try:
-        parsed_date = datetime.strptime(clean_date, "%m/%d/%Y %I:%M:%S %p")
-        return parsed_date.strftime("%m/%d/%Y %I:%M:%S %p")  # Keep original format
+        # ✅ Parse SQLite's text format (YYYY-MM-DD HH:MM:SS+00:00)
+        parsed_date = datetime.strptime(raw_date, "%Y-%m-%d %H:%M:%S%z")
+
+        # ✅ Format into MM/DD/YYYY HH:MM:SS AM/PM
+        return parsed_date.strftime("%m/%d/%Y %I:%M:%S %p")
+
     except ValueError:
         print(f"⚠ Error parsing date for Result ID '{result_id}': {raw_date}")
         return "Unknown"
@@ -393,19 +391,13 @@ def update_pressure_plot(selected_serial_number):
             continue
 
         sample_name = sample.sample_name
-        run_time = sample.run_time
+        run_time = sample.run_time  # Now a float, no need for regex extraction
 
-        # Validate `run_time` and convert it
-        match = re.search(r"([\d\.]+)", str(run_time))
-        if match:
-            try:
-                run_time = float(match.group(1))
-                midpoint_time = run_time / 2
-            except ValueError:
-                print(f"⚠ Skipping Sample '{sample_name}' - Invalid run_time: {sample.run_time}")
-                continue
+        # ✅ Validate `run_time` as a float
+        if isinstance(run_time, (int, float)) and run_time > 0:
+            midpoint_time = run_time / 2  # Compute midpoint directly
         else:
-            print(f"⚠ Skipping Sample '{sample_name}' - Bad run_time format: {sample.run_time}")
+            print(f"⚠ Skipping Sample '{sample_name}' - Invalid run_time: {sample.run_time}")
             continue
 
         # Get pressure data for Channel 3
