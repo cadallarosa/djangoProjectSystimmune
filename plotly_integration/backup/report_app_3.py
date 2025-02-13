@@ -2,10 +2,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from django_plotly_dash import DjangoDash
 import dash
-from dash import dcc, html, Input, Output, State, dash_table, Dash, MATCH, callback_context
+from dash import dcc, html, Input, Output, State, dash_table, Dash, MATCH
 import pandas as pd
 from scipy.stats import linregress
-from .models import Report, SampleMetadata, PeakResults, TimeSeriesData
+from plotly_integration.models import Report, SampleMetadata, PeakResults, TimeSeriesData
 import json
 import logging
 from openpyxl.workbook import Workbook
@@ -19,6 +19,16 @@ logging.basicConfig(filename='app_logs.log', level=logging.DEBUG,
 # Initialize the Dash app
 app = DjangoDash('TimeSeriesApp')
 
+# Molecular weight mapping
+MW_MAPPING = {
+    'Peak1-Thyroglobulin': 1400000,
+    'Peak2-Thyroglobulin': 660000,
+    'Peak3-IgG': 150000,
+    'Peak4-BSA': 66400,
+    'Peak5-Myoglobin': 17000,
+    'Peak6-Uracil': 112
+}
+
 # Fetch available projects and reports
 projects = {}
 for report in Report.objects.all():
@@ -27,6 +37,7 @@ for report in Report.objects.all():
     projects[report.project_id].append({
         'name': report.report_name, 'samples': report.selected_samples
     })
+
 
 
 # Sidebar content generator
@@ -41,24 +52,12 @@ def generate_sidebar(projects):
             'padding': '10px',
             'border-bottom': '2px solid #0056b3',
         }),
-        # 🔵 Refresh Button
-        html.Button(
-            "Refresh Project Reports",
-            id="refresh-sidebar-btn",
-            n_clicks=0,
-            style={
-                'width': '100%',
-                'background-color': '#0056b3',
-                'color': 'white',
-                'border': 'none',
-                'padding': '10px',
-                'font-size': '14px',
-                'cursor': 'pointer',
-                'border-radius': '5px',
-                'margin-bottom': '10px',
-                'transition': 'all 0.2s ease-in-out'
-            }
-        ),
+        html.P("Right-click on the results to change the report", style={
+            'font-size': '12px',
+            'color': '#777',
+            'text-align': 'center',
+            'margin-bottom': '20px',
+        }),
     ]
 
     for project_id, reports in projects.items():
@@ -116,6 +115,7 @@ def generate_sidebar(projects):
     return sidebar_items
 
 
+
 # Layout for the Dash app
 app.layout = html.Div([
     dcc.Store(id='selected-report', data=None),
@@ -126,7 +126,21 @@ app.layout = html.Div([
     dcc.Store(id='hmw-table-store', data=[]),
     dcc.Store(id='report-list-store', data=[]),
 
+
     # Top-left Home Button
+    html.Div(
+        id="selected-report-display",
+        style={
+            'margin-top': '10px',
+            'padding': '10px',
+            'border': '1px solid #0056b3',
+            'border-radius': '5px',
+            'background-color': '#f0f8ff',
+            'color': '#003366',
+            'font-weight': 'bold',
+            'text-align': 'center'
+        }
+    ),
     html.Div(
         html.Button("Home", id="home-btn", style={
             'background-color': '#0056b3',
@@ -155,13 +169,32 @@ app.layout = html.Div([
             }
         ),
         html.Div([  # Main content container
+            html.Div(  # Project header
+                id='project-header',
+                children=[
+                    html.H3("Project ID - Analysis Type", style={
+                        'margin': '10px',
+                        'color': '#0056b3',
+                        'text-align': 'center',
+                        'border-bottom': '2px solid #0056b3'
+                    })
+                ],
+                style={
+                    'width': '68%',
+                    'padding': '10px',
+                    'border': '2px solid #0056b3',
+                    'border-radius': '5px',
+                    'background-color': '#f7f9fc',
+                    'margin-bottom': '10px'
+
+                }
+            ),
             html.Div([  # Plot and settings
                 dcc.Store(id='selected-report', data={}),  # Add this line for state persistence
                 html.Div(  # Plot area
                     id='plot-area',
                     children=[
-                        html.H4("SEC Results", id="sec-results-header",
-                                style={'text-align': 'center', 'color': '#0056b3'}),
+                        html.H4("SEC Results", style={'text-align': 'center', 'color': '#0056b3'}),
                         dcc.Graph(
                             id='time-series-graph',
                             figure=go.Figure(
@@ -196,9 +229,9 @@ app.layout = html.Div([
                         dcc.Checklist(
                             id='channel-checklist',
                             options=[
-                                {'label': 'UV280', 'value': 'channel_1'},
-                                {'label': 'UV260', 'value': 'channel_2'},
-                                {'label': 'Pressure', 'value': 'channel_3'}
+                                {'label': 'Channel 1', 'value': 'channel_1'},
+                                {'label': 'Channel 2', 'value': 'channel_2'},
+                                {'label': 'Channel 3', 'value': 'channel_3'}
                             ],
                             value=['channel_1']
                         ),
@@ -261,44 +294,7 @@ app.layout = html.Div([
                             ],
                             value=['enable_peak_labeling'],  # Default to no peak labeling
                             style={'margin-top': '10px'}
-                        ),
-                        html.Div([
-                            html.Label("Number of Columns:", style={'color': '#0056b3'}),
-                            dcc.Input(
-                                id='num-cols-input',
-                                type='number',
-                                min=1,
-                                step=1,
-                                value=3,  # Default value
-                                debounce=True,
-                                style={'width': '100%'}
-                            )
-                        ], style={'margin-top': '10px'}),
-
-                        html.Div([
-                            html.Label("Vertical Spacing:", style={'color': '#0056b3'}),
-                            dcc.Input(
-                                id='vertical-spacing-input',
-                                type='number',
-                                min=0,
-                                max=1,
-                                step=0.01,
-                                value=0.05,  # Default value
-                                style={'width': '100%'}
-                            )
-                        ], style={'margin-top': '10px'}),
-                        html.Div([
-                            html.Label("Horizontal Spacing:", style={'color': '#0056b3'}),
-                            dcc.Input(
-                                id='horizontal-spacing-input',
-                                type='number',
-                                min=0,
-                                max=1,
-                                step=0.01,
-                                value=0.05,  # Default value
-                                style={'width': '100%'}
-                            )
-                        ], style={'margin-top': '10px'}),
+                        )
 
                     ],
                     style={
@@ -309,7 +305,6 @@ app.layout = html.Div([
                         'border': '2px solid #0056b3',
                         'border-radius': '5px',
                     }
-
                 )
             ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'}),
             html.Div(
@@ -386,6 +381,7 @@ app.layout = html.Div([
                             {"field": "Column Name", "value": ""},
                             {"field": "Column Serial Number", "value": ""},
                             {"field": "Instrument Method Name", "value": ""},
+                            {"field": "STD ID", "value": ""}
                         ],
                         style_table={'overflowX': 'auto'},
                         style_cell={
@@ -415,24 +411,6 @@ app.layout = html.Div([
                 id='standard-analysis',
                 children=[
                     html.H4("Standard Analysis", style={'text-align': 'center', 'color': '#0056b3'}),
-
-                    # 🔹 Standard ID Dropdown
-                    html.Div([
-                        html.Label("Select Standard ID:", style={'color': '#0056b3'}),
-                        dcc.Dropdown(
-                            id='standard-id-dropdown',
-                            placeholder="Select a Standard ID",
-                            style={'width': '100%'}
-                        )
-                    ], style={'margin-top': '10px'}),
-
-                    # 🔹 Standard Peak Plot
-                    dcc.Graph(
-                        id='standard-peak-plot',
-                        figure=go.Figure(),
-                        style={'margin-top': '10px'}
-                    ),
-
                     html.Div(
                         id='standard-analysis-content',
                         children=[
@@ -451,7 +429,7 @@ app.layout = html.Div([
                                 ],
                                 data=[],
                                 row_selectable='multi',  # Allow multiple rows to be selected
-                                selected_rows=[i for i in range(5)],  # Default: select all rows in `data`
+                                selected_rows=[i for i in range(6)],  # Default: select all rows in `data`
                                 style_table={'overflowX': 'auto'},
                                 style_cell={'textAlign': 'center', 'padding': '5px'},
                                 style_header={'fontWeight': 'bold', 'backgroundColor': '#e9f1fb'}
@@ -464,18 +442,15 @@ app.layout = html.Div([
                             'background-color': '#f7f9fc',
                         }
                     ),
-
                     html.P("Regression Equation: ", id="regression-equation"),
                     html.P("R² Value: ", id="r-squared-value"),
                     html.P("Estimated MW for RT: ", id="estimated-mw"),
-
                     dcc.Input(
                         id="rt-input",
                         type="number",
                         placeholder="Enter Retention Time",
                         style={'width': '80%', 'margin-top': '10px'}
                     ),
-
                     html.Button("Calculate MW", id="calculate-mw-button", style={
                         'background-color': '#0056b3',
                         'color': 'white',
@@ -499,39 +474,84 @@ app.layout = html.Div([
 ])
 
 
+def get_std_result_id(sample_set_name=None, system_name=None):
+    """
+    Determine the standard result ID dynamically based on sample set and system name.
+
+    Args:
+        sample_set_name (str): The sample set name for filtering (optional).
+        system_name (str): The system name for filtering (optional).
+
+    Returns:
+        Tuple: (std_result_id, std_sample) where std_result_id is the result ID or "No STD Found",
+        and std_sample is the SampleMetadata object for the standard.
+    """
+    try:
+        # Primary STD search: Check for an STD in the same sample set and system
+        std_sample = SampleMetadata.objects.filter(
+            sample_set_name=sample_set_name,
+            sample_prefix="STD",
+            system_name=system_name
+        ).first()
+
+        # Secondary STD search: Broad search if no specific match found
+        if not std_sample:
+            std_sample = SampleMetadata.objects.filter(sample_prefix="STD").first()
+
+        std_result_id = std_sample.result_id if std_sample else "No STD Found"
+        return std_result_id, std_sample
+
+    except Exception as e:
+        print(f"Error determining standard result ID: {e}")
+        return "No STD Found", None
+
+
 @app.callback(
-    Output("sec-results-header", "children"),  # Update the SEC Results header
-    [Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks')],
+    Output("std-result-id-store", "data"),
+    [
+        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks')
+    ],
     prevent_initial_call=True
 )
-def update_sec_results_header(report_clicks):
-    ctx = dash.callback_context  # Correctly access callback context
+def store_std_result_id(report_clicks):
+    ctx = dash.callback_context
 
     if not ctx.triggered:
-        return "SEC Results"
+        return None
 
-    # Extract triggered report name
+    # Determine the triggering report
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-    try:
-        triggered_data = eval(triggered_id)  # Convert string ID to dictionary
-    except Exception:
-        return "Error: Invalid Report Data"
+    triggered_data = eval(triggered_id)
 
     if 'report_name' not in triggered_data:
-        return "SEC Results"
+        return None
 
     report_name = triggered_data['report_name']
     report = Report.objects.filter(report_name=report_name).first()
 
     if not report:
-        return "Report Not Found"
+        return None
 
-    # Format the SEC Results text
-    return f"{report.project_id} - {report.report_name}"
+    # Fetch the first sample name from the report's selected samples
+    sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
+    if not sample_list:
+        return None
+
+    first_sample_name = sample_list[0]
+    sample_metadata = SampleMetadata.objects.filter(sample_name=first_sample_name).first()
+
+    if not sample_metadata:
+        return None
+
+    # Retrieve the `std_result_id` using the centralized logic
+    std_result_id, _ = get_std_result_id(
+        sample_set_name=sample_metadata.sample_set_name,
+        system_name=sample_metadata.system_name
+    )
+
+    return std_result_id
 
 
-# Sidebar Logic
 @app.callback(
     Output({'type': 'contents', 'project_id': MATCH}, 'style'),
     Input({'type': 'folder', 'project_id': MATCH}, 'n_clicks'),
@@ -549,27 +569,6 @@ def toggle_folder(n_clicks):
 
 
 @app.callback(
-    Output('sidebar', 'children'),
-    Input('refresh-sidebar-btn', 'n_clicks')
-)
-def refresh_sidebar(n_clicks):
-    if n_clicks == 0:
-        raise dash.exceptions.PreventUpdate
-
-    # Fetch the latest project and report data from the database
-    projects = {}
-    for report in Report.objects.all():
-        if report.project_id not in projects:
-            projects[report.project_id] = []
-        projects[report.project_id].append({
-            'name': report.report_name,
-            'samples': report.selected_samples
-        })
-
-    # Regenerate the sidebar with updated data
-    return generate_sidebar(projects)
-
-@app.callback(
     Output("sample-details-table", "data"),
     Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
     prevent_initial_call=True
@@ -583,6 +582,7 @@ def update_sample_and_std_details(report_clicks):
         {"field": "Column Name", "value": ""},
         {"field": "Column Serial Number", "value": ""},
         {"field": "Instrument Method Name", "value": ""},
+        {"field": "STD ID", "value": ""}
     ]
 
     if not ctx.triggered:
@@ -619,6 +619,13 @@ def update_sample_and_std_details(report_clicks):
     system_name = sample_metadata.system_name or "N/A"
     instrument_method_name = sample_metadata.instrument_method_name or "N/A"
 
+    # Primary STD search: Check for an STD in the same sample set
+    std_sample = SampleMetadata.objects.filter(
+        sample_set_name=sample_set_name, sample_prefix="STD"
+    ).first()
+
+    # Use centralized function to determine the STD ID
+    std_result_id, _ = get_std_result_id(sample_set_name=sample_set_name, system_name=system_name)
 
     # Return table data
     return [
@@ -626,202 +633,12 @@ def update_sample_and_std_details(report_clicks):
         {"field": "Column Name", "value": column_name},
         {"field": "Column Serial Number", "value": column_serial_number},
         {"field": "Instrument Method Name", "value": instrument_method_name},
-
+        {"field": "STD ID", "value": std_result_id}
     ]
 
 
 import pandas as pd
 import numpy as np
-
-from collections import Counter
-
-from collections import Counter
-
-
-def get_filtered_std_ids(report_id):
-    """
-    Retrieve all standard result IDs from the most relevant sample set for the given report ID,
-    including the associated sample names.
-
-    Args:
-        report_id (str): The ID of the selected report.
-
-    Returns:
-        List[Tuple]: A list of tuples containing (std_result_id, sample_name, std_sample).
-    """
-    try:
-        # Retrieve the report
-        report = Report.objects.filter(report_id=report_id).first()
-        if not report:
-            return [("No STD Found", "Unknown Sample", None)]  # Ensure return format is consistent
-
-        # Extract selected sample names **with exact match**
-        sample_names = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
-
-        # Fetch all sample set names **linked to the exact selected samples**
-        sample_set_entries = SampleMetadata.objects.filter(sample_name__in=sample_names) \
-            .values_list("sample_name", "sample_set_name")
-
-        # Count occurrences of each sample set
-        sample_set_counts = Counter([entry[1] for entry in sample_set_entries])
-
-        # If no sample sets are found, return an empty result
-        if not sample_set_counts:
-            return [("No STD Found", "Unknown Sample", None)]
-
-        # Select the most common sample set (assumes correct set has most samples)
-        most_common_sample_set = sample_set_counts.most_common(1)[0][0]
-
-        # Debugging Output
-        print(f"Extracted Sample Names: {sample_names}")
-        print(f"Detected Sample Set Names: {list(sample_set_counts.keys())}")
-        print(f"✔ Using Most Common Sample Set: {most_common_sample_set}")
-
-        # Retrieve standard IDs **only from this sample set**
-        std_samples = SampleMetadata.objects.filter(
-            sample_set_name=most_common_sample_set,  # Ensure correct filtering
-            sample_prefix="STD"
-        ).distinct()
-
-        std_result_list = []
-        for sample in std_samples:
-            std_id = sample.result_id
-            sample_name = getattr(sample, "sample_name", "Unknown Sample")  # Handle missing sample name safely
-            std_result_list.append((std_id, sample_name, sample))
-
-        return std_result_list if std_result_list else [("No STD Found", "Unknown Sample", None)]
-
-    except Exception as e:
-        print(f"Error retrieving standard result IDs: {e}")
-        return [("No STD Found", "Unknown Sample", None)]
-
-
-@app.callback(
-    [
-        Output('standard-id-dropdown', 'options'),  # Update dropdown options
-        Output("std-result-id-store", "data")  # Store first available standard ID
-    ],
-    [Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks')],
-    prevent_initial_call=True
-)
-def update_standard_id_dropdown(report_clicks):
-    ctx = dash.callback_context
-
-    if not ctx.triggered:
-        return [], None  # Return empty dropdown and reset storage
-
-    triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-    try:
-        triggered_data = eval(triggered_id)  # Convert string ID to dictionary
-    except Exception:
-        return [], None
-
-    if 'report_name' not in triggered_data:
-        return [], None
-
-    report_name = triggered_data['report_name']
-    report = Report.objects.filter(report_name=report_name).first()
-
-    if not report:
-        return [], None
-
-    # Retrieve standard IDs using the updated function
-    std_results = get_filtered_std_ids(report.report_id)
-
-    # Format dropdown options with sample name and standard ID
-    dropdown_options = [
-        {'label': f"{sample_name} - STD {std_id}", 'value': std_id}
-        for std_id, sample_name, _ in std_results if std_id != "No STD Found"
-    ]
-
-    # Automatically select the first standard ID
-    first_std_id = dropdown_options[0]['value'] if dropdown_options else "No STD Found"
-
-    print(f"🔄 Auto-selecting first standard: {first_std_id}")  # Debugging
-
-    return dropdown_options, first_std_id
-
-
-def get_top_peaks(result_id):
-    """
-    Fetch and process the top 6 peaks by area for a given standard result ID.
-    Returns a DataFrame with ordered peak names.
-    """
-    # Fetch peak results
-    peaks = PeakResults.objects.filter(result_id=result_id).values(
-        "peak_name", "peak_retention_time", "height", "area", "asym_at_10", "plate_count", "res_hh"
-    )
-    df = pd.DataFrame(list(peaks))
-
-    if df.empty:
-        return df  # Return empty DataFrame if no peaks found
-    time_cutoff = 18
-    df = df[df["peak_retention_time"] <= time_cutoff]
-    # Define the ordered peak names
-    ordered_peak_names = [
-        "Peak1-Thyroglobulin",
-        "Peak2-IgG",
-        "Peak3-BSA",
-        "Peak4-Myoglobin",
-        "Peak5-Uracil"
-    ]
-
-    # Step 1: Sort peaks by area (descending) and keep only the top 6 peaks
-    df = df.sort_values(by="area", ascending=False).reset_index(drop=True)
-    df = df.iloc[:5] if len(df) > 5 else df  # Keep only the top 6 peaks
-
-    # Step 2: Reorder the selected peaks by retention time (ascending)
-    df = df.sort_values(by="peak_retention_time", ascending=True).reset_index(drop=True)
-
-    # Step 3: Assign peak names from ordered list
-    df["peak_name"] = ordered_peak_names[:len(df)]
-
-    return df
-
-
-@app.callback(
-    Output('standard-peak-plot', 'figure'),
-    Input('standard-id-dropdown', 'value'),
-    prevent_initial_call=True
-)
-def update_standard_plot(standard_id):
-    if not standard_id or standard_id == "No STD Found":
-        return go.Figure()
-
-    # Fetch time series data
-    time_series = TimeSeriesData.objects.filter(result_id=standard_id).values("time", "channel_1")
-    df_time = pd.DataFrame(time_series)
-
-    if df_time.empty:
-        return go.Figure()
-
-    # Fetch and process the top 6 peaks
-    df_peaks = get_top_peaks(standard_id)
-
-    if df_peaks.empty:
-        return go.Figure()
-
-    # Function to find the closest y-value in time series for a given retention time
-    def get_closest_time_series_value(retention_time):
-        closest_idx = (df_time["time"] - retention_time).abs().idxmin()
-        return df_time.loc[closest_idx, "channel_1"] if closest_idx in df_time.index else None
-
-    # Create Plotly figure
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(x=df_time["time"], y=df_time["channel_1"], mode='lines', name=f"STD {standard_id} - Channel 1"))
-
-    # Ensure annotation is placed at the correct peak height from time series
-    for _, row in df_peaks.iterrows():
-        y_value = get_closest_time_series_value(row["peak_retention_time"])
-        if y_value is not None:
-            fig.add_annotation(x=row["peak_retention_time"], y=y_value, text=row["peak_name"], showarrow=True,
-                               arrowhead=2)
-
-    fig.update_layout(title=f"Time Series for Standard ID {standard_id}", xaxis_title="Retention Time (min)",
-                      yaxis_title="UV280", template="plotly_white")
-    return fig
 
 
 @app.callback(
@@ -834,40 +651,63 @@ def update_standard_plot(standard_id):
         Output("regression-parameters", "data"),  # Store slope and intercept
     ],
     [
-        Input('standard-id-dropdown', 'value'),
-        Input("standard-table", "selected_rows"),  # Ensure selection is passed
+        Input("std-result-id-store", "data"),  # Use the stored std_result_id
+        Input("standard-table", "selected_rows"),  # Selected rows for regression
         State("standard-table", "data"),
         State("rt-input", "value"),
     ],
     prevent_initial_call=True
 )
 def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
+    # print(std_result_id)
     if not std_result_id or std_result_id == "No STD Found":
         return "No STD Selected", "N/A", {}, "N/A", [], {'slope': 0, 'intercept': 0}
 
-    # Fetch and process the top 6 peaks
-    df = get_top_peaks(std_result_id)
+    # Query peak results
+    peak_results = PeakResults.objects.filter(result_id=std_result_id).values(
+        "peak_name", "peak_retention_time", "asym_at_10", "plate_count", "res_hh"
+    )
+    df = pd.DataFrame(list(peak_results))
+    if df.empty:
+        return "No Peak Results Found", "N/A", {}, "N/A", [], {'slope': 0, 'intercept': 0}
+    # Define the ordered peak names
+    ordered_peak_names = [
+        "Peak1-Thyroglobulin",
+        "Peak2-Thyroglobulin",
+        "Peak3-IgG",
+        "Peak4-BSA",
+        "Peak5-Myoglobin",
+        "Peak6-Uracil"
+    ]
+
+    # Sort the DataFrame by retention time
+    df = df.sort_values(by="peak_retention_time", ascending=True).reset_index(drop=True)
+
+    # Drop any rows beyond the first 6
+    if len(df) > 6:
+        df = df.iloc[:6]
+
+    # Assign peak names to the DataFrame
+    df["peak_name"] = ordered_peak_names[:len(df)]  # Ensure names match the number of rows
+    df["MW"] = df["peak_name"].map(MW_MAPPING)
+
+    # Handle missing MW values
+    df["MW"] = df["MW"].fillna("N/A")  # Replace with a default value if necessary
+    df["MW"] = df["peak_name"].map(MW_MAPPING)
+    # print(df)
 
     if df.empty:
-        return "No Peak Results Found", "N/A", {}, "N/A", [], [], {'slope': 0, 'intercept': 0}
+        return "No Peak Results Found", "N/A", {}, "N/A", []
 
-    # Assign Molecular Weight (MW)
-    MW_MAPPING = {
-        'Peak1-Thyroglobulin': 660000,
-        'Peak2-IgG': 150000,
-        'Peak3-BSA': 66400,
-        'Peak4-Myoglobin': 17000,
-        'Peak5-Uracil': 112
-    }
     # Molecular weight mapping
     PERFORMANCE_MAPPING = {
         'Peak1-Thyroglobulin': 1000,
-        'Peak2-IgG': 1000,
-        'Peak3-BSA': 1000,
-        'Peak4-Myoglobin': 1000,
-        'Peak5-Uracil': 1000
+        'Peak2-Thyroglobulin': 1000,
+        'Peak3-IgG': 1000,
+        'Peak4-BSA': 1000,
+        'Peak5-Myoglobin': 1000,
+        'Peak6-Uracil': 1000
     }
-    df["MW"] = df["peak_name"].map(MW_MAPPING).fillna("N/A")
 
     # Add Performance column
     df["performance_cutoff"] = df["peak_name"].map(PERFORMANCE_MAPPING)
@@ -898,20 +738,21 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
     table_data = df.to_dict("records")
     # print("Table Data for Display:", table_data)
 
-    # Prepare table data
-    table_data = df.to_dict("records")
-
-    # **Ensure user selection persists**
+    # Validate selected_rows
     if not selected_rows or not table_data:
-        return "No Points Selected for Regression", "N/A", {}, "N/A", table_data, selected_rows, {'slope': 0,
-                                                                                                  'intercept': 0}
+        print("No rows selected or table data is empty.")
+        return "No Points Selected for Regression", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
 
-    # Retrieve selected peaks
-    selected_data = [table_data[i] for i in selected_rows if i < len(table_data)]
-    regression_df = pd.DataFrame(selected_data).dropna(subset=["MW", "peak_retention_time"])
+    # Safely retrieve selected rows
+    try:
+        selected_data = [table_data[i] for i in selected_rows if i < len(table_data)]
+    except IndexError as e:
+        print(f"IndexError: {e}")
+        selected_data = []
 
-    if regression_df.empty:
-        return "Regression Data is Empty", "N/A", {}, "N/A", table_data, selected_rows, {'slope': 0, 'intercept': 0}
+    if not selected_data:
+        print("No valid data for selected rows.")
+        return "No Points Selected for Regression", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
 
     # Perform regression
     regression_df = pd.DataFrame(selected_data).dropna(subset=["MW", "peak_retention_time"])
@@ -926,8 +767,12 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
         print(f"Regression error: {e}")
         return "Regression Failed", "N/A", {}, "N/A", table_data, {'slope': 0, 'intercept': 0}
 
-    # **Generate regression plot**
-    x_vals = np.linspace(regression_df["peak_retention_time"].min(), regression_df["peak_retention_time"].max(), 100)
+    # Regression plot
+    x_vals = np.linspace(
+        regression_df["peak_retention_time"].min(),
+        regression_df["peak_retention_time"].max(),
+        100,
+    )
     y_vals = slope * x_vals + intercept
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -941,12 +786,12 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
     fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode="lines", name="Regression Line"))
     fig.update_layout(
         title="Retention Time vs Log(MW)",
-        xaxis_title="Retention Time (min)",
+        xaxis_title="Retention Time",
         yaxis_title="Log(MW)",
         template="plotly_white"
     )
 
-    # **Estimate MW**
+    # Estimate MW
     estimated_mw = "N/A"
     if rt_input is not None:
         log_mw = slope * rt_input + intercept
@@ -963,10 +808,9 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
 
 
 def generate_subplots_with_shading(sample_list, channels, enable_shading, enable_peak_labeling, main_peak_rt, slope,
-                                   intercept, hmw_table_data, num_cols=3, vertical_spacing=0.05,
-                                   horizontal_spacing=0.5):
+                                   intercept, hmw_table_data):
     num_samples = len(sample_list)
-    cols = num_cols
+    cols = 3
     rows = (num_samples // cols) + (num_samples % cols > 0)
 
     region_colors = {
@@ -986,8 +830,8 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
         cols=cols,
         start_cell="top-left",
         subplot_titles=sample_list,
-        vertical_spacing=vertical_spacing,
-        horizontal_spacing=horizontal_spacing
+        vertical_spacing=0.06,
+        horizontal_spacing=0.05
     )
 
     for i, sample_name in enumerate(sample_list):
@@ -1287,6 +1131,16 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
     return table_columns, filtered_data, summary_data
 
 
+@app.callback(
+    Output("selected-report-display", "children"),
+    Input("selected-report", "data")
+)
+def display_selected_report(selected_report):
+    if not selected_report:
+        return "No report selected"
+    return f"Currently Selected Report: {selected_report}"
+
+
 # Compute the most common peak retention time based on max height
 def compute_main_peak_rt(sample_list):
     retention_times = []
@@ -1300,14 +1154,7 @@ def compute_main_peak_rt(sample_list):
             continue
 
         df = pd.DataFrame.from_records(peak_results.values())
-
-        # Ensure 'height' and 'peak_retention_time' exist and convert 'height' to numeric
         if df.empty or 'height' not in df.columns or 'peak_retention_time' not in df.columns:
-            continue
-
-        df['height'] = pd.to_numeric(df['height'], errors='coerce')  # Convert to numeric, non-numeric -> NaN
-
-        if df['height'].isna().all():  # If all values are NaN, skip this sample
             continue
 
         max_height_row = df.loc[df['height'].idxmax()]
@@ -1359,10 +1206,6 @@ def update_main_peak_rt(n_clicks, selected_report):
         Input('regression-parameters', 'data'),  # Regression parameters for peak labeling
         Input('hmw-table-store', 'data'),  # HMW data changes
         Input('channel-checklist', 'value'),  # Trigger on channel selection
-        Input('num-cols-input', 'value'),  # New Input
-        Input('vertical-spacing-input', 'value'),  # New Input
-        Input('horizontal-spacing-input', 'value')  # New Input
-
     ],
     [
         State('selected-report', 'data')  # Persist the current selected report
@@ -1371,7 +1214,7 @@ def update_main_peak_rt(n_clicks, selected_report):
 )
 def update_graph(plot_type, report_clicks, shading_options, peak_label_options,
                  main_peak_rt, low_mw_cutoff, regression_params, hmw_table_data,
-                 selected_channels, num_cols, vertical_spacing, horizontal_spacing, stored_report):
+                 selected_channels, stored_report):
     ctx = dash.callback_context
 
     # Determine which input triggered the callback
@@ -1450,10 +1293,7 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options,
             main_peak_rt=main_peak_rt,
             slope=slope,
             intercept=intercept,
-            hmw_table_data=hmw_table_data,
-            num_cols=num_cols,
-            vertical_spacing=vertical_spacing,
-            horizontal_spacing=horizontal_spacing
+            hmw_table_data=hmw_table_data
         )
 
         return fig, {'display': 'block'}, report_name

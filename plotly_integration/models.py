@@ -1,5 +1,8 @@
 from django.db import models
 
+
+
+
 class SampleMetadata(models.Model):
     id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
     result_id = models.IntegerField()
@@ -12,7 +15,7 @@ class SampleMetadata(models.Model):
     sample_name = models.TextField(null=True, blank=True)
     sample_set_id = models.IntegerField(null=True, blank=True)
     sample_set_name = models.TextField(null=True, blank=True)
-    date_acquired = models.DateTimeField(null=True, blank=True)
+    date_acquired = models.TextField(null=True, blank=True)  # 🔹 Change from DateTimeField to DateField
     acquired_by = models.TextField(null=True, blank=True)
     run_time = models.FloatField(null=True, blank=True)
     processing_method = models.TextField(null=True, blank=True)
@@ -26,7 +29,7 @@ class SampleMetadata(models.Model):
 
     class Meta:
         db_table = 'sample_metadata'
-        managed = False
+        managed = True
         unique_together = ('result_id', 'system_name')
 
 
@@ -117,10 +120,11 @@ class Report(models.Model):
     selected_samples = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     user_id = models.TextField(null=True, blank=True)
+    date_created = models.TextField(null=True, blank=True)
 
     class Meta:
         db_table = 'report'
-        managed = False
+        managed = True
 
 
 class Users(models.Model):
@@ -169,3 +173,7 @@ class Results(models.Model):
     class Meta:
         db_table = 'results'
         managed = False
+
+
+
+

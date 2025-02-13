@@ -82,10 +82,11 @@ def extract_metadata(file_path):
     # Extract `result_id` from "Injection Id" field in metadata
     result_id = int(metadata_dict.get("Injection Id", 0))
 
+
     # Check if the result_id is valid
     if result_id == 0:
         return None, None  # Return None to skip further processing
-
+    # print(metadata_dict)
     metadata_dict['Result Id'] = result_id
     return metadata_dict, result_id
 
@@ -129,31 +130,54 @@ def extract_peak_results(file_path, result_id):
         reader = csv.reader(file_obj, delimiter='\t')
         data = [row for row in reader]
 
-    # Extract peak result data
-    report = []
-    check = False
-    for row in data:
-        if '% Area' in row:
-            while row[1] != 'Channel Name':
-                row = row[1:] + [row[0]]
-            report.append(row)
-            check = True
-        elif 'ACQUITY TUV ChA' in row and check:
-            if row[0] == '#':
-                row = row[1:]
-            report.append(row)
+    # Define expected column headers
+    expected_columns = [
+        "Channel Name", "Name", "RT", "Area", "% Area", "Height",
+        "Asym@10", "Plate Count", "Res (HH)", "Start Time", "End Time"
+    ]
 
+    report = []
+    report.append(expected_columns)  # Force correct column order
+    check = False  # Flag to start reading after the header
+    for row in data:
+        row = [col.strip() for col in row]  # Remove extra spaces
+
+        # Detect the column header row (start of peak results)
+        if "% Area" in row:
+            check = True
+            continue  # Skip the header row
+
+        elif "(min)" in row:
+            check = True
+            continue  # Skip the header row
+
+        # Start collecting peak data
+        elif check and any(keyword in row for keyword in ["ACQUITY TUV ChA","2998 Ch1 280nm@6.0nm"]):
+            # print(row)
+            # Ensure correct header row exists before adding data
+            if not report:
+                report.append(expected_columns)
+                # print('not')
+
+            # Align data properly
+            while len(row) > len(expected_columns):
+                row = row[1:]  # Shift left to match expected length
+                # print(row)
+
+            report.append(row)
+    # print(report)
+    # Convert collected peak data into a DataFrame
     if report:
         df = pd.DataFrame(data=report)
+        # print(df)
 
         if not df.empty:
-            new_header = df.iloc[0]  # First row as header
-            df = df[1:]  # Remove the header row from data
-            df.columns = new_header  # Assign new header
+            # Assign the first row as column headers
+            df.columns = df.iloc[0]
+            df = df[1:].reset_index(drop=True)
 
-            # Ensure valid column names by filtering out unexpected columns
+            # Ensure valid column mappings
             column_mapping = {
-                'Result_Id': 'result_id',
                 'Channel Name': 'channel_name',
                 'Name': 'peak_name',
                 'RT': 'peak_retention_time',
@@ -173,19 +197,24 @@ def extract_peak_results(file_path, result_id):
                 'res_hh', 'peak_start_time', 'peak_end_time'
             ]
 
-            df = df[[col for col in df.columns if col in column_mapping]]
-            df.drop(columns=[col for col in df.columns if '#' in str(col)], inplace=True)
-            df.reset_index(drop=True, inplace=True)
+            # Keep only necessary columns and rename them
+            df = df.rename(columns=column_mapping)
+            # print(df)
+            # df = df[[col for col in df.columns if col in column_mapping]]
 
-            # Add result_id to the dataframe
-            df['result_id'] = result_id
-
-            # Rename columns to match the database schema
-            df.rename(columns=column_mapping, inplace=True)
-
-            # Ensure columns match the database schema
+            # Add result_id column
+            df["result_id"] = result_id
+            # print(df)
             df = df[expected_columns]
+            # Ensure all expected columns exist, filling missing ones with NaN
+            for col in expected_columns:
+                if col not in df:
+                    df[col] = None
+            df = df.drop_duplicates(subset=["peak_retention_time"], keep="first")
+
+            # print(df)
             return df
+
     return None
 
 
@@ -195,9 +224,9 @@ def insert_peak_results_to_db(peak_results_df, cursor):
         # Check if the peak result already exists using the result_id and peak_name
         cursor.execute(
             """
-            SELECT result_id 
-            FROM peak_results 
-            WHERE result_id = ? AND peak_retention_time = ? 
+            SELECT result_id
+            FROM peak_results
+            WHERE result_id = ? AND peak_retention_time = ?
             """,
             (row["result_id"], row["peak_retention_time"]),
         )
@@ -249,7 +278,7 @@ def process_files(directory, db_name, reported_folder):
     # Ensure the Reported folder exists
     os.makedirs(reported_folder, exist_ok=True)
 
-    # Get the list of .arw files
+    # Get the list of .ars files
     files = [f for f in os.listdir(directory) if f.endswith(".ars")]
 
     # List to hold files that need to be moved
@@ -259,26 +288,35 @@ def process_files(directory, db_name, reported_folder):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
 
-    # Wrap the files in a tqdm progress bar
-    for filename in tqdm(files, desc="Processing Files", unit="file"):
-        file_path = os.path.join(directory, filename)
+    files_processed = False
+    if len(files) == 0:
+        files_processed = True
+    else:
+        files_processed = False
 
-        # Step 1: Process the file (extract metadata, convert to DataFrame, and insert)
-        process_file(file_path, db_name, cursor)  # This will handle metadata extraction, conversion, and DB insertion
+    while not files_processed:
+        # Wrap the files in a tqdm progress bar
+        for filename in tqdm(files, desc="Processing Files", unit="file"):
+            file_path = os.path.join(directory, filename)
 
-        # Extract peak results using the result_id (assuming result_id comes from process_file)
-        metadata_dict, result_id = extract_metadata(file_path)
-        if result_id != 0:
-            peak_results_df = extract_peak_results(file_path, result_id)
+            # Step 1: Process the file (extract metadata, convert to DataFrame, and insert)
+            process_file(file_path, db_name, cursor)  # This will handle metadata extraction, conversion, and DB insertion
 
-            # Step 2: Insert peak results into the DB if the dataframe is not None
-            if peak_results_df is not None:
-                insert_peak_results_to_db(peak_results_df, cursor)
-            else:
-                print(f"No peak result data found for file: {filename}")
+            # Extract peak results using the result_id (assuming result_id comes from process_file)
+            metadata_dict, result_id = extract_metadata(file_path)
+            if result_id != 0:
+                peak_results_df = extract_peak_results(file_path, result_id)
 
-        # Add the file to the list of files to move
-        files_to_move.append(file_path)
+                # Step 2: Insert peak results into the DB if the dataframe is not None
+                if peak_results_df is not None:
+                    insert_peak_results_to_db(peak_results_df, cursor)
+                else:
+                    print(f"No peak result data found for file: {filename}")
+
+            # Add the file to the list of files to move
+            files_to_move.append(file_path)
+
+            files_processed = True
 
     # Commit all changes and close the connection
     conn.commit()

@@ -1,8 +1,12 @@
 import os
+import re
+import pytz
+from datetime import datetime
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
 from django_plotly_dash import DjangoDash
 from django.conf import settings
+from plotly_integration.models import SampleMetadata  # Adjust based on your app
 import plotly_integration.database.process_ars as process_ars
 import plotly_integration.database.process_arw as process_arw
 
@@ -106,8 +110,24 @@ app.layout = html.Div(
                         "fontSize": "18px",
                     },
                 ),
+                # Clean Data button
+                html.Button(
+                    "Clean Data",
+                    id="clean-data-btn",
+                    style={"backgroundColor": "#28a745", "color": "white", "marginTop": "20px",
+                           "padding": "15px 30px", "border": "none", "borderRadius": "5px", "cursor": "pointer",
+                           "fontSize": "18px"}),
+
                 html.Div(
                     id="output-message",
+                    style={
+                        "marginTop": "30px",
+                        "fontSize": "18px",
+                        "color": "#333",
+                    },
+                ),
+                html.Div(
+                    id="output-message-2",
                     style={
                         "marginTop": "30px",
                         "fontSize": "18px",
@@ -117,13 +137,14 @@ app.layout = html.Div(
                 # Interval component for active monitoring
                 dcc.Interval(
                     id="interval-component",
-                    interval=5000,  # Check every 5 seconds
+                    interval=5000000,  # Check every 5 seconds
                     n_intervals=0,  # Number of intervals passed
                 ),
             ],
         ),
     ],
 )
+
 
 # Callback to monitor folder and update file count
 @app.callback(
@@ -143,6 +164,7 @@ def monitor_folder(n_intervals, folder_path):
     if total_files == 0:
         return "No files found in the selected folder."
     return f"Folder contains {total_files} file(s): {ars_files} .ars file(s) and {arw_files} .arw file(s)."
+
 
 # Callback for processing files
 @app.callback(
@@ -176,5 +198,72 @@ def start_import(n_clicks, folder_path, reported_folder):
             process_arw.process_files(directory=folder_path, reported_folder=reported_folder, db_name=DB_NAME)
 
         return "File import completed successfully!"
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
+
+
+@app.callback(
+    Output("output-message-2", "children"),
+    [Input("clean-data-btn", "n_clicks")],
+    prevent_initial_call=True  # Ensures it only runs on button click
+)
+def clean_data(n_clicks):
+    if not n_clicks:
+        return "Click 'Clean Data' to start the cleaning process."
+
+    try:
+        cleaned_count = 0
+        errors = []
+
+        DATE_FORMATS = [
+            ("%m/%d/%Y %I:%M:%S %p PST", "US/Pacific"),
+            ("%m/%d/%Y %I:%M:%S %p PDT", "US/Pacific")
+        ]
+        PST_TZ = pytz.timezone("US/Pacific")
+        UTC_TZ = pytz.UTC
+
+        samples = SampleMetadata.objects.all()
+
+        for sample in samples:
+            try:
+                updated = False
+
+                if sample.sample_number == '':
+                    sample.sample_number = None
+                    updated = True
+
+                if isinstance(sample.run_time, str) and "Minutes" in sample.run_time:
+                    sample.run_time = float(re.search(r"[\d.]+", sample.run_time).group())
+                    updated = True
+
+                if isinstance(sample.injection_volume, str) and "uL" in sample.injection_volume:
+                    sample.injection_volume = float(re.search(r"[\d.]+", sample.injection_volume).group())
+                    updated = True
+
+                if isinstance(sample.date_acquired, str):
+                    for date_format, tz_name in DATE_FORMATS:
+                        try:
+                            original_date = datetime.strptime(sample.date_acquired, date_format)
+                            original_date = PST_TZ.localize(original_date)
+                            sample.date_acquired = original_date.astimezone(UTC_TZ)
+                            updated = True
+                            break
+                        except ValueError:
+                            continue
+
+                if updated:
+                    sample.save()
+                    cleaned_count += 1
+
+            except Exception as e:
+                errors.append(f"Error processing {sample.id}: {str(e)}")
+
+        message = f"Data cleaning complete. {cleaned_count} records updated."
+        if errors:
+            message += f" Errors encountered: {len(errors)}"
+
+        print("Data cleaning completed!")  # Logs to console
+        return message
+
     except Exception as e:
         return f"An error occurred: {str(e)}"

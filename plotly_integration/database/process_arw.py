@@ -60,13 +60,15 @@ def parse_arw_file(file_path):
 
     # Downsample the data points
     data_points = downsample_data(data_points, interval=0.0166667)  # Adjust interval as needed
+    # print(data_points)
+    # print(chrom_metadata)
     return chrom_metadata, data_points
 
 
 def insert_into_database(conn, chrom_metadata, data_points):
 
     cursor = conn.cursor()
-    channel_names = query_channels_by_system(conn, 'BENDER TUV')
+    channel_names = query_channels_by_system(conn, chrom_metadata["system_name"])
     
     # Map Channel Name to Columns (case insensitive)
     channel_to_column = {
@@ -74,12 +76,13 @@ def insert_into_database(conn, chrom_metadata, data_points):
         f"{channel_names[1]}": "channel_2",
         f"{channel_names[2]}": "channel_3"
     }
-
+    # print(channel_to_column)
+    # print(chrom_metadata['system_name'])
     # Normalize file_channel_name for matching
     file_channel_name = chrom_metadata.get('channel', '').strip().lower()
     # print(f"Processing channel: '{file_channel_name}'")  # Debug print
     if file_channel_name not in channel_to_column:
-        # print(f"Channel '{file_channel_name}' not recognized. Skipping insert.")
+        print(f"Channel '{file_channel_name}' not recognized. Skipping insert.")
         return
 
     target_column = channel_to_column[file_channel_name]
@@ -134,7 +137,7 @@ def insert_into_database(conn, chrom_metadata, data_points):
          row['measurement'])  # 'sensor_value' is assumed to exist in data_points
         for index, row in data_points.iterrows()
     ]
-    
+    print(time_series_data)
     # 4. Upsert Logic: Only Update the Target Column
     query = f"""
         INSERT INTO time_series_data (result_id, system_name, time, {target_column})

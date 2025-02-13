@@ -11,6 +11,10 @@ import logging
 from openpyxl.workbook import Workbook
 from django.db.models import F, ExpressionWrapper, fields
 
+# Logging Configuration
+logging.basicConfig(filename='app_logs.log', level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
 # Initialize the Dash app
 app = DjangoDash('TimeSeriesApp')
 
@@ -29,7 +33,9 @@ projects = {}
 for report in Report.objects.all():
     if report.project_id not in projects:
         projects[report.project_id] = []
-    projects[report.project_id].append({'name': report.report_name, 'samples': report.selected_samples})
+    projects[report.project_id].append({
+        'name': report.report_name, 'samples': report.selected_samples
+    })
 
 
 # Sidebar content generator
@@ -40,12 +46,15 @@ def generate_sidebar(projects):
             'margin-bottom': '20px',
             'font-weight': 'bold',
             'font-size': '18px',
-            'color': '#0056b3'
+            'color': '#003366',
+            'padding': '10px',
+            'border-bottom': '2px solid #0056b3',
         }),
         html.P("Right-click on the results to change the report", style={
             'font-size': '12px',
-            'color': '#555',
-            'text-align': 'center'
+            'color': '#777',
+            'text-align': 'center',
+            'margin-bottom': '20px',
         }),
     ]
 
@@ -61,19 +70,25 @@ def generate_sidebar(projects):
                     'margin-bottom': '10px',
                     'font-weight': 'bold',
                     'color': '#0056b3',
-                    'padding': '5px',
+                    'padding': '10px',
                     'border': '1px solid #0056b3',
                     'border-radius': '5px',
-                    'background-color': '#e9f1fb'
-                }
+                    'background-color': '#e0f0ff',
+                    'transition': 'all 0.3s ease-in-out',
+                    'box-shadow': '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                },
             ),
             html.Div(
                 [html.Div([
-                    html.Div(f"📄 {report['name']}", style={'font-weight': 'bold', 'color': '#0056b3'}),
+                    html.Div(f"📄 {report['name']}", style={
+                        'font-weight': 'bold',
+                        'color': '#003366',
+                        'margin-bottom': '5px',
+                    }),
                     html.Div(f"Samples: {report['samples']}", style={
                         'font-size': '12px',
                         'color': '#555',
-                        'margin-left': '10px'
+                        'margin-left': '10px',
                     })
                 ],
                     className="report",
@@ -84,8 +99,10 @@ def generate_sidebar(projects):
                         'margin-bottom': '5px',
                         'background-color': '#f9f9f9',
                         'cursor': 'pointer',
-                        'border-radius': '5px'
-                    }
+                        'border-radius': '5px',
+                        'transition': 'all 0.3s ease-in-out',
+                        'box-shadow': '0px 1px 3px rgba(0, 0, 0, 0.1)',
+                    },
                 ) for report in reports],
                 className="folder-contents",
                 style={'display': 'none', 'margin-left': '10px'},
@@ -106,6 +123,19 @@ app.layout = html.Div([
     dcc.Store(id='hmw-table-store', data=[]),
 
     # Top-left Home Button
+    html.Div(
+        id="selected-report-display",
+        style={
+            'margin-top': '10px',
+            'padding': '10px',
+            'border': '1px solid #0056b3',
+            'border-radius': '5px',
+            'background-color': '#f0f8ff',
+            'color': '#003366',
+            'font-weight': 'bold',
+            'text-align': 'center'
+        }
+    ),
     html.Div(
         html.Button("Home", id="home-btn", style={
             'background-color': '#0056b3',
@@ -171,7 +201,9 @@ app.layout = html.Div([
                                 layout=go.Layout(
                                     title="Sample Plot",
                                     xaxis_title="Time",
-                                    yaxis_title="UV280"
+                                    yaxis_title="UV280",
+                                    height=800  # Adjust height (default is 400)
+
                                 )
                             )
                         )
@@ -193,7 +225,8 @@ app.layout = html.Div([
                             id='channel-checklist',
                             options=[
                                 {'label': 'Channel 1', 'value': 'channel_1'},
-                                {'label': 'Channel 2', 'value': 'channel_2'}
+                                {'label': 'Channel 2', 'value': 'channel_2'},
+                                {'label': 'Channel 3', 'value': 'channel_3'}
                             ],
                             value=['channel_1']
                         ),
@@ -319,21 +352,32 @@ app.layout = html.Div([
                 id='sample-details',
                 children=[
                     html.H4("Sample Details", style={'text-align': 'center', 'color': '#0056b3'}),
-                    html.Div(
-                        id='sample-details-content',
-                        children=[
-                            html.P("Sample Set Name: ", id="sample-set-name"),
-                            html.P("Column Name: ", id="column-name"),
-                            html.P("Column Serial Number: ", id="column-serial-number"),
-                            html.P("Instrument Method Name: ", id="instrument-method-name"),
-                            html.P("STD ID: ", id="standard-id"),
+                    dash_table.DataTable(
+                        id='sample-details-table',
+                        columns=[
+                            {"name": "Field", "id": "field"},
+                            {"name": "Value", "id": "value"}
                         ],
-                        style={
-                            'padding': '10px',
-                            'border': '2px solid #0056b3',
-                            'border-radius': '5px',
-                            'background-color': '#f7f9fc',
-                        }
+                        data=[
+                            {"field": "Sample Set Name", "value": ""},
+                            {"field": "Column Name", "value": ""},
+                            {"field": "Column Serial Number", "value": ""},
+                            {"field": "Instrument Method Name", "value": ""},
+                            {"field": "STD ID", "value": ""}
+                        ],
+                        style_table={'overflowX': 'auto'},
+                        style_cell={
+                            'textAlign': 'left',
+                            'padding': '5px',
+                            'border': '1px solid #ddd',
+                            'backgroundColor': '#f7f9fc',
+                        },
+                        style_header={
+                            'backgroundColor': '#0056b3',
+                            'fontWeight': 'bold',
+                            'color': 'white',
+                            'textAlign': 'center',
+                        },
                     )
                 ],
                 style={
@@ -490,72 +534,94 @@ def store_std_result_id(report_clicks):
     return std_result_id
 
 
-# Callbacks for folder toggle functionality
 @app.callback(
     Output({'type': 'contents', 'project_id': dash.dependencies.ALL}, 'style'),
     Input({'type': 'folder', 'project_id': dash.dependencies.ALL}, 'n_clicks'),
     prevent_initial_call=True
 )
 def toggle_folder(n_clicks_list):
-    styles = [{'display': 'none'} if not n_clicks or n_clicks % 2 == 0 else {'display': 'block'} for n_clicks in
-              n_clicks_list]
+    """
+    Toggle the visibility of folder contents based on click count.
+    """
+    styles = [
+        {'display': 'block'} if n_clicks and n_clicks % 2 != 0 else {'display': 'none'}
+        for n_clicks in n_clicks_list
+    ]
+    print(f"Folder Toggle Styles: {styles}")
     return styles
 
 
-# Set up logging to log to a file
-logging.basicConfig(filename='app_logs.log', level=logging.DEBUG,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-
+# @app.callback(
+#     Output("selected-report", "data"),
+#     Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
+#     prevent_initial_call=True
+# )
+# def update_selected_report(report_clicks):
+#     """
+#     Update the selected report when a report is clicked.
+#     """
+#     ctx = dash.callback_context
+#     if not ctx.triggered:
+#         return dash.no_update
+#
+#     # Determine the triggered element
+#     triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+#     try:
+#         triggered_data = json.loads(triggered_id.replace("'", '"'))
+#     except json.JSONDecodeError:
+#         triggered_data = {}
+#
+#     # Ensure this was triggered by a report click
+#     if triggered_data.get("type") != "report":
+#         return dash.no_update
+#
+#     report_name = triggered_data.get("report_name", None)
+#     print(f"Selected Report: {report_name}")
+#     return report_name
 
 @app.callback(
-    [
-        Output("sample-set-name", "children"),
-        Output("column-name", "children"),
-        Output("column-serial-number", "children"),
-        Output("instrument-method-name", "children"),
-        Output("standard-id", "children")
-    ],
+    Output("sample-details-table", "data"),
     Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
     prevent_initial_call=True
 )
 def update_sample_and_std_details(report_clicks):
     ctx = dash.callback_context
 
-    # Default return values
-    default_values = (
-        "Sample Set Name: ",
-        "Column Name: ",
-        "Column Serial Number: ",
-        "Instrument Method Name: ",
-        "STD ID: "
-    )
+    # Default table data
+    default_data = [
+        {"field": "Sample Set Name", "value": ""},
+        {"field": "Column Name", "value": ""},
+        {"field": "Column Serial Number", "value": ""},
+        {"field": "Instrument Method Name", "value": ""},
+        {"field": "STD ID", "value": ""}
+    ]
 
     if not ctx.triggered:
-        return default_values
+        return default_data
 
     # Determine the triggering report
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
     triggered_data = eval(triggered_id)
 
     if 'report_name' not in triggered_data:
-        return default_values
+        return default_data
 
     report_name = triggered_data['report_name']
     report = Report.objects.filter(report_name=report_name).first()
 
     if not report:
-        return default_values
+        return default_data
 
     # Fetch the first sample name from the report's selected samples
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
     if not sample_list:
-        return default_values
+        return default_data
 
     first_sample_name = sample_list[0]
     sample_metadata = SampleMetadata.objects.filter(sample_name=first_sample_name).first()
 
     if not sample_metadata:
-        return default_values
+        return default_data
 
     # Extract details from the `SampleMetadata` model
     sample_set_name = sample_metadata.sample_set_name or "N/A"
@@ -563,7 +629,6 @@ def update_sample_and_std_details(report_clicks):
     column_serial_number = sample_metadata.column_serial_number or "N/A"
     system_name = sample_metadata.system_name or "N/A"
     instrument_method_name = sample_metadata.instrument_method_name or "N/A"
-    sample_date_acquired = sample_metadata.date_acquired
 
     # Primary STD search: Check for an STD in the same sample set
     std_sample = SampleMetadata.objects.filter(
@@ -573,14 +638,14 @@ def update_sample_and_std_details(report_clicks):
     # Use centralized function to determine the STD ID
     std_result_id, _ = get_std_result_id(sample_set_name=sample_set_name, system_name=system_name)
 
-    # Return formatted details for display
-    return (
-        f"Sample Set Name: {sample_set_name}",
-        f"Column Name: {column_name}",
-        f"Column Serial Number: {column_serial_number}",
-        f"Instrument Method Name: {instrument_method_name}",
-        f"STD Result ID: {std_result_id}"
-    )
+    # Return table data
+    return [
+        {"field": "Sample Set Name", "value": sample_set_name},
+        {"field": "Column Name", "value": column_name},
+        {"field": "Column Serial Number", "value": column_serial_number},
+        {"field": "Instrument Method Name", "value": instrument_method_name},
+        {"field": "STD ID", "value": std_result_id}
+    ]
 
 
 import pandas as pd
@@ -756,7 +821,7 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
 def generate_subplots_with_shading(sample_list, channels, enable_shading, enable_peak_labeling, main_peak_rt, slope,
                                    intercept, hmw_table_data):
     num_samples = len(sample_list)
-    cols = 2
+    cols = 3
     rows = (num_samples // cols) + (num_samples % cols > 0)
 
     region_colors = {
@@ -776,7 +841,7 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
         cols=cols,
         start_cell="top-left",
         subplot_titles=sample_list,
-        vertical_spacing=0.05,
+        vertical_spacing=0.03,
         horizontal_spacing=0.05
     )
 
@@ -914,22 +979,30 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
 
 
 @app.callback(
-    [Output('time-series-graph', 'figure'),
-     Output('time-series-graph', 'style'),
-     Output('selected-report', 'data')],
-    [Input('plot-type-dropdown', 'value'),
-     Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
-     Input('shading-checklist', 'value'),
-     Input('peak-label-checklist', 'value'),
-     Input('main-peak-rt-input', 'value'),
-     Input('regression-parameters', 'data'),  # Input for regression parameters
-     Input('hmw-table-store', 'data')],  # Access stored HMW Table data
-    [State('selected-report', 'data'),
-     State('channel-checklist', 'value')],
+    [
+        Output('time-series-graph', 'figure'),
+        Output('time-series-graph', 'style'),
+        Output('selected-report', 'data')
+    ],
+    [
+        Input('plot-type-dropdown', 'value'),  # Trigger on plot type change
+        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),  # Trigger on report change
+        Input('shading-checklist', 'value'),  # Trigger on shading enable/disable
+        Input('peak-label-checklist', 'value'),  # Trigger on peak labeling enable/disable
+        Input('main-peak-rt-input', 'value'),  # Trigger on Main Peak RT change
+        Input('low-mw-cutoff-input', 'value'),  # Trigger on LMW Cutoff change
+        Input('regression-parameters', 'data'),  # Regression parameters for peak labeling
+        Input('hmw-table-store', 'data'),  # HMW data changes
+        Input('channel-checklist', 'value'),  # Trigger on channel selection
+    ],
+    [
+        State('selected-report', 'data')  # Persist the current selected report
+    ],
     prevent_initial_call=True
 )
-def update_graph(plot_type, report_clicks, shading_options, peak_label_options, main_peak_rt, regression_params,
-                 hmw_table_data, selected_report, selected_channels):
+def update_graph(plot_type, report_clicks, shading_options, peak_label_options,
+                 main_peak_rt, low_mw_cutoff, regression_params, hmw_table_data,
+                 selected_channels, selected_report):
     ctx = dash.callback_context
 
     # Determine which input triggered the callback
@@ -953,7 +1026,6 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options, 
 
     # Retrieve the list of selected samples
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
-    # print(sample_list)
 
     if plot_type == 'plotly':
         # Generate the Plotly graph
@@ -979,26 +1051,21 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options, 
             xaxis_title='Time (Minutes)',
             yaxis_title='UV280',
             template='plotly_white',
-            height=400
+            height=800
         )
         return fig, {'display': 'block'}, report_name  # Show Plotly graph and persist report
 
-
-
-
-
     elif plot_type == 'subplots':
-
         if not hmw_table_data:
             return go.Figure(), {'display': 'block'}, report_name
 
         # Extract slope and intercept from regression parameters
         slope = regression_params.get('slope', 0)
         intercept = regression_params.get('intercept', 0)
-        # print(f"Using slope: {slope}, intercept: {intercept}")  # Debugging output
         enable_shading = 'enable_shading' in shading_options
         enable_peak_labeling = 'enable_peak_labeling' in peak_label_options
 
+        # Generate subplots with dynamic shading and peak labeling
         fig = generate_subplots_with_shading(
             sample_list,
             selected_channels,
@@ -1033,37 +1100,55 @@ def export_to_xlsx(n_clicks, table_data):
 
 
 @app.callback(
+    [Output('main-peak-rt-store', 'data'), Output('low-mw-cutoff-store', 'data')],
+    [Input('main-peak-rt-input', 'value'), Input('low-mw-cutoff-input', 'value')],
+    prevent_initial_call=True
+)
+def update_cutoff_values(main_peak_rt, low_mw_cutoff):
+    print(f"Updated Main Peak RT: {main_peak_rt}, LMW Cutoff: {low_mw_cutoff}")
+    return main_peak_rt, low_mw_cutoff
+
+
+@app.callback(
     [Output('hmw-table', 'columns'), Output('hmw-table', 'data'), Output('hmw-table-store', 'data')],
     [
         Input('hmw-column-selector', 'value'),  # User-selected columns
-        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
-        Input('main-peak-rt-store', 'data'),
-        Input('low-mw-cutoff-store', 'data')
+        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),  # Trigger on report change
+        Input('main-peak-rt-input', 'value'),  # Main Peak RT
+        Input('low-mw-cutoff-input', 'value')  # LMW Cutoff
     ],
+    [State('selected-report', 'data')],  # Use the stored selected report
     prevent_initial_call=True
 )
-def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutoff):
+def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutoff, selected_report):
     ctx = dash.callback_context
 
-    if not ctx.triggered:
+    # Debugging triggered input
+    print(f"Triggered ID: {ctx.triggered[0]['prop_id']}")
+    print(f"Main Peak RT: {main_peak_rt}, LMW Cutoff: {low_mw_cutoff}")
+    print(f"Selected Report: {selected_report}")
+
+    # Ensure valid numeric inputs
+    if main_peak_rt is None or low_mw_cutoff is None:
+        print("Invalid Main Peak RT or LMW Cutoff values.")
         return [], [], []
 
-    triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
-    try:
-        triggered_data = json.loads(triggered_id.replace("'", '"'))
-    except json.JSONDecodeError:
-        triggered_data = {}
-
-    if 'report_name' not in triggered_data:
+    # Use the stored selected report
+    if not selected_report:
+        print("No report found or selected.")
         return [], [], []
 
-    report_name = triggered_data['report_name']
-    report = Report.objects.filter(report_name=report_name).first()
-
+    report = Report.objects.filter(report_name=selected_report).first()
     if not report:
+        print(f"Report '{selected_report}' not found in the database.")
         return [], [], []
 
+    # Generate HMW Table
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
+    if not sample_list:
+        print("No samples found in the selected report.")
+        return [], [], []
+
     summary_data = []
 
     for sample_name in sample_list:
@@ -1076,101 +1161,89 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
             continue
 
         df = pd.DataFrame.from_records(peak_results.values())
+        print(df)
+        if 'peak_retention_time' in df.columns:
+            df['peak_retention_time'] = pd.to_numeric(df['peak_retention_time'], errors='coerce')
+            df = df.dropna(subset=['peak_retention_time'])  # Drop invalid rows
+            df['area'] = df['area'].astype(float)
+            df['peak_start_time'] = df['peak_start_time'].astype(float)
+            df['peak_end_time'] = df['peak_end_time'].astype(float)
 
-        if 'peak_retention_time' not in df.columns or 'area' not in df.columns or 'peak_start_time' not in df.columns or 'peak_end_time' not in df.columns:
-            continue
+            try:
+                closest_index = (df['peak_retention_time'] - main_peak_rt).abs().idxmin()
+            except ValueError:
+                print("Error finding closest index for Main Peak RT.")
+                continue
 
-        df['peak_retention_time'] = df['peak_retention_time'].astype(float)
-        df['area'] = df['area'].astype(float)
-        df['peak_start_time'] = df['peak_start_time'].astype(float)
-        df['peak_end_time'] = df['peak_end_time'].astype(float)
+            main_peak_area = round(df.loc[closest_index, 'area'], 2)
+            main_peak_start = df.loc[closest_index, 'peak_start_time']
+            main_peak_end = df.loc[closest_index, 'peak_end_time']
 
-        closest_index = (df['peak_retention_time'] - main_peak_rt).abs().idxmin()
-        main_peak_area = round(df.loc[closest_index, 'area'], 2)
-        main_peak_start = df.loc[closest_index, 'peak_start_time']
-        main_peak_end = df.loc[closest_index, 'peak_end_time']
+            hmw_start = df[df['peak_retention_time'] < main_peak_start]['peak_start_time'].min()
+            hmw_end = main_peak_start
 
-        hmw_start = df[df['peak_retention_time'] < main_peak_start]['peak_start_time'].min()
-        hmw_end = main_peak_start
+            lmw_start = main_peak_end
+            lmw_end = df[df['peak_retention_time'] > main_peak_end]['peak_end_time'].max()
 
-        lmw_start = main_peak_end
-        lmw_end = df[df['peak_retention_time'] > main_peak_end]['peak_end_time'].max()
+            df_excluding_main_peak = df.drop(index=closest_index)
 
-        df_excluding_main_peak = df.drop(index=closest_index)
+            hmw_area = round(
+                df_excluding_main_peak[df_excluding_main_peak['peak_retention_time'] < main_peak_rt]['area'].sum(),
+                2
+            )
 
-        hmw_area = round(
-            df_excluding_main_peak[df_excluding_main_peak['peak_retention_time'] < main_peak_rt]['area'].sum(),
-            2
-        )
+            lmw_area = round(
+                df_excluding_main_peak[
+                    (df_excluding_main_peak['peak_retention_time'] > main_peak_rt) &
+                    (df_excluding_main_peak['peak_retention_time'] <= low_mw_cutoff)
+                    ]['area'].sum(),
+                2
+            )
 
-        lmw_area = round(
-            df_excluding_main_peak[
-                (df_excluding_main_peak['peak_retention_time'] > main_peak_rt) &
-                (df_excluding_main_peak['peak_retention_time'] <= low_mw_cutoff)
-            ]['area'].sum(),
-            2
-        )
+            total_area = main_peak_area + hmw_area + lmw_area
+            hmw_percent = round((hmw_area / total_area) * 100, 2) if total_area > 0 else 0
+            main_peak_percent = round((main_peak_area / total_area) * 100, 2) if total_area > 0 else 0
+            lmw_percent = round((lmw_area / total_area) * 100, 2) if total_area > 0 else 0
 
-        total_area = main_peak_area + hmw_area + lmw_area
-        hmw_percent = round((hmw_area / total_area) * 100, 2) if total_area > 0 else 0
-        main_peak_percent = round((main_peak_area / total_area) * 100, 2) if total_area > 0 else 0
-        lmw_percent = round((lmw_area / total_area) * 100, 2) if total_area > 0 else 0
+            summary_data.append({
+                'Sample Name': sample.sample_name,
+                'Main Peak Start': main_peak_start if pd.notna(main_peak_start) else "N/A",
+                'Main Peak End': main_peak_end if pd.notna(main_peak_end) else "N/A",
+                'HMW Start': hmw_start if pd.notna(hmw_start) else "N/A",
+                'HMW End': hmw_end if pd.notna(hmw_end) else "N/A",
+                'LMW Start': lmw_start if pd.notna(lmw_start) else "N/A",
+                'LMW End': lmw_end if pd.notna(lmw_end) else "N/A",
+                'HMW': hmw_percent,
+                'Main Peak': main_peak_percent,
+                'LMW': lmw_percent
+            })
 
-        summary_data.append({
-            'Sample Name': sample.sample_name,
-            'Main Peak Start': main_peak_start if pd.notna(main_peak_start) else "N/A",
-            'Main Peak End': main_peak_end if pd.notna(main_peak_end) else "N/A",
-            'HMW Start': hmw_start if pd.notna(hmw_start) else "N/A",
-            'HMW End': hmw_end if pd.notna(hmw_end) else "N/A",
-            'LMW Start': lmw_start if pd.notna(lmw_start) else "N/A",
-            'LMW End': lmw_end if pd.notna(lmw_end) else "N/A",
-            'HMW': hmw_percent,
-            'Main Peak': main_peak_percent,
-            'LMW': lmw_percent
-        })
+    # Debug the generated summary data
+    print(f"Summary Data: {summary_data}")
 
     # Define the desired column order
     desired_order = [
-        'Sample Name',
-        'HMW',
-        'HMW Start',
-        'HMW End',
-        'Main Peak',
-        'Main Peak Start',
-        'Main Peak End',
-        'LMW',
-        'LMW Start',
-        'LMW End'
+        'Sample Name', 'HMW', 'HMW Start', 'HMW End',
+        'Main Peak', 'Main Peak Start', 'Main Peak End',
+        'LMW', 'LMW Start', 'LMW End'
     ]
 
-    # Default columns to display
-    default_columns = ['Sample Name', 'HMW', 'Main Peak', 'LMW']
-
-    # Ensure selected_columns is not None
     selected_columns = selected_columns if selected_columns else []
-
-    # Combine default and user-selected columns
-    all_columns = list(set(default_columns + selected_columns))
-
-    # Order columns based on desired_order
+    all_columns = list(set(['Sample Name', 'HMW', 'Main Peak', 'LMW'] + selected_columns))
     ordered_columns = [col for col in desired_order if col in all_columns]
 
     # Create table columns dynamically
     table_columns = [{"name": col, "id": col} for col in ordered_columns]
-
-    # Filter summary_data for selected columns
-    filtered_data = [
-        {col: row[col] for col in ordered_columns if col in row} for row in summary_data
-    ]
+    filtered_data = [{col: row[col] for col in ordered_columns if col in row} for row in summary_data]
 
     return table_columns, filtered_data, summary_data
 
 
 @app.callback(
-    [Output('main-peak-rt-store', 'data'), Output('low-mw-cutoff-store', 'data')],
-    [Input('main-peak-rt-input', 'value'), Input('low-mw-cutoff-input', 'value')],
-    prevent_initial_call=True
+    Output("selected-report-display", "children"),
+    Input("selected-report", "data")
 )
-def update_cutoff_values(main_peak_rt, low_mw_cutoff):
-    print(f"Updated Main Peak RT: {main_peak_rt}, LMW Cutoff: {low_mw_cutoff}")
-    return main_peak_rt, low_mw_cutoff
+def display_selected_report(selected_report):
+    if not selected_report:
+        return "No report selected"
+    return f"Currently Selected Report: {selected_report}"
