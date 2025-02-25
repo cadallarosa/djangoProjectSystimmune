@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('plotly_integration', '0004_alter_report_options'),
+        ('plotly_integration', '0005_report_date_created'),
     ]
 
     operations = [

@@ -92,7 +92,32 @@ app.layout = html.Div([
                     dcc.Graph(
                         id='pressure-plot',
                         figure={},
-                        style={'margin-top': '20px'                        }
+                        style={'margin-top': '20px'},
+                        config={
+                            'clickmode': 'event+select',
+
+                        }
+
+                    ),
+
+                ],
+                style={
+                    'width': '68%',
+                    'padding': '10px',
+                    'border': '2px solid #0056b3',
+                    'border-radius': '5px',
+                    'background-color': '#f7f9fc'
+                }
+            ),
+            html.Div(  # Graph container
+                id='clicked-data-graph-container',
+                children=[
+                    html.H4("Sample Plot",
+                            style={'text-align': 'center', 'color': '#0056b3'}),
+                    dcc.Graph(
+                        id='clicked-data-grapht',
+                        figure={},
+                        style={'margin-top': '20px'}
 
                     )
                 ],
@@ -107,6 +132,7 @@ app.layout = html.Div([
         ], style={'width': '80%', 'padding': '10px', 'overflow-y': 'auto'})
     ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'})
 ])
+
 
 def get_date_acquired_by_result_id(result_id):
     """
@@ -267,7 +293,7 @@ def get_top_peaks(result_id):
         return df  # Return empty DataFrame if no peaks found
 
     # ✅ Filter by retention time cutoff
-    time_cutoff = 15.5
+    time_cutoff = 18
     df = df[df["peak_retention_time"] <= time_cutoff]
 
     # ✅ Define ordered peak names
@@ -290,6 +316,7 @@ def get_top_peaks(result_id):
     df["peak_name"] = ordered_peak_names[:len(df)]
 
     return df
+
 
 def get_column_performance_data(selected_serial_number):
     """
@@ -424,7 +451,8 @@ def update_pressure_plot(selected_serial_number):
         injection_numbers.append(injection_number)
         average_pressures.append(avg_pressure)
         hover_texts.append(f"Sample: {sample_name}<br>Date Acquired: {date_acquired}")
-
+        result_id = sample.result_id
+        # print([result_id for result_id in df["result_id"]])  # Check values
     # ✅ Step 5: Fetch Column Performance Data for `Peak2-IgG`
     df_performance = get_column_performance_data(selected_serial_number)
 
@@ -449,6 +477,7 @@ def update_pressure_plot(selected_serial_number):
         y=average_pressures,
         mode='markers+lines',
         name='Average Pressure',
+        customdata=df["result_id"].tolist(),  # Pass result_id with each point
         text=hover_texts,
         hoverinfo="text+y",
         yaxis="y1",  # Assign to primary Y-axis
@@ -468,6 +497,8 @@ def update_pressure_plot(selected_serial_number):
 
     # ✅ Step 7: Update Layout with Dual Y-axes and Legend
     fig.update_layout(
+        dragmode='select',  # Force selection mode
+        clickmode='event+select',  # Capture clicks
         title="Injection Number vs. Average Pressure & Column Performance",
         xaxis_title="Injection Number",
         showlegend=False,
@@ -494,5 +525,38 @@ def update_pressure_plot(selected_serial_number):
         #     borderwidth=1
         # )
     )
+
+    return fig
+
+
+# Callback to handle click events and plot time series data
+@app.callback(
+    Output('clicked-data-graph', 'figure'),
+    Input('pressure-plot', 'clickData')
+)
+def display_clicked_data(clickData):
+    if not clickData:
+        return go.Figure()
+    print(clickData)
+
+    # Extract result_id from clicked point
+    point_data = clickData['points'][0]
+    result_id = point_data['customdata'] if 'customdata' in point_data else None
+    print(result_id)
+
+    if not result_id:
+        return go.Figure()
+
+    # Query TimeSeriesData for channel_1
+    time_series = TimeSeriesData.objects.filter(result_id=result_id).values('time', 'channel_1')
+    df = pd.DataFrame(list(time_series))
+
+    if df.empty:
+        return go.Figure()
+
+    # Plot the data
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=df['time'], y=df['channel_1'], mode='lines', name=f'Result ID {result_id}'))
+    fig.update_layout(title=f'Time Series Data for Result ID {result_id}', xaxis_title='Time', yaxis_title='UV280')
 
     return fig

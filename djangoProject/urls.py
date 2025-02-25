@@ -26,6 +26,7 @@ urlpatterns = [
 
 
 
+
 ]
 
 from django.conf import settings

@@ -5,12 +5,16 @@ import dash
 from dash import dcc, html, Input, Output, State, dash_table, Dash, MATCH, callback_context
 import pandas as pd
 from scipy.stats import linregress
-from .models import Report, SampleMetadata, PeakResults, TimeSeriesData
+from plotly_integration.models import Report, SampleMetadata, PeakResults, TimeSeriesData
 import json
 import logging
 from openpyxl.workbook import Workbook
 from collections import Counter
 from django.db.models import F, ExpressionWrapper, fields
+from datetime import datetime
+import re
+import numpy as np
+from collections import Counter
 
 # Logging Configuration
 logging.basicConfig(filename='app_logs.log', level=logging.DEBUG,
@@ -19,18 +23,55 @@ logging.basicConfig(filename='app_logs.log', level=logging.DEBUG,
 # Initialize the Dash app
 app = DjangoDash('TimeSeriesApp')
 
-# Fetch available projects and reports
-projects = {}
-for report in Report.objects.all():
-    if report.project_id not in projects:
-        projects[report.project_id] = []
-    projects[report.project_id].append({
-        'name': report.report_name, 'samples': report.selected_samples
-    })
+
+def parse_date(date_value):
+    """Convert date strings to datetime objects, return None if invalid."""
+    if isinstance(date_value, datetime):
+        return date_value
+    elif isinstance(date_value, str):
+        try:
+            return datetime.fromisoformat(date_value)  # Handle ISO date strings
+        except ValueError:
+            return None
+    return None
 
 
-# Sidebar content generator
+# ✅ Fix `fetch_reports()` to handle string dates
+def fetch_reports():
+    projects = {}
+    for report in Report.objects.values(
+            'project_id',
+            'report_id',
+            'report_name',
+            'user_id',
+            'selected_samples',
+            'date_created'
+    ):
+        if report['project_id'] not in projects:
+            projects[report['project_id']] = []
+        projects[report['project_id']].append({
+            'report_id': report['report_id'],
+            'name': report['report_name'],
+            'user_id': report.get('user_id', 'N/A'),  # Show N/A if missing
+            'selected_samples': report.get('selected_samples', 'None'),  # Default to 'None'
+            'date_created': parse_date(report['date_created']).isoformat() if parse_date(
+                report['date_created']) else None  # ✅ Convert string to datetime first
+        })
+    return projects
+
+
+# Store the initial reports in `dcc.Store` when the app loads
+initial_projects = fetch_reports()
+
+
+def extract_numeric_part(project_id):
+    """Extract the first two numeric parts from a project ID (e.g., SI-02x10 -> 2)."""
+    match = re.search(r"SI-(\d+)", project_id)
+    return int(match.group(1)) if match else float('inf')
+
+
 def generate_sidebar(projects):
+    """Generate a sorted sidebar with projects and their reports."""
     sidebar_items = [
         html.Div("Projects", style={
             'text-align': 'center',
@@ -61,10 +102,20 @@ def generate_sidebar(projects):
         ),
     ]
 
-    for project_id, reports in projects.items():
+    # ✅ Sort projects by numeric part (e.g., SI-01, SI-02)
+    sorted_projects = sorted(projects.items(), key=lambda x: extract_numeric_part(x[0]))
+
+    for project_id, reports in sorted_projects:
+        # ✅ Sort reports by `date_created` (most recent first) with proper parsing
+        sorted_reports = sorted(
+            reports,
+            key=lambda r: parse_date(r.get('date_created')) or datetime.min,
+            reverse=True  # ✅ Newest first
+        )
+
         project_folder = html.Div([
             html.Div(
-                f"📁 Project {project_id}",
+                f"📁 {project_id}",
                 className="folder",
                 id={'type': 'folder', 'project_id': project_id},
                 n_clicks=0,
@@ -77,42 +128,72 @@ def generate_sidebar(projects):
                     'border': '1px solid #0056b3',
                     'border-radius': '5px',
                     'background-color': '#e0f0ff',
-                    'transition': 'all 0.3s ease-in-out',
-                    'box-shadow': '0px 2px 4px rgba(0, 0, 0, 0.1)',
                 },
             ),
             html.Div(
-                [html.Div([
-                    html.Div(f"📄 {report['name']}", style={
-                        'font-weight': 'bold',
-                        'color': '#003366',
-                        'margin-bottom': '5px',
-                    }),
-                    html.Div(f"Samples: {report['samples']}", style={
-                        'font-size': '12px',
-                        'color': '#555',
-                        'margin-left': '10px',
-                    })
+                [
+                    html.Div([
+                        html.Div(f"📄 {report['name']}", style={
+                            'font-weight': 'bold',
+                            'color': '#003366',
+                            'margin-bottom': '5px',
+                        }),
+                        html.Div(
+                            # ✅ Show actual `date_created` or "N/A"
+                            f"Date Created: {parse_date(report.get('date_created')).strftime('%Y-%m-%d %H:%M:%S') if parse_date(report.get('date_created')) else 'N/A'}",
+                            style={
+                                'font-size': '12px',
+                                'color': '#555',
+                                'margin-left': '10px',
+                            },
+                        ),
+                        html.Div(
+                            # ✅ Show actual `date_created` or "N/A"
+                            f"Created By: {report['user_id']}",
+                            style={
+                                'font-size': '12px',
+                                'color': '#555',
+                                'margin-left': '10px',
+                            },
+                        ),
+                        html.Div(
+                            # ✅ Show actual `date_created` or "N/A"
+                            f"Selected Samples: {report['selected_samples']}",
+                            style={
+                                'font-size': '12px',
+                                'color': '#555',
+                                'margin-left': '10px',
+                            },
+                        ),
+                        html.Div(
+                            # ✅ Show actual `date_created` or "N/A"
+                            f"Report ID: {report['report_id']}",
+                            style={
+                                'font-size': '12px',
+                                'color': '#555',
+                                'margin-left': '10px',
+                            },
+                        ),
+                    ],
+                        className="report",
+                        id={'type': 'report', 'report_name': report['report_id']},
+                        style={
+                            'border': '1px solid #ccc',
+                            'padding': '10px',
+                            'margin-bottom': '5px',
+                            'background-color': '#f9f9f9',
+                            'border-radius': '5px',
+                        },
+                    )
+                    for report in sorted_reports
                 ],
-                    className="report",
-                    id={'type': 'report', 'report_name': report['name']},
-                    style={
-                        'border': '1px solid #ccc',
-                        'padding': '10px',
-                        'margin-bottom': '5px',
-                        'background-color': '#f9f9f9',
-                        'cursor': 'pointer',
-                        'border-radius': '5px',
-                        'transition': 'all 0.3s ease-in-out',
-                        'box-shadow': '0px 1px 3px rgba(0, 0, 0, 0.1)',
-                    },
-                ) for report in reports],
                 className="folder-contents",
                 style={'display': 'none', 'margin-left': '10px'},
                 id={'type': 'contents', 'project_id': project_id}
             )
         ])
         sidebar_items.append(project_folder)
+
     return sidebar_items
 
 
@@ -122,7 +203,7 @@ app.layout = html.Div([
     dcc.Store(id="std-result-id-store"),
     dcc.Store(id='regression-parameters', data={'slope': 0, 'intercept': 0}),
     dcc.Store(id='main-peak-rt-store', data=None),  # Default value for main peak RT
-    dcc.Store(id='low-mw-cutoff-store', data=18),  # Default value for low MW cutoff
+    dcc.Store(id='low-mw-cutoff-store', data=12),  # Default value for low MW cutoff
     dcc.Store(id='hmw-table-store', data=[]),
     dcc.Store(id='report-list-store', data=[]),
 
@@ -142,7 +223,7 @@ app.layout = html.Div([
     html.Div([  # Main layout with sidebar and content areas
         html.Div(  # Sidebar
             id='sidebar',
-            children=generate_sidebar(projects),
+            children=generate_sidebar(initial_projects),
             style={
                 'width': '20%',
                 'height': 'calc(100vh - 50px)',
@@ -175,9 +256,13 @@ app.layout = html.Div([
                                     xaxis_title="Time",
                                     yaxis_title="UV280",
                                     height=800  # Adjust height (default is 400)
-
                                 )
-                            )
+                            ),
+                            config={  # ✅ Correct placement
+                                'toImageButtonOptions': {
+                                    'filename': 'custom_name'
+                                }}
+
                         )
                     ],
                     style={
@@ -227,7 +312,7 @@ app.layout = html.Div([
                             dcc.Input(
                                 id='main-peak-rt-input',
                                 type='number',
-                                value=5.10,  # Default
+                                value=7.843,  # Default
                                 style={'width': '100%'}
                             ),
                             dcc.Store(id='main-peak-rt-store', data=5.10),
@@ -249,7 +334,7 @@ app.layout = html.Div([
                             dcc.Input(
                                 id='low-mw-cutoff-input',
                                 type='number',
-                                value=18,  # Default value
+                                value=12,  # Default value
                                 style={'width': '100%'}
                             )
                         ], style={'margin-top': '10px'}),
@@ -371,6 +456,7 @@ app.layout = html.Div([
                     'background-color': '#f7f9fc'
                 }
             ),
+
             html.Div(
                 id='sample-details',
                 children=[
@@ -522,7 +608,7 @@ def update_sec_results_header(report_clicks):
         return "SEC Results"
 
     report_name = triggered_data['report_name']
-    report = Report.objects.filter(report_name=report_name).first()
+    report = Report.objects.filter(report_id=report_name).first()
 
     if not report:
         return "Report Not Found"
@@ -556,18 +642,11 @@ def refresh_sidebar(n_clicks):
     if n_clicks == 0:
         raise dash.exceptions.PreventUpdate
 
-    # Fetch the latest project and report data from the database
-    projects = {}
-    for report in Report.objects.all():
-        if report.project_id not in projects:
-            projects[report.project_id] = []
-        projects[report.project_id].append({
-            'name': report.report_name,
-            'samples': report.selected_samples
-        })
+    # ✅ Fetch reports from the Report table with `date_created`
+    projects = fetch_reports()
 
-    # Regenerate the sidebar with updated data
     return generate_sidebar(projects)
+
 
 @app.callback(
     Output("sample-details-table", "data"),
@@ -596,18 +675,18 @@ def update_sample_and_std_details(report_clicks):
         return default_data
 
     report_name = triggered_data['report_name']
-    report = Report.objects.filter(report_name=report_name).first()
+    report = Report.objects.filter(report_id=report_name).first()
 
     if not report:
         return default_data
 
     # Fetch the first sample name from the report's selected samples
-    sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
-    if not sample_list:
+    selected_result_ids = [sample.strip() for sample in report.selected_result_ids.split(",") if sample.strip()]
+    if not selected_result_ids:
         return default_data
 
-    first_sample_name = sample_list[0]
-    sample_metadata = SampleMetadata.objects.filter(sample_name=first_sample_name).first()
+    first_sample_name = selected_result_ids[0]
+    sample_metadata = SampleMetadata.objects.filter(result_id=first_sample_name).first()
 
     if not sample_metadata:
         return default_data
@@ -619,7 +698,6 @@ def update_sample_and_std_details(report_clicks):
     system_name = sample_metadata.system_name or "N/A"
     instrument_method_name = sample_metadata.instrument_method_name or "N/A"
 
-
     # Return table data
     return [
         {"field": "Sample Set Name", "value": sample_set_name},
@@ -628,14 +706,6 @@ def update_sample_and_std_details(report_clicks):
         {"field": "Instrument Method Name", "value": instrument_method_name},
 
     ]
-
-
-import pandas as pd
-import numpy as np
-
-from collections import Counter
-
-from collections import Counter
 
 
 def get_filtered_std_ids(report_id):
@@ -656,10 +726,11 @@ def get_filtered_std_ids(report_id):
             return [("No STD Found", "Unknown Sample", None)]  # Ensure return format is consistent
 
         # Extract selected sample names **with exact match**
-        sample_names = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
+        selected_result_ids = [result_id.strip() for result_id in report.selected_result_ids.split(",") if
+                               result_id.strip()]
 
         # Fetch all sample set names **linked to the exact selected samples**
-        sample_set_entries = SampleMetadata.objects.filter(sample_name__in=sample_names) \
+        sample_set_entries = SampleMetadata.objects.filter(result_id__in=selected_result_ids) \
             .values_list("sample_name", "sample_set_name")
 
         # Count occurrences of each sample set
@@ -673,7 +744,7 @@ def get_filtered_std_ids(report_id):
         most_common_sample_set = sample_set_counts.most_common(1)[0][0]
 
         # Debugging Output
-        print(f"Extracted Sample Names: {sample_names}")
+        print(f"Extracted Sample Names: {selected_result_ids}")
         print(f"Detected Sample Set Names: {list(sample_set_counts.keys())}")
         print(f"✔ Using Most Common Sample Set: {most_common_sample_set}")
 
@@ -721,7 +792,7 @@ def update_standard_id_dropdown(report_clicks):
         return [], None
 
     report_name = triggered_data['report_name']
-    report = Report.objects.filter(report_name=report_name).first()
+    report = Report.objects.filter(report_id=report_name).first()
 
     if not report:
         return [], None
@@ -962,7 +1033,8 @@ def standard_analysis(std_result_id, selected_rows, table_data, rt_input):
     )
 
 
-def generate_subplots_with_shading(sample_list, channels, enable_shading, enable_peak_labeling, main_peak_rt, slope,
+def generate_subplots_with_shading(selected_result_ids, sample_list, channels, enable_shading, enable_peak_labeling,
+                                   main_peak_rt, slope,
                                    intercept, hmw_table_data, num_cols=3, vertical_spacing=0.05,
                                    horizontal_spacing=0.5):
     num_samples = len(sample_list)
@@ -985,22 +1057,23 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
         rows=rows,
         cols=cols,
         start_cell="top-left",
-        subplot_titles=sample_list,
+        subplot_titles=sample_list,  # NEED TO FIX THIS
         vertical_spacing=vertical_spacing,
         horizontal_spacing=horizontal_spacing
     )
 
-    for i, sample_name in enumerate(sample_list):
+    for i, result_id in enumerate(selected_result_ids):
         row = (i // cols) + 1
         col = (i % cols) + 1
-        sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+        sample = SampleMetadata.objects.filter(result_id=result_id).first()
         if not sample:
             continue
         time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
         df = pd.DataFrame(list(time_series.values()))
-
+        sample_name = sample.sample_name
         # Get HMW Table row for the current sample
-        hmw_row = next((row for row in hmw_table_data if row['Sample Name'] == sample_name), None)
+        # ✅ Find HMW row safely
+        hmw_row = next((r for r in hmw_table_data if isinstance(r, dict) and r.get('Sample Name') == sample_name), None)
         if not hmw_row:
             continue
 
@@ -1124,20 +1197,42 @@ def generate_subplots_with_shading(sample_list, channels, enable_shading, enable
 
 
 @app.callback(
-    Output("download-hmw-data", "data"),
-    Input("export-button", "n_clicks"),
-    State("hmw-table", "data"),
+    [Output("download-hmw-data", "data")],
+    [
+        Input("export-button", "n_clicks"),
+    ],
+    [
+        State("hmw-table", "data"),
+        State('selected-report', 'data')
+    ],  # Use the stored selected report
     prevent_initial_call=True
 )
-def export_to_xlsx(n_clicks, table_data):
+def export_to_xlsx(n_clicks, table_data, selected_report):
     if not table_data:
         return dash.no_update  # Do nothing if the table is empty
+
+    print(selected_report)
+    # Fetch report details from the database
+    report = Report.objects.filter(report_id=int(selected_report)).first()
+    print(report)
+    print(report.project_id)
+    print(report.report_name)
+
+    if not report:
+        return dash.no_update
+
+    # Get current date
+    current_date = datetime.now().strftime("%Y%m%d")
+
+    # Build the file name
+    file_name = f"{current_date}-{report.project_id}-{report.report_name}.xlsx"
+    print(file_name)
 
     # Convert table data to a pandas DataFrame
     df = pd.DataFrame(table_data)
 
     # Use Dash's `send_data_frame` to export the DataFrame as an XLSX file
-    return dcc.send_data_frame(df.to_excel, "HMW_Table.xlsx", index=False)
+    return [dcc.send_data_frame(df.to_excel, file_name, index=False)]
 
 
 @app.callback(
@@ -1173,7 +1268,7 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
         triggered_data = {}
     # print(triggered_data)
     # **Ensure `report_name` always has a valid value**
-    report_name = None  # Default to None
+    report_name = selected_report
     if 'report_name' in triggered_data:
         report_name = triggered_data['report_name']  # **New report clicked**
     elif isinstance(selected_report, str) and selected_report:  # **Ensure stored report is valid**
@@ -1185,18 +1280,26 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
         return go.Figure().update_layout(title="No Report Selected"), {'display': 'block'}, selected_report
 
     # Fetch the selected report
-    report = Report.objects.filter(report_name=report_name).first()
+    report = Report.objects.filter(report_id=report_name).first()
     if not report:
         print(f"⚠️ Report '{report_name}' not found in database.")
         return go.Figure().update_layout(title="Report Not Found"), {'display': 'block'}, selected_report
 
     # Retrieve the list of selected samples
-    sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
+    selected_result_ids = [sample.strip() for sample in report.selected_result_ids.split(",") if sample.strip()]
+    # selected_result_ids = sorted(selected_result_ids, key=lambda x: int(x))
+    #
+    # # Build the sample list by querying SampleMetadata
+    # sample_list = []
+    # for result_id in selected_result_ids:
+    #     sample = SampleMetadata.objects.filter(result_id=result_id).first()
+    #     if sample:
+    #         sample_list.append(sample.sample_name)
 
     summary_data = []
 
-    for sample_name in sample_list:
-        sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+    for result_id in selected_result_ids:
+        sample = SampleMetadata.objects.filter(result_id=result_id).first()
         if not sample:
             continue
 
@@ -1253,6 +1356,16 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
             main_peak_percent = round((main_peak_area / total_area) * 100, 2) if total_area > 0 else 0
             lmw_percent = round((lmw_area / total_area) * 100, 2) if total_area > 0 else 0
 
+            # Limit of detection Calculation
+            if total_area > 0:
+                peak_area_cutoff = 1000
+                if hmw_percent == 100:
+                    hmw_percent = f">{round(100 - ((peak_area_cutoff / total_area) * 100), 2)}"
+                if main_peak_percent == 100:
+                    main_peak_percent = f">{round(100 - ((peak_area_cutoff / total_area) * 100), 2)}"
+                if lmw_percent == 100:
+                    lmw_percent = f">{round(100 - ((peak_area_cutoff / total_area) * 100), 2)}"
+
             summary_data.append({
                 'Sample Name': sample.sample_name,
                 'Main Peak Start': main_peak_start if pd.notna(main_peak_start) else "N/A",
@@ -1263,7 +1376,10 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
                 'LMW End': lmw_end if pd.notna(lmw_end) else "N/A",
                 'HMW': hmw_percent,
                 'Main Peak': main_peak_percent,
-                'LMW': lmw_percent
+                'LMW': lmw_percent,
+                'HMW Area': hmw_area,
+                'Main Peak Area': main_peak_area,
+                'LMW Area': lmw_area
             })
 
     # Debug the generated summary data
@@ -1271,9 +1387,9 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
 
     # Define the desired column order
     desired_order = [
-        'Sample Name', 'HMW', 'HMW Start', 'HMW End',
-        'Main Peak', 'Main Peak Start', 'Main Peak End',
-        'LMW', 'LMW Start', 'LMW End'
+        'Sample Name', 'HMW', 'HMW Area', 'HMW Start', 'HMW End',
+        'Main Peak', "Main Peak Area", 'Main Peak Start', 'Main Peak End',
+        'LMW', 'LMW Area', 'LMW Start', 'LMW End'
     ]
 
     selected_columns = selected_columns if selected_columns else []
@@ -1288,10 +1404,10 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
 
 
 # Compute the most common peak retention time based on max height
-def compute_main_peak_rt(sample_list):
+def compute_main_peak_rt(selected_result_ids):
     retention_times = []
-    for sample_name in sample_list:
-        sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+    for result_id in selected_result_ids:
+        sample = SampleMetadata.objects.filter(result_id=result_id).first()
         if not sample:
             continue
 
@@ -1327,17 +1443,17 @@ def update_main_peak_rt(n_clicks, selected_report):
         print("No report selected.")
         return dash.no_update  # Prevents unnecessary update
 
-    report = Report.objects.filter(report_name=selected_report).first()
+    report = Report.objects.filter(report_id=selected_report).first()
     if not report:
         print("Report not found.")
         return dash.no_update
-
+    selected_result_ids = [sample.strip() for sample in report.selected_result_ids.split(",") if sample.strip()]
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
-    if not sample_list:
+    if not selected_result_ids:
         print("No samples found in the report.")
         return dash.no_update
 
-    new_rt = compute_main_peak_rt(sample_list)
+    new_rt = compute_main_peak_rt(selected_result_ids)
     print(f"Updated Main Peak RT: {new_rt}")  # Debugging Log
 
     return new_rt  # This will update `dcc.Store(id="main-peak-rt-store")`
@@ -1347,70 +1463,82 @@ def update_main_peak_rt(n_clicks, selected_report):
     [
         Output('time-series-graph', 'figure'),
         Output('time-series-graph', 'style'),
-        Output('selected-report', 'data')
-    ],
-    [
-        Input('plot-type-dropdown', 'value'),  # Trigger on plot type change
-        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),  # Trigger on report change
-        Input('shading-checklist', 'value'),  # Trigger on shading enable/disable
-        Input('peak-label-checklist', 'value'),  # Trigger on peak labeling enable/disable
-        Input('main-peak-rt-input', 'value'),  # Trigger on Main Peak RT change
-        Input('low-mw-cutoff-input', 'value'),  # Trigger on LMW Cutoff change
-        Input('regression-parameters', 'data'),  # Regression parameters for peak labeling
-        Input('hmw-table-store', 'data'),  # HMW data changes
-        Input('channel-checklist', 'value'),  # Trigger on channel selection
-        Input('num-cols-input', 'value'),  # New Input
-        Input('vertical-spacing-input', 'value'),  # New Input
-        Input('horizontal-spacing-input', 'value')  # New Input
+        Output('selected-report', 'data'),
+        Output('time-series-graph', 'config')
 
     ],
     [
-        State('selected-report', 'data')  # Persist the current selected report
+        Input('plot-type-dropdown', 'value'),  # Plot type change
+        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),  # Report selection
+        Input('shading-checklist', 'value'),
+        Input('peak-label-checklist', 'value'),
+        Input('main-peak-rt-input', 'value'),
+        Input('low-mw-cutoff-input', 'value'),
+        Input('regression-parameters', 'data'),
+        Input('hmw-table-store', 'data'),
+        Input('channel-checklist', 'value'),
+        Input('num-cols-input', 'value'),
+        Input('vertical-spacing-input', 'value'),
+        Input('horizontal-spacing-input', 'value'),
     ],
+    [State('selected-report', 'data')],  # Retrieve stored `report_id`
     prevent_initial_call=True
 )
 def update_graph(plot_type, report_clicks, shading_options, peak_label_options,
                  main_peak_rt, low_mw_cutoff, regression_params, hmw_table_data,
-                 selected_channels, num_cols, vertical_spacing, horizontal_spacing, stored_report):
+                 selected_channels, num_cols, vertical_spacing, horizontal_spacing,
+                 stored_report_id):
     ctx = dash.callback_context
 
-    # Determine which input triggered the callback
+    # ✅ 1. Determine `report_id` from either `ctx.triggered` or `stored_report_id`
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
     try:
-        triggered_data = json.loads(triggered_id.replace("'", '"'))
-        # print(triggered_data)
-    except json.JSONDecodeError:
+        triggered_data = eval(triggered_id)  # Convert string ID to dictionary
+    except Exception:
         triggered_data = {}
-    # print(triggered_data)
-    # **Ensure `report_name` always has a valid value**
-    report_name = None  # Default to None
-    if 'report_name' in triggered_data:
-        report_name = triggered_data['report_name']  # **New report clicked**
-    elif isinstance(stored_report, str) and stored_report:  # **Ensure stored report is valid**
-        report_name = stored_report
 
-    # **Ensure `report_name` is defined before accessing the database**
-    if not report_name:
+    report_id = triggered_data.get('report_name') or stored_report_id
+    print(f'this is the stored report id {stored_report_id}')
+
+    if not report_id:
         print("⚠️ No report found or selected. Returning empty graph.")
-        return go.Figure().update_layout(title="No Report Selected"), {'display': 'block'}, stored_report
+        return go.Figure().update_layout(title="No Report Selected"), {'display': 'block'}, stored_report_id
 
-    # Fetch the selected report
-    report = Report.objects.filter(report_name=report_name).first()
+    # ✅ 2. Fetch the Report using `report_id`
+    report = Report.objects.filter(report_id=report_id).first()
+
     if not report:
-        print(f"⚠️ Report '{report_name}' not found in database.")
-        return go.Figure().update_layout(title="Report Not Found"), {'display': 'block'}, stored_report
+        print(f"⚠️ Report '{report_id}' not found in database.")
+        return go.Figure().update_layout(title="Report Not Found"), {'display': 'block'}, stored_report_id
 
-    # Retrieve the list of selected samples
+    # ✅ 3. Retrieve Sample List and Result IDs
     sample_list = [sample.strip() for sample in report.selected_samples.split(",") if sample.strip()]
+    selected_result_ids = [result_id.strip() for result_id in report.selected_result_ids.split(",") if
+                           result_id.strip()]
+    # Order the result IDs numerically
+    selected_result_ids = sorted(selected_result_ids, key=lambda x: int(x))
 
+    # Build the sample list by querying SampleMetadata
+    sample_list = []
+    for result_id in selected_result_ids:
+        sample = SampleMetadata.objects.filter(result_id=result_id).first()
+        if sample:
+            sample_list.append(sample.sample_name)
+    print(f"✅ Report ID: {report_id}")
+    print(f"✅ Selected Samples: {sample_list}")
+    print(f"✅ Selected Result IDs: {selected_result_ids}")
+
+    current_date = datetime.now().strftime("%Y%m%d")
+    filename = f"{current_date}-{report.project_id}-{report.report_name}"
+
+    # ✅ 4. Render Plot Based on Plot Type
     if plot_type == 'plotly':
-        # Generate the Plotly graph
         fig = go.Figure()
-        for sample_name in sample_list:
-            sample = SampleMetadata.objects.filter(sample_name=sample_name).first()
+        for result_id in selected_result_ids:
+            sample = SampleMetadata.objects.filter(result_id=result_id).first()
             if not sample:
                 continue
-            time_series = TimeSeriesData.objects.filter(result_id=sample.result_id)
+            time_series = TimeSeriesData.objects.filter(result_id=result_id)
             df = pd.DataFrame(list(time_series.values()))
             for channel in selected_channels:
                 if channel in df.columns:
@@ -1421,28 +1549,35 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options,
                         name=f"{sample.sample_name} - {channel}"
                     ))
 
-        # Update layout for Plotly graph
         fig.update_layout(
-            title='Time Series Data',
+            title='Time Series Data (Plotly)',
             xaxis_title='Time (Minutes)',
             yaxis_title='UV280',
             template='plotly_white',
             height=800
         )
-        return fig, {'display': 'block'}, report_name  # Show Plotly graph and persist report
+        return (fig, {'display': 'block'}, report_id,
+                {
+                    'toImageButtonOptions': {
+                        'filename': filename,
+                        'format': 'png',
+                        'height': 600,
+                        'width': 800,
+                        'scale': 2
+                    }})
 
     elif plot_type == 'subplots':
         if not hmw_table_data:
-            return go.Figure(), {'display': 'block'}, report_name
+            print("⚠️ No HMW table data provided.")
+            return go.Figure().update_layout(title="No HMW Data"), {'display': 'block'}, report_id
 
-        # Extract slope and intercept from regression parameters
         slope = regression_params.get('slope', 0)
         intercept = regression_params.get('intercept', 0)
         enable_shading = 'enable_shading' in shading_options
         enable_peak_labeling = 'enable_peak_labeling' in peak_label_options
 
-        # Generate subplots with dynamic shading and peak labeling
         fig = generate_subplots_with_shading(
+            selected_result_ids,
             sample_list,
             selected_channels,
             enable_shading=enable_shading,
@@ -1456,6 +1591,15 @@ def update_graph(plot_type, report_clicks, shading_options, peak_label_options,
             horizontal_spacing=horizontal_spacing
         )
 
-        return fig, {'display': 'block'}, report_name
+        return fig, {'display': 'block'}, report_id,
+                {
+                    'toImageButtonOptions': {
+                        'filename': filename,
+                        'format': 'png',
+                        'height': 600,
+                        'width': 800,
+                        'scale': 2
+                    }}
 
-    return go.Figure(), {'display': 'block'}, report_name
+
+    return go.Figure(), {'display': 'block'}, report_id,{}

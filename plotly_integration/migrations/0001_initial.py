@@ -92,7 +92,6 @@ class Migration(migrations.Migration):
                 ('selected_samples', models.TextField(blank=True, null=True)),
                 ('comments', models.TextField(blank=True, null=True)),
                 ('user_id', models.TextField(blank=True, null=True)),
-
             ],
             options={
                 'db_table': 'report',

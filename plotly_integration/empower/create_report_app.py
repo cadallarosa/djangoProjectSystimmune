@@ -1,7 +1,7 @@
 import pytz
 from dash import dcc, html, Input, Output, State, dash_table
 from django_plotly_dash import DjangoDash
-from .models import SampleMetadata, Report
+from plotly_integration.models import SampleMetadata, Report
 from datetime import datetime
 import re
 import pandas as pd
@@ -533,12 +533,21 @@ def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, ne
 
         # ✅ Create DataFrame and sort by sample name
         df = pd.DataFrame(data, columns=["sample_name", "result_id"])
-        df = df.sort_values(by="sample_name", ascending=True)
+        df = df.sort_values(by="result_id", ascending=True)
 
         # ✅ Extract sorted lists
         sorted_samples = df["sample_name"].tolist()
         sorted_result_ids = df["result_id"].tolist()
+        selected_result_ids = sorted_result_ids
+        selected_result_ids = sorted(selected_result_ids, key=lambda x: int(x))
 
+        # Build the sample list by querying SampleMetadata
+        sample_list = []
+        for result_id in selected_result_ids:
+            sample = SampleMetadata.objects.filter(result_id=result_id).first()
+            if sample:
+                sample_list.append(sample.sample_name)
+        sorted_samples = sample_list
         # ✅ Convert lists to comma-separated strings for storage
         sample_names_str = ",".join(sorted_samples)
         result_ids_str = ",".join(sorted_result_ids)
