@@ -90,7 +90,38 @@ app.layout = html.Div(
                     }),
                     href="http://localhost:8000/plotly_integration/dash-app/app/ColumnUsageApp/",
                     target="_blank"
-                )
+                ),
+
+                dcc.Link(
+                    html.Button("Akta App", style={
+                        'width': '250px',
+                        'height': '60px',
+                        'font-size': '18px',
+                        'color': '#ffffff',
+                        'background-color': '#9966CC',
+                        'border': 'none',
+                        'border-radius': '8px',
+                        'cursor': 'pointer',
+                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                    }),
+                    href="http://localhost:8000/plotly_integration/dash-app/app/AktaChromatogramApp/",
+                    target="_blank"
+                ),
+                dcc.Link(
+                    html.Button("Akta Data Import", style={
+                        'width': '250px',
+                        'height': '60px',
+                        'font-size': '18px',
+                        'color': '#ffffff',
+                        'background-color': '#FFB6C1',
+                        'border': 'none',
+                        'border-radius': '8px',
+                        'cursor': 'pointer',
+                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                    }),
+                    href="http://localhost:8000/plotly_integration/dash-app/app/ImportAktaData/",
+                    target="_blank"
+                ),
             ],
             style={
                 'display': 'flex',

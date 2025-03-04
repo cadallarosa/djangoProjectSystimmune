@@ -1,11 +1,14 @@
+from django.db.models import Subquery, OuterRef
 from django_plotly_dash import DjangoDash
 from dash import dcc, html, dash_table, Input, Output
 import pandas as pd
-from plotly_integration.models import SampleMetadata, TimeSeriesData, PeakResults
+from plotly_integration.models import SampleMetadata, TimeSeriesData, PeakResults, EmpowerColumnLogbook, ChromMetadata
 import plotly.graph_objects as go
 import re
 from datetime import datetime
 import json
+from django.utils.timezone import make_naive, is_aware
+import dash_bootstrap_components as dbc
 
 # Initialize the new Dash app
 app = DjangoDash('ColumnUsageApp')
@@ -16,6 +19,47 @@ styles = {
         'overflowX': 'scroll'
     }
 }
+
+# ✅ Create preconfigured Figure
+injection_figure = go.Figure()
+
+# Configure layout settings
+injection_figure.update_layout(
+    dragmode="select",  # ✅ Force selection mode
+    clickmode="event+select",  # ✅ Capture clicks
+    title=dict(
+        text="Injection Number vs. Average Pressure & Column Performance",
+        x=0.5,
+        xanchor='center'),
+    xaxis_title="Injection Number",
+    showlegend=False,
+    yaxis=dict(
+        title="Average Pressure (psi)",
+        side="left",
+        color="blue"
+    ),
+    yaxis2=dict(
+        title="Plate Count (Peak2-IgG)",
+        overlaying="y",
+        side="right",
+        showgrid=False,
+        color="red"
+    ),
+    template="plotly_white"
+)
+
+selected_sample_figure = go.Figure()
+
+selected_sample_figure.update_layout(
+    title=dict(
+        text='Time Series Data for Selected Points',
+        x=0.5,
+        xanchor='center'),
+    xaxis_title='Time',
+    yaxis_title='UV280',
+    template="plotly_white"
+)
+
 # Layout for the new app
 app.layout = html.Div([
     html.Div(
@@ -37,7 +81,7 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id='column-dropdown',
                 placeholder="Select a Column",
-                style={'width': '90%', 'margin-bottom': '10px'}
+                style={'width': '100%', 'margin-bottom': '10px'}
             ),
             html.Label("Select Channel:", style={'color': '#0056b3', 'font-weight': 'bold'}),
             dcc.RadioItems(
@@ -48,7 +92,8 @@ app.layout = html.Div([
                     {'label': 'Pressure (psi)', 'value': 'channel_3'}
                 ],
                 value='channel_1',  # Default to channel 1
-                style={'display': 'flex', 'flex-direction': 'row', 'justify-content': 'left', 'gap': '10px', 'margin-bottom': '10px'}
+                style={'display': 'flex', 'flex-direction': 'row', 'justify-content': 'left', 'gap': '10px',
+                       'margin-bottom': '10px'}
             ),
             html.Div(
                 id='table-container',
@@ -76,116 +121,112 @@ app.layout = html.Div([
                 }
             )
         ], style={
-            'width': '90%',
+            'width': '100%',
             'padding': '10px',
             'background-color': '#f7f7f7'
         }),
-
         html.Div([
-            html.Div([
-                html.H4("Injection Number vs. Average Pressure", style={'text-align': 'center', 'color': '#0056b3'}),
-                dcc.Graph(id='pressure-plot', figure={}, style={'margin-top': '20px', 'height': '55vh'},
-                          config={'clickmode': 'event+select'})
+            # ✅ Wrap `pressure-plot` inside `dcc.Loading`
+            dbc.Container([
+                # html.H4("Injection Number vs. Average Pressure", style={'text-align': 'center', 'color': '#0056b3'}),
+                dcc.Loading(
+                    id="loading-pressure-plot",
+                    type="circle",  # Other options: "circle", "dot"
+                    style={"transform": 'scale(2)', 'text-align': 'center'},
+                    overlay_style={"visibility": "visible", "opacity": .5, "backgroundColor": "white"},
+                    # custom_spinner=html.H2(["Loading...", dbc.Spinner(color="red")]),
+                    children=[
+                        dcc.Graph(
+                            id='pressure-plot',
+                            figure=injection_figure,  # ✅ Set preconfigured figure
+                            style={'margin-top': '20px', 'height': '55vh'},
+                            config={'clickmode': 'event+select'}
+                        )
+                    ],
+                )
             ], style={'width': '50%', 'padding': '10px'}),
 
+            # ✅ Wrap `pressure-plot` inside `dcc.Loading`
+            dbc.Container([
+                # html.H4("Sample Plot", style={'text-align': 'center', 'color': '#0056b3'}),
+                dcc.Loading(
+                    id="loading-clicked-data-plot",
+                    type="circle",  # Other options: "circle", "dot"
+                    style={"transform": 'scale(2)', 'text-align': 'center'},
+                    overlay_style={"visibility": "visible", "opacity": .5, "backgroundColor": "white"},
+                    # custom_spinner=html.H2(["Loading...", dbc.Spinner(color="red")]),
+                    children=[
+                        dcc.Graph(id='clicked-data-graph', figure=selected_sample_figure,
+                                  style={'margin-top': '20px', 'height': '55vh'})
+                    ],
+                )
+            ], style={'width': '50%', 'padding': '10px'})],
+            style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px', 'width': '100%'}),
+
+        html.Div(className='row', children=[
             html.Div([
-                html.H4("Sample Plot", style={'text-align': 'center', 'color': '#0056b3'}),
-                dcc.Graph(id='clicked-data-graph', figure={}, style={'margin-top': '20px', 'height': '55vh'})
-            ], style={'width': '50%', 'padding': '10px'})
-        ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'})
-    ]),
-
-    html.Div(className='row', children=[
-        html.Div([
-            dcc.Markdown("""**Click Data**\n\nClick on points in the graph."""),
-            html.Pre(id='click-data', style={**styles['pre'], 'display': 'none'}),
-            dcc.Markdown("""**Selection Data**\n\nUse the lasso or rectangle tool to select points."""),
-            html.Pre(id='selected-data', style={**styles['pre'], 'display': 'none'}),
-            dcc.Markdown("""**Zoom and Relayout Data**\n\nZoom or click on the graph to trigger events."""),
-            html.Pre(id='relayout-data', style={**styles['pre'], 'display': 'none'})
-        ], style={'display': 'flex', 'flex-direction': 'row', 'justify-content': 'space-between', 'width': '100%'})
-    ])
+                dcc.Markdown("""**Click Data**\n\nClick on points in the graph."""),
+                html.Pre(id='click-data', style={**styles['pre'], 'display': 'none'}),
+                dcc.Markdown("""**Selection Data**\n\nUse the lasso or rectangle tool to select points."""),
+                html.Pre(id='selected-data', style={**styles['pre'], 'display': 'none'}),
+                dcc.Markdown("""**Zoom and Relayout Data**\n\nZoom or click on the graph to trigger events."""),
+                html.Pre(id='relayout-data', style={**styles['pre'], 'display': 'none'})
+            ], style={'display': 'flex', 'flex-direction': 'row', 'justify-content': 'space-between', 'width': '100%'})
+        ])
+    ], style={'display': 'flex',
+              'flex-direction': 'column',
+              'align-items': 'center',
+              'justify-content': 'flex-start',
+              'width': '97%'}
+    ),
 ])
-
-
-def get_date_acquired_by_result_id(result_id):
-    """
-    Fetch the `date_acquired` for a given result_id.
-    SQLite stores it as TEXT, so we need to parse and format it.
-    Returns it in MM/DD/YYYY HH:MM:SS AM/PM format.
-    """
-    raw_date = SampleMetadata.objects.filter(result_id=result_id).values_list("date_acquired", flat=True).first()
-
-    if not raw_date or raw_date.strip() == "":
-        return "Unknown"  # Default if missing
-
-    try:
-        # ✅ Parse SQLite's text format (YYYY-MM-DD HH:MM:SS+00:00)
-        parsed_date = datetime.strptime(raw_date, "%Y-%m-%d %H:%M:%S%z")
-
-        # ✅ Format into MM/DD/YYYY HH:MM:SS AM/PM
-        return parsed_date.strftime("%m/%d/%Y %I:%M:%S %p")
-
-    except ValueError:
-        print(f"⚠ Error parsing date for Result ID '{result_id}': {raw_date}")
-        return "Unknown"
 
 
 @app.callback(
     Output('column-dropdown', 'options'),
     Input('column-dropdown', 'id')
 )
-def populate_column_dropdown(_):
+def populate_column_dropdown(n_clicks=None):
     """
-    Fetch unique column serial numbers from SampleMetadata,
-    ensuring that we use the latest `date_acquired`.
-    Uses `get_date_acquired_by_result_id()` to format the date properly.
+    Fetch column serial numbers and names from `empower_column_logbook` using Django ORM,
+    ensuring we use the pre-stored `most_recent_injection` date.
     """
-    # Fetch all unique column serial numbers with associated result_id
-    unique_columns = (
-        SampleMetadata.objects
-        .filter(column_serial_number__isnull=False)  # Exclude NULL serial numbers
-        .values("column_name", "column_serial_number", "result_id")  # Fetch necessary fields
+    # ✅ Retrieve all columns from empower_column_logbook, ordering by most_recent_injection (descending)
+    columns = (
+        EmpowerColumnLogbook.objects
+        .filter(column_serial_number__isnull=False)  # Ensure serial number exists
+        .order_by("-most_recent_injection_date")  # Sort by most recent injection date
+        .values("id", "column_name", "column_serial_number", "most_recent_injection_date")  # Fetch only needed fields
     )
 
-    column_data = {}
+    column_data = []
 
-    for col in unique_columns:
+    for col in columns:
         serial = col["column_serial_number"]
         column_name = col["column_name"]
-        result_id = col["result_id"]
+        most_recent_injection = col["most_recent_injection_date"]
 
-        # ✅ Use `get_date_acquired_by_result_id()` to fetch formatted date
-        formatted_date = get_date_acquired_by_result_id(result_id)
+        # ✅ Format `most_recent_injection` as MM/DD/YYYY HH:MM:SS AM/PM
+        if most_recent_injection:
+            formatted_date = most_recent_injection.strftime("%m/%d/%Y %I:%M:%S %p")
+        else:
+            formatted_date = "Unknown"
 
-        # ✅ Ensure consistent formatting for comparison
-        parsed_date = pd.to_datetime(formatted_date, errors="coerce") if formatted_date != "Unknown" else None
+        # ✅ Store column data
+        column_data.append({
+            "column_id": col["id"],
+            "column_name": column_name,
+            "serial_number": serial,
+            "date_acquired": formatted_date,
+        })
 
-        # ✅ Store only the most recent `date_acquired` for each `serial_number`
-        if serial not in column_data or (parsed_date and parsed_date > column_data[serial]["parsed_date"]):
-            column_data[serial] = {
-                "column_name": column_name,
-                "serial_number": serial,
-                "date_acquired": formatted_date,
-                "parsed_date": parsed_date  # Store parsed date for sorting
-            }
-
-    # ✅ Step 1: Convert `column_data` to a list
-    column_list = list(column_data.values())
-
-    # ✅ Step 2: Sort by `date_acquired` descending, placing "Unknown" at the bottom
-    column_list.sort(
-        key=lambda x: (x["parsed_date"] is None, x["parsed_date"] if x["parsed_date"] else pd.Timestamp.min),
-        reverse=True  # Sort by date descending
-    )
-
-    # ✅ Step 3: Generate dropdown options
+    # ✅ Generate dropdown options
     dropdown_options = [
         {
             'label': f"{col['column_name']} - {col['serial_number']} (Last Used: {col['date_acquired']})",
             'value': col['serial_number']
         }
-        for col in column_list
+        for col in column_data
     ]
 
     return dropdown_options
@@ -198,56 +239,24 @@ def populate_column_dropdown(_):
 )
 def update_sample_count_table(selected_serial_number):
     """
-    When a column is selected, update the table with ordered injection data.
-    Ensures data is sorted by `date_acquired` (most recent → oldest).
+    When a column is selected, update the table using `EmpowerColumnLogbook`.
     """
     if not selected_serial_number:
         return []
 
-    # Fetch all samples for the selected column
-    samples = SampleMetadata.objects.filter(column_serial_number=selected_serial_number)
+    # ✅ Fetch the column entry from EmpowerColumnLogbook
+    column_entry = EmpowerColumnLogbook.objects.filter(column_serial_number=selected_serial_number).first()
 
-    if not samples.exists():
-        return []
+    if not column_entry:
+        return []  # Return empty if no matching column found
 
-    # ✅ Step 1: Store sample data in a list
-    sample_data = []
-    for sample in samples:
-        formatted_date = get_date_acquired_by_result_id(sample.result_id)  # ✅ Use result_id for consistency
-
-        sample_data.append({
-            "column_name": sample.column_name,
-            "serial_number": sample.column_serial_number,
-            "result_id": sample.result_id,
-            "date_acquired": formatted_date
-        })
-
-    # ✅ Step 2: Convert to DataFrame
-    df = pd.DataFrame(sample_data)
-
-    if df.empty:
-        return []  # Return empty table if no data
-
-    # ✅ Step 3: Convert `date_acquired` to datetime, handling missing values
-    df["date_acquired"] = pd.to_datetime(df["date_acquired"], errors="coerce")
-
-    # ✅ Step 4: Sort by `date_acquired` (Most Recent → Oldest)
-    df = df.sort_values(by="date_acquired", ascending=False).reset_index(drop=True)
-
-    # ✅ Step 5: Assign injection numbers based on sorted order
-    df["injection_number"] = df.index + 1  # Start numbering from 1
-
-    # ✅ Step 6: Count total injections per column
-    sample_count = len(df)
-
-    # ✅ Step 7: Ensure table updates correctly
-    table_data = [
-        {
-            "column_name": df["column_name"].iloc[0] if not df.empty else "Unknown",
-            "serial_number": selected_serial_number,
-            "sample_count": sample_count
-        }
-    ]
+    # ✅ Prepare the response data
+    table_data = [{
+        "column_name": column_entry.column_name,
+        "serial_number": column_entry.column_serial_number,
+        "sample_count": column_entry.total_injections,  # ✅ Directly use stored injection count
+        "most_recent_injection": column_entry.most_recent_injection_date.strftime("%m/%d/%Y") if column_entry.most_recent_injection_date else "Unknown"
+    }]
 
     return table_data
 
@@ -292,14 +301,14 @@ def get_top_peaks(result_id):
     return df
 
 
-def get_column_performance_data(selected_serial_number):
+def get_column_performance_data(column_id):
     """
     Fetch column performance data by extracting plate count from the peak results table
     if the sample prefix is 'STD'.
     """
     # Fetch standard samples associated with the selected column
     std_samples = SampleMetadata.objects.filter(
-        column_serial_number=selected_serial_number,
+        column_id=column_id,
         sample_prefix="STD"  # ✅ Only process standard samples
     )
 
@@ -312,7 +321,7 @@ def get_column_performance_data(selected_serial_number):
     for sample in std_samples:
         result_id = sample.result_id
         sample_name = sample.sample_name
-        date_acquired = get_date_acquired_by_result_id(result_id)
+        date_acquired = sample.date_acquired
 
         # ✅ Get peak results for the standard
         df_peaks = get_top_peaks(result_id)
@@ -339,6 +348,36 @@ def get_column_performance_data(selected_serial_number):
     return df_performance
 
 
+def get_data_annotations():
+    """
+    Fetches sample metadata with pressure-related data from ChromMetadata.
+    Uses optimized queries for faster results.
+    """
+    # ✅ Fetch data with a single query
+    data_points = (
+        SampleMetadata.objects
+        .select_related("chrommetadata")  # ✅ Join with ChromMetadata for efficiency
+        .values(
+            "sample_name",
+            "result_id",
+            "chrommetadata__average_pressure",
+        )
+    )
+
+    # ✅ Process data
+    annotated_data = [
+        {
+            "sample_name": data["sample_name"],
+            "result_id": data["result_id"],
+            "average_pressure": data["chrommetadata__average_pressure"],
+        }
+        for data in data_points
+    ]
+
+    return annotated_data
+
+
+
 @app.callback(
     Output('pressure-plot', 'figure'),
     Input('column-dropdown', 'value'),
@@ -346,89 +385,70 @@ def get_column_performance_data(selected_serial_number):
 )
 def update_pressure_plot(selected_serial_number):
     """
-    Plot Injection Number vs. Average Pressure at the Midpoint of Each Run.
-    Overlay Column Performance (Plate Count) on a secondary Y-axis.
+    Optimized query: Fetch column_id → Filter SampleMetadata by column_id → Join ChromMetadata efficiently.
     """
     if not selected_serial_number:
+        return go.Figure()  # Return an empty figure if no serial number is selected
+
+    # ✅ Step 1: Convert Serial Number to Column ID
+    column = EmpowerColumnLogbook.objects.filter(column_serial_number=selected_serial_number).first()
+    if not column:
+        print(f"⚠ No matching column found for Serial Number: {selected_serial_number}")
         return go.Figure()
 
-    # Fetch all samples with the selected column serial number
-    samples = SampleMetadata.objects.filter(column_serial_number=selected_serial_number)
+    column_id = column.id  # Get the column's ID from EmpowerColumnLogbook
+
+    # ✅ Step 2: Query SampleMetadata using `column_id` (Indexed Foreign Key)
+    samples = (
+        SampleMetadata.objects
+        .filter(column_id=column_id)  # Use column_id for efficient lookup
+        .annotate(
+            # ✅ Step 3: Use Subquery to pull `average_pressure` from ChromMetadata
+            average_pressure=Subquery(
+                ChromMetadata.objects
+                .filter(result_id=OuterRef("result_id"), system_name=OuterRef("system_name"))
+                .values("average_pressure")[:1]  # Only fetch the first matching value
+            )
+        )
+        .values("result_id", "sample_name", "date_acquired", "average_pressure")
+    )
 
     if not samples.exists():
+        print(f"⚠ No sample data found for Column ID: {column_id}")
         return go.Figure()
 
-    # ✅ Step 1: Store sample data in a DataFrame using `result_id`
-    sample_data = []
-    for sample in samples:
-        formatted_date = get_date_acquired_by_result_id(sample.result_id)
+    # ✅ Step 4: Convert to DataFrame for Plotly
+    df = pd.DataFrame(list(samples))
 
-        sample_data.append({
-            "result_id": sample.result_id,
-            "date_acquired": formatted_date
-        })
-
-    # ✅ Step 2: Convert to DataFrame and sort by `date_acquired` (oldest → newest)
-    df = pd.DataFrame(sample_data)
+    # ✅ Step 5: Sort by `date_acquired` (oldest → newest) and assign injection numbers
     df["date_acquired"] = pd.to_datetime(df["date_acquired"], errors="coerce")
     df = df.sort_values(by="date_acquired").reset_index(drop=True)
-
-    # ✅ Step 3: Assign injection numbers based on sorted order
     df["injection_number"] = df.index + 1  # Start numbering from 1
 
-    # ✅ Step 4: Prepare lists for plotting
-    injection_numbers = []
-    average_pressures = []
-    hover_texts = []
+    # ✅ Step 6: Prepare Plotly Data
+    injection_numbers = df["injection_number"].tolist()
+    average_pressures = df["average_pressure"].tolist()
+    hover_texts = [
+        f"Sample: {row['sample_name']}<br>Date Acquired: {row['date_acquired'].strftime('%m/%d/%Y %I:%M:%S %p')}"
+        for _, row in df.iterrows()
+    ]
 
-    for _, row in df.iterrows():
-        result_id = row["result_id"]
-        injection_number = row["injection_number"]
-        date_acquired = row["date_acquired"].strftime("%m/%d/%Y %I:%M:%S %p")
+    # ✅ Step 7: Create Plotly Figure
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=injection_numbers,
+        y=average_pressures,
+        mode='markers+lines',
+        name='Average Pressure',
+        customdata=df["result_id"].tolist(),
+        text=hover_texts,
+        hoverinfo="text+y",
+        yaxis="y1",
+        marker=dict(color="blue")
+    ))
 
-        # ✅ Fetch sample name using `result_id`
-        sample = SampleMetadata.objects.filter(result_id=result_id).first()
-        if not sample:
-            continue
-
-        sample_name = sample.sample_name
-        run_time = sample.run_time  # Now a float, no need for regex extraction
-
-        # ✅ Validate `run_time` as a float
-        if isinstance(run_time, (int, float)) and run_time > 0:
-            midpoint_time = run_time / 2  # Compute midpoint directly
-        else:
-            print(f"⚠ Skipping Sample '{sample_name}' - Invalid run_time: {sample.run_time}")
-            continue
-
-        # Get pressure data for Channel 3
-        pressure_data = list(TimeSeriesData.objects.filter(result_id=result_id).values("time", "channel_3"))
-
-        if not pressure_data:
-            print(f"⚠ No pressure data found for Sample '{sample_name}'")
-            continue
-
-        # Convert to DataFrame and sort by time
-        df_pressure = pd.DataFrame(pressure_data).sort_values(by="time")
-
-        # Find closest time index to midpoint
-        closest_idx = (df_pressure["time"] - midpoint_time).abs().idxmin()
-
-        # Select 10 points before and after (ensure bounds)
-        start_idx = max(closest_idx - 10, 0)
-        end_idx = min(closest_idx + 10, len(df_pressure) - 1)
-
-        # Compute average pressure in the range
-        avg_pressure = df_pressure.loc[start_idx:end_idx, "channel_3"].mean()
-
-        # ✅ Store data for the plot
-        injection_numbers.append(injection_number)
-        average_pressures.append(avg_pressure)
-        hover_texts.append(f"Sample: {sample_name}<br>Date Acquired: {date_acquired}")
-        result_id = sample.result_id
-        # print([result_id for result_id in df["result_id"]])  # Check values
-    # ✅ Step 5: Fetch Column Performance Data for `Peak2-IgG`
-    df_performance = get_column_performance_data(selected_serial_number)
+    # ✅ Step 8: Fetch and Overlay Column Performance Data (Plate Count)
+    df_performance = get_column_performance_data(column_id)
 
     if not df_performance.empty:
         df_performance = df_performance[df_performance["peak_name"] == "Peak2-IgG"]
@@ -436,43 +456,23 @@ def update_pressure_plot(selected_serial_number):
         # Merge injection numbers to maintain consistency
         df_performance = df_performance.merge(df[["result_id", "injection_number"]], on="result_id", how="left")
 
-        # ✅ Ensure missing injections are filled properly
-        df_performance["injection_number"] = df_performance["injection_number"].astype("Int64")
-
-        # ✅ Sort by injection number
+        # Sort by injection number
         df_performance = df_performance.sort_values(by="injection_number").reset_index(drop=True)
 
-    # ✅ Step 6: Create the Plotly Figure
-    fig = go.Figure()
-
-    # 🔹 **Plot Average Pressure on Primary Y-axis**
-    fig.add_trace(go.Scatter(
-        x=injection_numbers,
-        y=average_pressures,
-        mode='markers+lines',
-        name='Average Pressure',
-        customdata=df["result_id"].tolist(),  # Pass result_id with each point
-        text=hover_texts,
-        hoverinfo="text+y",
-        yaxis="y1",  # Assign to primary Y-axis
-        marker=dict(color="blue")
-    ))
-
-    # 🔹 **Plot Column Performance (Plate Count) on Secondary Y-axis**
-    if not df_performance.empty:
+        # Add plate count data to the secondary y-axis
         fig.add_trace(go.Scatter(
             x=df_performance["injection_number"],
             y=df_performance["plate_count"],
             mode="markers+lines",
             name="Peak2-IgG Plate Count",
             marker=dict(color="red"),
-            yaxis="y2"  # Assign to secondary Y-axis
+            yaxis="y2"
         ))
 
-    # ✅ Step 7: Update Layout with Dual Y-axes and Legend
+    # ✅ Step 9: Update Figure Layout
     fig.update_layout(
-        dragmode='select',  # Force selection mode
-        clickmode='event+select',  # Capture clicks
+        dragmode='select',
+        clickmode='event+select',
         title="Injection Number vs. Average Pressure & Column Performance",
         xaxis_title="Injection Number",
         showlegend=False,
@@ -489,18 +489,12 @@ def update_pressure_plot(selected_serial_number):
             color="red"
         ),
         template="plotly_white",
-        # legend=dict(
-        #     x=1.05,  # 🔹 Moves legend just outside the graph
-        #     y=1,  # 🔹 Aligns legend at the top
-        #     xanchor="left",  # 🔹 Ensures it stays outside the plot
-        #     yanchor="top",  # 🔹 Keeps it at the top
-        #     bgcolor="rgba(255,255,255,0.8)",  # 🔹 Optional: White background for clarity
-        #     bordercolor="rgba(0,0,0,0.2)",  # 🔹 Optional: Light border for definition
-        #     borderwidth=1
-        # )
+
     )
 
     return fig
+
+
 
 def filter_primary_axis_points(data):
     if not data:
@@ -514,6 +508,9 @@ def filter_primary_axis_points(data):
 )
 def display_click_data(clickData, selectedData, channel):
     result_ids = []
+    filtered_click_data = []  # ✅ Ensure variable is always initialized
+    filtered_selected_data = []  # ✅ Ensure variable is always initialized
+
     print(json.dumps(clickData, indent=2))
     if clickData:
         filtered_click_data = filter_primary_axis_points(clickData)
@@ -531,7 +528,7 @@ def display_click_data(clickData, selectedData, channel):
 
     fig = go.Figure()
     for result_id in set(result_ids):
-        time_series = TimeSeriesData.objects.filter(result_id=result_id).values('time', channel)
+        time_series = TimeSeriesData.objects.filter(result_id__in=result_ids).values("result_id", "time", channel)
         df = pd.DataFrame(list(time_series))
         sample = SampleMetadata.objects.filter(result_id=result_id).first()
         sample_name = sample.sample_name if sample else result_id
@@ -544,7 +541,8 @@ def display_click_data(clickData, selectedData, channel):
         'channel_2': 'UV260',
         'channel_3': 'Pressure (psi)'
     }
-    fig.update_layout(title='Time Series Data for Selected Points', xaxis_title='Time', yaxis_title=channel_names.get(channel, channel),template="plotly_white")
+    fig.update_layout(title='Time Series Data for Selected Points', xaxis_title='Time',
+                      yaxis_title=channel_names.get(channel, channel), template="plotly_white")
 
     return json.dumps(clickData, indent=2), json.dumps(selectedData, indent=2), fig
 

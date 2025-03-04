@@ -5,40 +5,50 @@ from plotly_integration.models import SampleMetadata, Report
 from datetime import datetime
 import re
 import pandas as pd
+from django.utils.timezone import is_aware
 
 # Initialize the Dash app
 app = DjangoDash("ReportApp")
 
 
-# Fetch default data for initialization
 def get_default_columns_and_data():
     default_columns = ["sample_name", "result_id", "date_acquired", "sample_set_name", "column_name"]
-    samples = SampleMetadata.objects.all()  # Fetch all rows
+    samples = SampleMetadata.objects.all()
     columns = [{"name": col.replace("_", " ").title(), "id": col} for col in default_columns]
 
     data = []
     for sample in samples:
-        row = {}
-        for col in default_columns:
-            value = getattr(sample, col, "")
+        row = {col: getattr(sample, col, None) for col in default_columns}  # ✅ Use `None` instead of erroring out
 
-            # ✅ Convert `date_acquired` from text to a sortable datetime
-            if col == "date_acquired" and value:
+        if "date_acquired" in row and row["date_acquired"]:
+            dt_value = row["date_acquired"]
+
+            # ✅ Convert string-based date to datetime
+            if isinstance(dt_value, str):
                 try:
-                    value = datetime.strptime(value, "%Y-%m-%d %H:%M:%S%z")  # Convert SQLite format
+                    dt_value = datetime.strptime(dt_value, "%Y-%m-%d %H:%M:%S")
                 except ValueError:
-                    value = None  # Handle invalid dates
+                    dt_value = None
 
-            row[col] = value
+            # ✅ Strip timezone info if datetime is aware
+            if isinstance(dt_value, datetime) and is_aware(dt_value):
+                dt_value = dt_value.replace(tzinfo=None)
+
+            row["date_acquired"] = dt_value  # ✅ Store corrected value
+
         data.append(row)
 
-    # ✅ Sort data by `date_acquired` (Most Recent First)
-    data = sorted(data, key=lambda x: x["date_acquired"] or datetime.min, reverse=True)
+    # ✅ Sort by `date_acquired` (most recent first) after stripping timezone
+    data = sorted(
+        data,
+        key=lambda x: x["date_acquired"] if x["date_acquired"] else datetime.min,
+        reverse=True
+    )
 
-    # ✅ Convert `date_acquired` back to string for display
+    # ✅ Convert back to string for display
     for row in data:
         if row["date_acquired"]:
-            row["date_acquired"] = row["date_acquired"].strftime("%Y-%m-%d %H:%M:%S")
+            row["date_acquired"] = row["date_acquired"].strftime("%m/%d/%Y %I:%M:%S %p")
 
     return columns, data
 
@@ -331,24 +341,37 @@ def update_table(sample_types, sample_set_names, selected_columns):
 
     data = []
     for sample in query:
-        row = {col: getattr(sample, col, "") for col in selected_columns}
+        row = {col: getattr(sample, col, None) for col in selected_columns}  # ✅ Use `None` instead of erroring out
 
-        # ✅ Convert `date_acquired` from text to datetime for sorting
         if "date_acquired" in row and row["date_acquired"]:
-            try:
-                row["date_acquired"] = datetime.strptime(row["date_acquired"], "%Y-%m-%d %H:%M:%S%z")
-            except ValueError:
-                row["date_acquired"] = None  # Handle invalid dates
+            dt_value = row["date_acquired"]
+
+            # ✅ Convert string-based date to datetime
+            if isinstance(dt_value, str):
+                try:
+                    dt_value = datetime.strptime(dt_value, "%Y-%m-%d %H:%M:%S")
+                except ValueError:
+                    dt_value = None
+
+            # ✅ Strip timezone info if datetime is aware
+            if isinstance(dt_value, datetime) and is_aware(dt_value):
+                dt_value = dt_value.replace(tzinfo=None)
+
+            row["date_acquired"] = dt_value  # ✅ Store corrected value
 
         data.append(row)
 
-    # ✅ Sort by `date_acquired` (most recent first)
-    data = sorted(data, key=lambda x: x["date_acquired"] or datetime.min, reverse=True)
+        # ✅ Sort by `date_acquired` (most recent first) after stripping timezone
+    data = sorted(
+        data,
+        key=lambda x: x["date_acquired"] if x["date_acquired"] else datetime.min,
+        reverse=True
+    )
 
     # ✅ Convert back to string for display
     for row in data:
         if row["date_acquired"]:
-            row["date_acquired"] = row["date_acquired"].strftime("%Y-%m-%d %H:%M:%S")
+            row["date_acquired"] = row["date_acquired"].strftime("%m/%d/%Y %I:%M:%S %p")
 
     return columns, data
 
@@ -367,8 +390,11 @@ def update_sample_set_options(sample_types):
 
     # Extract the date prefix (YYMMDD) and convert to datetime for sorting
     def extract_date(sample_set):
+        if not sample_set:  # ✅ Handle None values
+            return datetime.min  # Assign the earliest possible date
+
         try:
-            date_part = sample_set[:6]  # Get first 6 characters
+            date_part = sample_set[:6]  # ✅ Safe slicing
             return datetime.strptime(date_part, "%y%m%d")  # Convert to YYYY-MM-DD format
         except ValueError:
             return datetime.min  # Assign the earliest date if invalid format
@@ -506,69 +532,3 @@ def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, ne
 
     return "No action performed."
 
-
-def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, new_user_id, comments, table_data,
-                  selected_rows):
-    if n_clicks > 0:
-        # Ensure required fields are provided
-        if not report_name or (not project_id and not new_project_id) or (not user_id and not new_user_id):
-            return "Please provide all required fields."
-
-        # Resolve final Project ID
-        final_project_id = new_project_id if project_id == "new_project_id" else project_id
-
-        # Resolve final User ID
-        final_user_id = new_user_id if user_id == "new_user_id" else user_id
-
-        # Extract selected sample names and result IDs into a DataFrame
-        data = []
-        for i in selected_rows:
-            sample_name = table_data[i].get("sample_name", "")
-            result_id = table_data[i].get("result_id", None)
-            if result_id:
-                data.append((sample_name, str(result_id)))
-
-        if not data:
-            return "No rows selected. Please select rows to include in the report."
-
-        # ✅ Create DataFrame and sort by sample name
-        df = pd.DataFrame(data, columns=["sample_name", "result_id"])
-        df = df.sort_values(by="result_id", ascending=True)
-
-        # ✅ Extract sorted lists
-        sorted_samples = df["sample_name"].tolist()
-        sorted_result_ids = df["result_id"].tolist()
-        selected_result_ids = sorted_result_ids
-        selected_result_ids = sorted(selected_result_ids, key=lambda x: int(x))
-
-        # Build the sample list by querying SampleMetadata
-        sample_list = []
-        for result_id in selected_result_ids:
-            sample = SampleMetadata.objects.filter(result_id=result_id).first()
-            if sample:
-                sample_list.append(sample.sample_name)
-        sorted_samples = sample_list
-        # ✅ Convert lists to comma-separated strings for storage
-        sample_names_str = ",".join(sorted_samples)
-        result_ids_str = ",".join(sorted_result_ids)
-
-        # Capture the current timestamp and format it for SQLite storage
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # YYYY-MM-DD HH:MM:SS format
-
-        # Save the report to the database with the date_created field
-        Report.objects.create(
-            report_name=report_name,
-            project_id=final_project_id,
-            user_id=final_user_id,
-            comments=comments,
-            selected_samples=sample_names_str,  # Store sorted sample names
-            date_created=timestamp,  # Store as text
-            selected_result_ids=result_ids_str  # Store sorted result IDs
-        )
-        # ✅ Convert UTC to PST and format it
-        pst_tz = pytz.timezone("US/Pacific")  # Pacific Time Zone
-        timestamp_pst = datetime.now(pytz.utc).astimezone(pst_tz).strftime("%Y-%m-%d %H:%M:%S")  # PST format
-
-        return f"Report '{report_name}' created successfully on {timestamp_pst}!"
-
-    return "No action performed."

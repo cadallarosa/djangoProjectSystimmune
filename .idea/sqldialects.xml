@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="PROJECT" dialect="SQLite" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/c4429e55-2b45-443f-b4ac-7c47a79883bd/console.sql" dialect="SQLite" />
+    <file url="file://$PROJECT_DIR$/plotly_integration/database" dialect="SQLite" />
+    <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

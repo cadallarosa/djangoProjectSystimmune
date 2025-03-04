@@ -111,30 +111,31 @@ app.layout = html.Div(
                         "fontSize": "18px",
                     },
                 ),
-                # Clean Data button
-                html.Button(
-                    "Clean Data",
-                    id="clean-data-btn",
-                    style={"backgroundColor": "#28a745", "color": "white", "marginTop": "20px",
-                           "padding": "15px 30px", "border": "none", "borderRadius": "5px", "cursor": "pointer",
-                           "fontSize": "18px"}),
+                # ✅ Single `dcc.Loading` for Import Process
+                dcc.Loading(
+                    id="loading-import",
+                    type="dot",  # Can be "default", "dot", "circle"
+                    children=[
+                        html.Div(
+                            id="output-message",
+                            style={
+                                "marginTop": "30px",
+                                "fontSize": "18px",
+                                "color": "#333",
+                            },
+                        ),
 
-                html.Div(
-                    id="output-message",
-                    style={
-                        "marginTop": "30px",
-                        "fontSize": "18px",
-                        "color": "#333",
-                    },
+                    ],
                 ),
-                html.Div(
-                    id="output-message-2",
-                    style={
-                        "marginTop": "30px",
-                        "fontSize": "18px",
-                        "color": "#333",
-                    },
-                ),
+                # html.Div(
+                #     id="output-message",
+                #     style={
+                #         "marginTop": "30px",
+                #         "fontSize": "18px",
+                #         "color": "#333",
+                #     },
+                # ),
+
                 # Interval component for active monitoring
                 dcc.Interval(
                     id="interval-component",
@@ -189,173 +190,20 @@ def start_import(n_clicks, folder_path, reported_folder):
         # Process files
         ars_files = [f for f in os.listdir(folder_path) if f.endswith(".ars")]
         arw_files = [f for f in os.listdir(folder_path) if f.endswith(".arw")]
+        total_files = len(ars_files) + len(arw_files)
 
+        if total_files == 0:
+            return "No files found.", "", 0
+
+        processed_files = 0
         # Process .ars files
         for file in ars_files:
-            process_ars.process_files(directory=folder_path, reported_folder=reported_folder, db_name=DB_NAME)
+            process_ars.process_files(directory=folder_path, reported_folder=reported_folder)
 
         # Process .arw files
         for file in arw_files:
-            process_arw.process_files(directory=folder_path, reported_folder=reported_folder, db_name=DB_NAME)
+            process_arw.process_files(directory=folder_path, reported_folder=reported_folder)
 
         return "File import completed successfully!"
     except Exception as e:
         return f"An error occurred: {str(e)}"
-
-
-# @app.callback(
-#     Output("output-message-2", "children"),
-#     [Input("clean-data-btn", "n_clicks")],
-#     prevent_initial_call=True  # Ensures it only runs on button click
-# )
-# def clean_data(n_clicks):
-#     if not n_clicks:
-#         return "Click 'Clean Data' to start the cleaning process."
-#
-#     try:
-#         cleaned_count = 0
-#         errors = []
-#
-#         DATE_FORMATS = [
-#             ("%m/%d/%Y %I:%M:%S %p PST", "US/Pacific"),
-#             ("%m/%d/%Y %I:%M:%S %p PDT", "US/Pacific")
-#         ]
-#         PST_TZ = pytz.timezone("US/Pacific")
-#         UTC_TZ = pytz.UTC
-#
-#         samples = SampleMetadata.objects.all()
-#
-#         for sample in samples:
-#             try:
-#                 updated = False
-#
-#                 if sample.sample_number == '':
-#                     sample.sample_number = None
-#                     updated = True
-#
-#                 if isinstance(sample.run_time, str) and "Minutes" in sample.run_time:
-#                     sample.run_time = float(re.search(r"[\d.]+", sample.run_time).group())
-#                     updated = True
-#
-#                 if isinstance(sample.injection_volume, str) and "uL" in sample.injection_volume:
-#                     sample.injection_volume = float(re.search(r"[\d.]+", sample.injection_volume).group())
-#                     updated = True
-#
-#                 if isinstance(sample.date_acquired, str):
-#                     for date_format, tz_name in DATE_FORMATS:
-#                         try:
-#                             original_date = datetime.strptime(sample.date_acquired, date_format)
-#                             original_date = PST_TZ.localize(original_date)
-#                             # sample.date_acquired = original_date
-#                             sample.date_acquired = original_date.astimezone(UTC_TZ)
-#                             updated = True
-#                             break
-#                         except ValueError:
-#                             continue
-#
-#                 if updated:
-#                     sample.save()
-#                     cleaned_count += 1
-#
-#             except Exception as e:
-#                 errors.append(f"Error processing {sample.id}: {str(e)}")
-#
-#         message = f"Data cleaning complete. {cleaned_count} records updated."
-#         if errors:
-#             message += f" Errors encountered: {len(errors)}"
-#
-#         print("Data cleaning completed!")  # Logs to console
-#         return message
-#
-#     except Exception as e:
-#         return f"An error occurred: {str(e)}"
-
-@app.callback(
-    Output("output-message-2", "children"),
-    [Input("clean-data-btn", "n_clicks")],
-    prevent_initial_call=True  # Runs only on button click
-)
-def clean_data(n_clicks):
-    if not n_clicks:
-        return "Click 'Clean Data' to start the cleaning process."
-
-    try:
-        cleaned_count = 0
-        errors = []
-
-        # Existing date formats to handle
-        DATE_FORMATS = [
-            ("%m/%d/%Y %I:%M:%S %p PST", "US/Pacific"),
-            ("%m/%d/%Y %I:%M:%S %p PDT", "US/Pacific"),
-            ("%Y-%m-%d %H:%M:%S%z", "UTC"),
-            ("%Y-%m-%d %H:%M:%S", "UTC"),
-        ]
-
-        PST_TZ = pytz.timezone("US/Pacific")
-        UTC_TZ = pytz.UTC
-
-        samples = SampleMetadata.objects.all()
-
-        with transaction.atomic():
-            for sample in samples:
-                try:
-                    updated = False
-
-                    # --- Fix Sample Number ---
-                    if sample.sample_number == '':
-                        sample.sample_number = None
-                        updated = True
-
-                    # --- Fix Run Time ---
-                    if isinstance(sample.run_time, str) and "Minutes" in sample.run_time:
-                        sample.run_time = float(re.search(r"[\d.]+", sample.run_time).group())
-                        updated = True
-
-                    # --- Fix Injection Volume ---
-                    if isinstance(sample.injection_volume, str) and "uL" in sample.injection_volume:
-                        sample.injection_volume = float(re.search(r"[\d.]+", sample.injection_volume).group())
-                        updated = True
-
-                    # --- Date Cleaning (Convert to PST and Store as PST) ---
-                    if isinstance(sample.date_acquired, str):
-                        for date_format, tz_name in DATE_FORMATS:
-                            try:
-                                original_date = datetime.strptime(sample.date_acquired, date_format)
-                                if tz_name == "US/Pacific":
-                                    original_date = PST_TZ.localize(original_date)
-                                elif tz_name == "UTC":
-                                    if original_date.tzinfo is None:
-                                        original_date = UTC_TZ.localize(original_date)
-                                # Convert to PST and Store
-                                sample.date_acquired = original_date.astimezone(PST_TZ)
-                                updated = True
-                                break
-                            except ValueError:
-                                continue
-
-                    # --- Handle Naive Timestamps (Assume UTC) ---
-                    if isinstance(sample.date_acquired, datetime) and sample.date_acquired.tzinfo is None:
-                        sample.date_acquired = sample.date_acquired.replace(tzinfo=UTC_TZ).astimezone(PST_TZ)
-                        updated = True
-
-                    # ✅ Convert All UTC to PST Before Saving
-                    if isinstance(sample.date_acquired, datetime) and sample.date_acquired.tzinfo == UTC_TZ:
-                        sample.date_acquired = sample.date_acquired.astimezone(PST_TZ)
-                        updated = True
-
-                    if updated:
-                        sample.save()
-                        cleaned_count += 1
-
-                except Exception as e:
-                    errors.append(f"Error processing Sample ID {sample.id}: {str(e)}")
-
-        message = f"Data cleaning complete. {cleaned_count} records updated."
-        if errors:
-            message += f" Errors encountered: {len(errors)}."
-
-        print("Data cleaning completed!")  # Logs to console
-        return message
-
-    except Exception as e:
-        return f"An error occurred during cleaning: {str(e)}"

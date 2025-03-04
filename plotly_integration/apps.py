@@ -14,19 +14,12 @@ class PlotlyIntegrationConfig(AppConfig):
             import plotly_integration.database_manager
             import plotly_integration.empower.report_app
             import plotly_integration.empower.column_analysis_app
-            import plotly_integration.sartoflow_smart.viral_filtration_app
-            import plotly_integration.sartoflow_smart.process_sartoflow_data
-            import plotly_integration.sartoflow_smart.ufdf_app
+            # import plotly_integration.sartoflow_smart.viral_filtration_app
+            # import plotly_integration.sartoflow_smart.process_sartoflow_data
+            # import plotly_integration.sartoflow_smart.ufdf_app
             import plotly_integration.akta.akta_data_import
             import plotly_integration.akta.akta_app
+            import plotly_integration.process_development.cld_mass_check.cld_mass_check_import_app
         except Exception as e:
             print(f"Warning: Dash app import failed - {e}")
 
-    # def ready(self):
-    #     import plotly_integration.create_report_app  # Ensure Dash app initializes correctly
-    #     import plotly_integration.homepage
-    #     import plotly_integration.database_manager
-    #     import plotly_integration.report_app
-    #     import plotly_integration.column_analysis_app
-    #     import plotly_integration.viral_filtration_app
-    #     import plotly_integration.process_sartoflow_data

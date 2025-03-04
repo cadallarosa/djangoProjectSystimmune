@@ -1,7 +1,7 @@
 import os
 import re
 import sqlite3
-
+from django.db import transaction
 import numpy as np
 import pandas as pd
 import shutil
@@ -10,7 +10,11 @@ from tqdm import tqdm
 from django.conf import settings
 from dash import dcc, html, Input, Output
 from django_plotly_dash import DjangoDash
-from plotly_integration.models import AktaChromatogram  # Ensure this model is defined in Django
+from plotly_integration.models import (
+    AktaChromatogram, AktaFraction, AktaRunLog, AktaResult
+)
+from datetime import datetime, timezone, timedelta
+import re
 
 # Get database path from Django settings
 DB_PATH = settings.DATABASES['default']['NAME']
@@ -35,6 +39,7 @@ app.layout = html.Div(
         html.Div(id="import-status", style={"marginTop": "20px", "color": "blue"}),
     ]
 )
+
 
 def read_and_process_csv(file_path):
     """
@@ -77,6 +82,7 @@ def read_and_process_csv(file_path):
 
     print("\n✅ Renamed DataFrame Columns:\n", df.columns)
     return df
+
 
 def downsample_data(df, interval=0.1):
     """
@@ -161,6 +167,35 @@ def downsample_data(df, interval=0.1):
 
     return df_downsampled, df_fraction, df_run_log
 
+def convert_runlog_timestamp(timestamp_str):
+    """
+    Converts a timestamp from 'M/D/YYYY h:mm:ss AM/PM ±HH:MM' to MySQL-compatible format 'YYYY-MM-DD HH:MM:SS'
+    """
+
+    # Regex pattern to extract date, time, AM/PM, and timezone
+    pattern = re.compile(r"(\d{1,2}/\d{1,2}/\d{4}) (\d{1,2}:\d{2}:\d{2} [APM]{2}) ([+-]\d{2}:\d{2})")
+    match = pattern.match(timestamp_str)
+
+    if not match:
+        print(f"⚠️ Invalid timestamp format: {timestamp_str}")
+        return None  # Return None if parsing fails
+
+    date_part, time_part, tz_offset = match.groups()
+
+    # Convert date + time to a datetime object
+    dt = datetime.strptime(f"{date_part} {time_part}", "%m/%d/%Y %I:%M:%S %p")
+
+    # Convert timezone offset to timedelta
+    offset_hours, offset_minutes = map(int, tz_offset.split(":"))
+    tz_delta = timedelta(hours=offset_hours, minutes=offset_minutes)
+
+    # Apply timezone offset
+    dt = dt.replace(tzinfo=timezone(tz_delta))
+
+    # Convert to MySQL format (removes timezone)
+    formatted_timestamp = dt.strftime('%Y-%m-%d %H:%M:%S')
+    return formatted_timestamp
+
 def extract_run_log_details(df_run_log):
     """
     Extracts Batch ID, Method Run timestamp, result path, user, and column ID from the Run Log column.
@@ -205,7 +240,10 @@ def extract_run_log_details(df_run_log):
             column_id_match = column_id_pattern.search(log)
             column_id = column_id_match.group(1) if column_id_match else None
 
-    return timestamp,batch_id, method, result_path, user, column_id
+    converted_timestamp = convert_runlog_timestamp(timestamp)
+
+    return converted_timestamp, batch_id, method, result_path, user, column_id
+
 
 # Define function to insert Batch ID
 def insert_batch_id(df_downsampled, df_fraction, df_run_log, batch_id):
@@ -224,136 +262,143 @@ def insert_batch_id(df_downsampled, df_fraction, df_run_log, batch_id):
     df_fraction.insert(0, "result_id", batch_id)
     df_run_log.insert(0, "result_id", batch_id)
 
-
-
     return df_downsampled, df_fraction, df_run_log
 
 
-def process_akta_file(file_path):
+def process_akta_file_orm(file_path):
     """
-    Loads Akta .asc file into DataFrames and inserts data into SQLite using raw SQL.
+    Loads Akta .asc file into DataFrames and inserts data into MySQL using Django ORM.
     """
     try:
         # Load and process file
         df = read_and_process_csv(file_path)
         df_downsampled, df_fraction, df_run_log = downsample_data(df, interval=0.1)
         timestamp, batch_id, method, result_path, user, column_id = extract_run_log_details(df_run_log)
+
         # Insert Batch ID into the DataFrames
         df_downsampled, df_fraction, df_run_log = insert_batch_id(df_downsampled, df_fraction, df_run_log, batch_id)
-        df_downsampled.to_csv("downsampled_chromatogram1.csv", index=False)
-        df_fraction.to_csv("fraction_chromatogram1.csv", index=False)
-        df_run_log.to_csv("run_log_chromatogram1.csv", index=False)
 
-        # Connect to SQLite database
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
+        # ✅ Use Django ORM to insert data in bulk
+        with transaction.atomic():  # Ensures data integrity
+            # 1️⃣ Insert into AktaChromatogram
+            chromatogram_objects = [
+                AktaChromatogram(
+                    result_id=batch_id,
+                    ml=row["ml"],
+                    uv_1_280=row["UV 1_280"],
+                    uv_2_0=row["UV 2_0"],
+                    uv_3_0=row["UV 3_0"],
+                    cond=row["Cond"],
+                    conc_b=row["Conc B"],
+                    pH=row["pH"],
+                    system_flow=row["System flow"],
+                    system_linear_flow=row["System linear flow"],
+                    system_pressure=row["System pressure"],
+                    cond_temp=row["Cond temp"],
+                    sample_flow=row["Sample flow"],
+                    sample_linear_flow=row["Sample linear flow"],
+                    sample_pressure=row["Sample pressure"],
+                    preC_pressure=row["PreC pressure"],
+                    deltaC_pressure=row["DeltaC pressure"],
+                    postC_pressure=row["PostC pressure"],
+                    frac_temp=row["Frac temp"],
+                )
+                for _, row in df_downsampled.iterrows()
+            ]
+            AktaChromatogram.objects.bulk_create(chromatogram_objects)
 
-        # -------------------------------
-        # 1) Insert Downsampled Data into `akta_chromatogram`
-        # -------------------------------
-        chromatogram_sql = """
-        INSERT INTO akta_chromatogram (
-            result_id, ml, uv_1_280, uv_2_0, uv_3_0, cond, conc_b, pH, system_flow, 
-            system_linear_flow, system_pressure, cond_temp, sample_flow, sample_linear_flow, 
-            sample_pressure, preC_pressure, deltaC_pressure, postC_pressure, frac_temp
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """
+            # 2️⃣ Insert into AktaFraction
+            fraction_objects = [
+                AktaFraction(
+                    result_id=row["result_id"],
+                    ml=row["ml"],
+                    fraction=row["Fraction"]
+                )
+                for _, row in df_fraction.iterrows()
+            ]
+            AktaFraction.objects.bulk_create(fraction_objects)
 
-        chromatogram_values = df_downsampled[
-            ["result_id", "ml", "UV 1_280", "UV 2_0", "UV 3_0", "Cond", "Conc B", "pH",
-             "System flow", "System linear flow", "System pressure", "Cond temp", "Sample flow",
-             "Sample linear flow", "Sample pressure", "PreC pressure", "DeltaC pressure",
-             "PostC pressure", "Frac temp"]
-        ].rename(columns={
-            "UV 1_280": "uv_1_280",
-            "UV 2_0": "uv_2_0",
-            "UV 3_0": "uv_3_0",
-            "Cond": "cond",
-            "Conc B": "conc_b",
-            "System flow": "system_flow",
-            "System linear flow": "system_linear_flow",
-            "System pressure": "system_pressure",
-            "Cond temp": "cond_temp",
-            "Sample flow": "sample_flow",
-            "Sample linear flow": "sample_linear_flow",
-            "Sample pressure": "sample_pressure",
-            "PreC pressure": "preC_pressure",
-            "DeltaC pressure": "deltaC_pressure",
-            "PostC pressure": "postC_pressure",
-            "Frac temp": "frac_temp",
-        }).values.tolist()
+            # 3️⃣ Insert into AktaRunLog
+            run_log_objects = [
+                AktaRunLog(
+                    result_id=row["result_id"],
+                    ml=row["ml"],
+                    log_text=row["Run Log"]
+                )
+                for _, row in df_run_log.iterrows()
+            ]
+            AktaRunLog.objects.bulk_create(run_log_objects)
 
-        cursor.executemany(chromatogram_sql, chromatogram_values)
+            # 4️⃣ Insert into AktaResult
+            AktaResult.objects.create(
+                result_id=batch_id,
+                column_name=column_id.split(", ")[1] if column_id else None,
+                column_volume=column_id.split(", ")[0].split("=")[1].split(" ")[0] if column_id else None,
+                method=method,
+                result_path=result_path,
+                date=timestamp,
+                user=user,
+                system="system_name_here",  # Adjust based on your logic
+            )
 
-        # -------------------------------
-        # 2) Insert Fraction Data into `akta_fraction`
-        # -------------------------------
-        fraction_sql = """
-        INSERT INTO akta_fraction (result_id, ml, fraction)
-        VALUES (?, ?, ?)
-        """
-
-        fraction_values = df_fraction.rename(columns={"Fraction": "fraction"})[["result_id", "ml", "fraction"]].values.tolist()
-        cursor.executemany(fraction_sql, fraction_values)
-
-        # -------------------------------
-        # 3) Insert Run Log Data into `akta_run_log`
-        # -------------------------------
-        run_log_sql = """
-        INSERT INTO akta_run_log (result_id, ml, log_text)
-        VALUES (?, ?, ?)
-        """
-
-        run_log_values = df_run_log.rename(columns={"Run Log": "log_text"})[["result_id", "ml", "log_text"]].values.tolist()
-        cursor.executemany(run_log_sql, run_log_values)
-
-        # -------------------------------
-        # 4) Insert Result Information into `akta_result`
-        # -------------------------------
-        result_sql = """
-        INSERT INTO akta_result (result_id, column_name, column_volume, method, result_path, date, user, system)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """
-        # ✅ Extract the filename from the path
-        file_name = os.path.basename(file_path)
-
-        # ✅ Ensure 'chromatogram' is in the filename
-        if "chromatogram" not in file_name.lower():
-            return f"Skipping {file_path}: Does not contain 'chromatogram' in the filename."
-
-        # ✅ Extract the system name (everything before '_chromatogram')
-        system_name = file_name.split("_chromatogram")[0]
-        # Extract column_name and column_volume from column_id
-        column_volume, column_name = None, None
-        if column_id:
-            parts = column_id.split(", ")
-            if len(parts) == 2:
-                column_volume = parts[0].split("=")[1].split(" ")[0]  # Extract volume (5.027)
-                column_name = parts[1]  # Extract name ("Foresight CHT XT")
-
-        # Prepare values for SQL insert
-        result_values = [(batch_id, column_name, column_volume, method, result_path, timestamp, user, system_name)]
-
-        # Execute insert
-        cursor.executemany(result_sql, result_values)
-
-        # Commit and close connection
-        conn.commit()
-        conn.close()
-
-        return f"Inserted {len(chromatogram_values)} chromatogram rows, {len(fraction_values)} fraction rows, and {len(run_log_values)} run log rows from {file_path}"
+        return f"✅ Inserted {len(chromatogram_objects)} chromatogram rows, {len(fraction_objects)} fraction rows, and {len(run_log_objects)} run log rows from {file_path}"
 
     except Exception as e:
         return f"❌ Error processing {file_path}: {str(e)}"
 
 
-def process_all_files():
-    """ Processes all Akta .asc files and moves them to the processed folder """
-    # Ensure the processed folder exists
+def process_akta_file_raw_sql(file_path):
+    """
+    Loads Akta .asc file into DataFrames and inserts data into MySQL using raw SQL.
+    """
+    try:
+        # Load and process file
+        df = read_and_process_csv(file_path)
+        df_downsampled, df_fraction, df_run_log = downsample_data(df, interval=0.1)
+        timestamp, batch_id, method, result_path, user, column_id = extract_run_log_details(df_run_log)
+        df_downsampled, df_fraction, df_run_log = insert_batch_id(df_downsampled, df_fraction, df_run_log, batch_id)
+
+        # ✅ Connect to MySQL database
+        from django.db import connection
+        with connection.cursor() as cursor:
+            # 1️⃣ Insert into akta_chromatogram
+            chromatogram_sql = """
+            INSERT INTO akta_chromatogram (
+                result_id, ml, uv_1_280, uv_2_0, uv_3_0, cond, conc_b, pH, system_flow,
+                system_linear_flow, system_pressure, cond_temp, sample_flow, sample_linear_flow,
+                sample_pressure, preC_pressure, deltaC_pressure, postC_pressure, frac_temp
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cursor.executemany(chromatogram_sql, df_downsampled.values.tolist())
+
+            # 2️⃣ Insert into akta_fraction
+            fraction_sql = "INSERT INTO akta_fraction (result_id, ml, fraction) VALUES (%s, %s, %s)"
+            cursor.executemany(fraction_sql, df_fraction.values.tolist())
+
+            # 3️⃣ Insert into akta_run_log
+            run_log_sql = "INSERT INTO akta_run_log (result_id, ml, log_text) VALUES (%s, %s, %s)"
+            cursor.executemany(run_log_sql, df_run_log.values.tolist())
+
+            # 4️⃣ Insert into akta_result
+            result_sql = """
+            INSERT INTO akta_result (result_id, column_name, column_volume, method, result_path, date, user, system)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(result_sql,
+                           (batch_id, column_id, None, method, result_path, timestamp, user, "system_name_here"))
+
+        return f"✅ Inserted data using raw SQL from {file_path}"
+
+    except Exception as e:
+        return f"❌ Error processing {file_path}: {str(e)}"
+
+
+def process_all_files(use_orm=False):
+    """
+    Processes all Akta .asc files and moves them to the processed folder.
+    """
     os.makedirs(PROCESSED_DIR, exist_ok=True)
 
-    # Get all .asc files from the shared folder
     files = [f for f in os.listdir(INPUT_DIR) if f.endswith(".asc")]
     if not files:
         return "No Akta files found."
@@ -364,12 +409,20 @@ def process_all_files():
         if not os.path.exists(file_path):
             results.append(f"Skipping {file_name}: File not found.")
             continue
-        result = process_akta_file(file_path)
+
+        if use_orm:
+            result = process_akta_file_orm(file_path)
+        else:
+            result = process_akta_file_raw_sql(file_path)
+
         results.append(result)
+
         processed_path = os.path.join(PROCESSED_DIR, file_name)
         if os.path.exists(file_path):
             shutil.move(file_path, processed_path)
+
     return "\n".join(results)
+
 
 
 @app.callback(
@@ -379,4 +432,4 @@ def process_all_files():
 )
 def trigger_import(n_clicks):
     """ Callback to trigger import when button is pressed """
-    return process_all_files()
+    return process_all_files(use_orm=True)  # ✅ Change to False for raw SQL

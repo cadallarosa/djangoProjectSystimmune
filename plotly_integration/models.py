@@ -1,31 +1,31 @@
 from django.db import models
 
-
-
-
+#Empower HPLC Tables
 class SampleMetadata(models.Model):
-    id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
+    id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
-    system_name = models.TextField()
-    project_name = models.TextField(null=True, blank=True)
-    sample_prefix = models.TextField(null=True, blank=True)
+    system_name = models.CharField(max_length=255)
+    project_name = models.CharField(max_length=255, null=True, blank=True)
+    sample_prefix = models.CharField(max_length=255, null=True, blank=True)
     sample_number = models.IntegerField(null=True, blank=True)
-    sample_suffix = models.TextField(null=True, blank=True)
-    sample_type = models.TextField(null=True, blank=True)
-    sample_name = models.TextField(null=True, blank=True)
+    sample_suffix = models.CharField(max_length=255, null=True, blank=True)
+    sample_type = models.CharField(max_length=255, null=True, blank=True)
+    sample_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
     sample_set_id = models.IntegerField(null=True, blank=True)
-    sample_set_name = models.TextField(null=True, blank=True)
-    date_acquired = models.TextField(null=True, blank=True)  # 🔹 Change from DateTimeField to DateField
-    acquired_by = models.TextField(null=True, blank=True)
+    sample_set_name = models.CharField(max_length=255, null=True, blank=True)
+    date_acquired = models.DateTimeField(null=True, blank=True)  # ✅ Changed from DateTimeField
+    acquired_by = models.CharField(max_length=255, null=True, blank=True)
     run_time = models.FloatField(null=True, blank=True)
-    processing_method = models.TextField(null=True, blank=True)
-    processed_channel_description = models.TextField(null=True, blank=True)
+    processing_method = models.CharField(max_length=255, null=True, blank=True)
+    processed_channel_description = models.CharField(max_length=255, null=True, blank=True)
     injection_volume = models.FloatField(null=True, blank=True)
     injection_id = models.IntegerField(null=True, blank=True)
-    column_name = models.TextField(null=True, blank=True)
-    column_serial_number = models.TextField(null=True, blank=True)
+    column_name = models.CharField(max_length=255, null=True, blank=True)
+    column_serial_number = models.CharField(max_length=255, null=True, blank=True)
+    column_id = models.ForeignKey('EmpowerColumnLogbook',on_delete=models.SET_NULL,null=True,db_column="column_id",to_field="id")
     instrument_method_id = models.IntegerField(null=True, blank=True)
-    instrument_method_name = models.TextField(null=True, blank=True)
+    instrument_method_name = models.CharField(max_length=255, null=True, blank=True)
+
 
     class Meta:
         db_table = 'sample_metadata'
@@ -36,8 +36,8 @@ class SampleMetadata(models.Model):
 class PeakResults(models.Model):
     id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
-    channel_name = models.TextField(null=True, blank=True)
-    peak_name = models.TextField(null=True, blank=True)
+    channel_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
+    peak_name = models.CharField(max_length=255, null=True, blank=True)
     peak_retention_time = models.FloatField(null=True, blank=True)
     peak_start_time = models.FloatField(null=True, blank=True)
     peak_end_time = models.FloatField(null=True, blank=True)
@@ -50,31 +50,44 @@ class PeakResults(models.Model):
 
     class Meta:
         db_table = 'peak_results'
-        managed = False
+        managed = True
         unique_together = ('result_id', 'peak_retention_time')
 
 
 class ChromMetadata(models.Model):
     id = models.AutoField(primary_key=True)
+    sample_metadata = models.OneToOneField(
+        'SampleMetadata',
+        on_delete=models.CASCADE,  # Delete ChromMetadata if SampleMetadata is deleted
+        related_name="chrom_metadata",  # Enables reverse lookup: sample.chrom_metadata
+        db_column="sample_metadata_id"
+    )
     result_id = models.IntegerField()
-    system_name = models.TextField()
-    sample_name = models.TextField(null=True, blank=True)
-    sample_set_name = models.TextField(null=True, blank=True)
+    system_name = models.CharField(max_length=255)
+    sample_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
+    sample_set_name = models.CharField(max_length=255, null=True, blank=True)
     sample_set_id = models.IntegerField(null=True, blank=True)
-    channel_1 = models.TextField(null=True, blank=True)
-    channel_2 = models.TextField(null=True, blank=True)
-    channel_3 = models.TextField(null=True, blank=True)
+    channel_1 = models.CharField(max_length=255, null=True, blank=True)
+    channel_2 = models.CharField(max_length=255, null=True, blank=True)
+    channel_3 = models.CharField(max_length=255, null=True, blank=True)
+    average_pressure = models.FloatField(null=True, blank=True)
+    max_pressure = models.FloatField(null=True, blank=True)  # New field
+    min_pressure = models.FloatField(null=True, blank=True)  # New field
+    pressure_variance = models.FloatField(null=True, blank=True)  # New field
+    pressure_stddev = models.FloatField(null=True, blank=True)  # New field
+    retention_time_range = models.FloatField(null=True, blank=True)  # New field
+    peak_pressure_time = models.FloatField(null=True, blank=True)  # New field
 
     class Meta:
         db_table = 'chrom_metadata'
-        managed = False
+        managed = True
         unique_together = ('result_id', 'system_name')
 
 
 class TimeSeriesData(models.Model):
     id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
-    system_name = models.TextField()
+    system_name = models.CharField(max_length=255)
     time = models.FloatField()
     channel_1 = models.FloatField(null=True, blank=True)
     channel_2 = models.FloatField(null=True, blank=True)
@@ -82,47 +95,72 @@ class TimeSeriesData(models.Model):
 
     class Meta:
         db_table = 'time_series_data'
-        managed = False
+        managed = True
         unique_together = ('result_id', 'time')
 
+class EmpowerColumnLogbook(models.Model):
+    id = models.AutoField(primary_key=True)  # Integer primary key
+    column_serial_number = models.CharField(max_length=255, unique=True)  # Unique serial number
+    column_name = models.CharField(max_length=255)
+    total_injections = models.IntegerField(default=0)
+    most_recent_injection_date = models.DateField(null=True, blank=True)  # ✅ Fixed
+
+    class Meta:
+        db_table = 'empower_column_logbook'
+        managed = True
 
 class SystemInformation(models.Model):
-    system_name = models.TextField(primary_key=True)
-    channel_1 = models.TextField(null=True, blank=True)
-    channel_2 = models.TextField(null=True, blank=True)
-    channel_3 = models.TextField(null=True, blank=True)
+    system_name = models.CharField(max_length=255, primary_key=True)  # ✅ Fixed
+    channel_1 = models.CharField(max_length=255, null=True, blank=True)
+    channel_2 = models.CharField(max_length=255, null=True, blank=True)
+    channel_3 = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         db_table = 'system_information'
-        managed = False
+        managed = True
 
-
+#django Specific Tables
 class ProjectID(models.Model):
-    project_name = models.TextField(null=True, blank=True)
-    sip_number = models.TextField(null=True, blank=True)
-    clone_id = models.TextField(null=True, blank=True)
-    sample_name = models.TextField(primary_key=True)
-    description = models.TextField(null=True, blank=True)
-    analyst = models.TextField(null=True, blank=True)
-    harvest_date = models.TextField(null=True, blank=True)
+    project = models.CharField(max_length=255, null=True, blank=True)
+    sip_number = models.CharField(max_length=255, null=True, blank=True)
+    fb_id = models.CharField(max_length=255, primary_key=True)  # ✅ Primary Key
+    cell_line = models.CharField(max_length=255, null=True, blank=True)
+    description = models.CharField(max_length=255, null=True, blank=True)
+    analyst = models.CharField(max_length=255, null=True, blank=True)
+    harvest_date = models.DateField(null=True, blank=True)
+    unifi_number = models.CharField(max_length=255, null=True, blank=True)
+    titer_comment = models.TextField(null=True, blank=True)
+    cld_30ml_octet_titer = models.FloatField(null=True, blank=True)
+    pro_aqa_titer = models.FloatField(null=True, blank=True)
+    fast_pro_a_recovery = models.FloatField(null=True, blank=True)
+    purification_recovery_a280 = models.FloatField(null=True, blank=True)
+    proa_eluate_a280_conc = models.FloatField(null=True, blank=True)
+    proa_eluate_volume = models.FloatField(null=True, blank=True)
+    hccf_loading_volume = models.FloatField(null=True, blank=True)
+    proa_recovery = models.FloatField(null=True, blank=True)
+    proa_column_size = models.FloatField(null=True, blank=True)
+    column_id = models.CharField(max_length=255, null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+    sec_2_wks_a_conc = models.FloatField(null=True, blank=True)  # ✅ New Field
+    sec_2wks_n_conc = models.FloatField(null=True, blank=True)  # ✅ New Field
 
     class Meta:
         db_table = 'project_id'
-        managed = False
+        managed = True
+
 
 
 class Report(models.Model):
-    report_id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
-    report_name = models.TextField(null=True, blank=True)
-    project_id = models.TextField(null=True, blank=True)
-    analysis_type = models.TextField(null=True, blank=True)
-    sample_type = models.TextField(null=True, blank=True)
+    report_id = models.AutoField(primary_key=True)
+    report_name = models.CharField(max_length=255, null=True, blank=True)
+    project_id = models.CharField(max_length=255, null=True, blank=True)
+    analysis_type = models.CharField(max_length=255, null=True, blank=True)
+    sample_type = models.CharField(max_length=255, null=True, blank=True)
     selected_samples = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
-    user_id = models.TextField(null=True, blank=True)
-    date_created = models.TextField(null=True, blank=True)
+    user_id = models.CharField(max_length=255, null=True, blank=True)
+    date_created = models.DateTimeField(null=True, blank=True)
     selected_result_ids = models.TextField(null=True, blank=True)
-
 
     class Meta:
         db_table = 'report'
@@ -131,12 +169,12 @@ class Report(models.Model):
 
 class Users(models.Model):
     user_id = models.IntegerField()
-    user_name = models.TextField(primary_key=True)
-    user_initials = models.TextField(null=True, blank=True)
+    user_name = models.CharField(max_length=255, primary_key=True)  # ✅ Fixed
+    user_initials = models.CharField(max_length=10, null=True, blank=True)
 
     class Meta:
         db_table = 'users'
-        managed = False
+        managed = True
 
 
 class Method(models.Model):
@@ -148,7 +186,7 @@ class Method(models.Model):
 
     class Meta:
         db_table = 'method'
-        managed = False
+        managed = True
 
 
 class ReportInstance(models.Model):
@@ -158,27 +196,27 @@ class ReportInstance(models.Model):
 
     class Meta:
         db_table = 'report_instance'
-        managed = False
+        managed = True
 
 
 class Results(models.Model):
     id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
-    system_name = models.TextField(null=True, blank=True)
-    project_name = models.IntegerField(null=True, blank=True)
+    system_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
+    project_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
     sample_set_id = models.IntegerField(null=True, blank=True)
-    sample_set_name = models.TextField(null=True, blank=True)
-    acquired_by = models.TextField(null=True, blank=True)
-    column_serial_number = models.TextField(null=True, blank=True)
+    sample_set_name = models.CharField(max_length=255, null=True, blank=True)
+    acquired_by = models.CharField(max_length=255, null=True, blank=True)
+    column_serial_number = models.CharField(max_length=255, null=True, blank=True)
     new_column = models.IntegerField(null=True, blank=True)
 
     class Meta:
         db_table = 'results'
-        managed = False
+        managed = True
 
 
 class ProjectInformation(models.Model):
-    protein = models.TextField()
+    protein = models.TextField(null=True, blank=True)
     project = models.TextField()
     project_description = models.TextField(null=True, blank=True)
     molecule_type = models.TextField(null=True, blank=True)
@@ -194,13 +232,12 @@ class ProjectInformation(models.Model):
     molecular_weight = models.FloatField(null=True, blank=True)  # Molecular Weight [Da]
     percent_poi = models.FloatField(null=True, blank=True)  # % POI
     pi = models.FloatField(null=True, blank=True)  # pI
-    latest_purification_date = models.DateField(null=True, blank=True)
+    latest_purification_date = models.DateTimeField(null=True, blank=True)
     purified = models.BooleanField(default=False)  # Boolean field for 'Purified'
 
     class Meta:
         db_table = 'project_information'
         managed = True
-
 
 
 class SartoflowTimeSeriesData(models.Model):
@@ -256,8 +293,7 @@ class SartoflowTimeSeriesData(models.Model):
 
     class Meta:
         db_table = "sartoflow_time_series_data"
-
-
+        managed = True
 
 # '''Akta Models for table'''
 
@@ -269,14 +305,14 @@ class AktaResult(models.Model):
     column_volume = models.TextField(null=True, blank=True)
     method = models.TextField(null=True, blank=True)
     result_path = models.TextField(null=True, blank=True)
-    date = models.TextField(null=True, blank=True)
-    user = models.CharField(max_length=255,null=True, blank=True)
-    sample_id = models.CharField(max_length=255,null=True, blank=True)
+    date = models.DateTimeField(null=True, blank=True)
+    user = models.CharField(max_length=255, null=True, blank=True)
+    sample_id = models.CharField(max_length=255, null=True, blank=True)
     run_type = models.BigIntegerField(null=True, blank=True)
     scouting_id = models.BigIntegerField(null=True, blank=True)
     scouting_run_num = models.BigIntegerField(null=True, blank=True)
     group_id = models.BigIntegerField(null=True, blank=True)
-    system = models.CharField(max_length=255,null=True, blank=True)
+    system = models.CharField(max_length=255, null=True, blank=True)
     source_material_id = models.BigIntegerField(null=True, blank=True)
     downstream_step_id = models.BigIntegerField(null=True, blank=True)
 
@@ -321,10 +357,9 @@ class AktaMethodInformation(models.Model):
         db_table = 'akta_method_information'
 
 
-
 class AktaChromatogram(models.Model):
     ml = models.FloatField()  # Volume in mL
-    result_id = models.CharField(max_length=50,null=True, blank=True)
+    result_id = models.CharField(max_length=50, null=True, blank=True)
     uv_1_280 = models.FloatField(null=True, blank=True)  # UV Absorbance at 280nm
     uv_2_0 = models.FloatField(null=True, blank=True)
     uv_3_0 = models.FloatField(null=True, blank=True)
@@ -349,10 +384,11 @@ class AktaChromatogram(models.Model):
     # def __str__(self):
     #     return f"Result: {self.result.result_id} | ml: {self.ml}"
 
+
 class AktaFraction(models.Model):
-    result_id = models.CharField(max_length=50,null=True, blank=True)
+    result_id = models.CharField(max_length=50, null=True, blank=True)
     ml = models.FloatField(null=True, blank=True)
-    fraction = models.CharField(max_length=100,null=True, blank=True)  # Example column
+    fraction = models.CharField(max_length=100, null=True, blank=True)  # Example column
 
     class Meta:
         db_table = "akta_fraction"
@@ -361,7 +397,7 @@ class AktaFraction(models.Model):
 
 
 class AktaRunLog(models.Model):
-    result_id = models.CharField(max_length=50,null=True, blank=True)
+    result_id = models.CharField(max_length=50, null=True, blank=True)
     ml = models.FloatField(null=True, blank=True)
     log_text = models.TextField(null=True, blank=True)
 
@@ -370,7 +406,6 @@ class AktaRunLog(models.Model):
 
     # def __str__(self):
     #     return f"Result: {self.result.result_id} | Log at ml: {self.ml}"
-
 
 
 class AktaScoutingList(models.Model):
@@ -387,8 +422,6 @@ class AktaScoutingList(models.Model):
 
     class Meta:
         db_table = 'akta_scouting_list'
-
-
 
 
 class PDSamples(models.Model):
@@ -416,7 +449,6 @@ class PDSamples(models.Model):
 
     class Meta:
         db_table = 'pd_samples'
-
 
 
 class DnAssignment(models.Model):

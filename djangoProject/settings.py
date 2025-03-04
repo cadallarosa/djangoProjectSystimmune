@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+from .ssh_tunnel import start_ssh_tunnel
+# from.my_sql import reset_mysql_connection
+import time
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,13 +58,50 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join('C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db'),
+#     }
+# }
+
+start_ssh_tunnel()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join('C:/Users/cdallarosa/DataAlchemy/Database Management/Database Management/Empower.db'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'djangoP1_db',
+        'USER': 'cdallarosa',
+        'PASSWORD': '$ystImmun3!2022',
+        'HOST': '127.0.0.1',  # Use server IP if remote
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'connect_timeout': 600,  # Wait longer before timing out
+            'autocommit': True,  # Ensure automatic commits
+        },
+
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'systimmune',
+#         'USER': 'root',
+#         'PASSWORD': 'C@nyon2025!',
+#         'HOST': '127.0.0.1',  # Use server IP if remote
+#         'PORT': '3308',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#             'connect_timeout': 600,  # Wait longer before timing out
+#             'autocommit': True,  # Ensure automatic commits
+#         },
+#
+#     }
+# }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -130,20 +170,34 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Use the CDN for Plotly resources instead of local static files
+# # Use the CDN for Plotly resources instead of local static files
+# PLOTLY_COMPONENTS = {
+#     'plotly': {
+#         'js': 'https://cdn.plot.ly/plotly-latest.min.js',  # Plotly JS CDN
+#         'css': None  # Dash uses the default CSS from the CDN
+#     },
+#     'dash_core_components': {
+#         'js': 'https://cdn.jsdelivr.net/npm/dash-core-components@2.9.0/dash_core_components/dash-core-components.min.js',
+#         'css': 'https://cdn.jsdelivr.net/npm/dash-core-components@2.9.0/dash_core_components/dash-core-components.min.css',
+#     },
+#     'dash_html_components': {
+#         'js': 'https://cdn.jsdelivr.net/npm/dash-html-components@2.9.0/dash_core_components/dash-html-components.min.js',
+#         'css': 'https://cdn.jsdelivr.net/npm/dash-html-components@2.9.0/dash_core_components/dash-html-components.min.css',
+#     }
+# }
+
 PLOTLY_COMPONENTS = {
     'plotly': {
-        'js': 'https://cdn.plot.ly/plotly-latest.min.js',  # Plotly JS CDN
+        'js': 'static/dash/component/plotly/package_data/plotly.min.js',  # Plotly JS CDN
         'css': None  # Dash uses the default CSS from the CDN
     },
     'dash_core_components': {
-        'js': 'https://cdn.jsdelivr.net/npm/dash-core-components@2.9.0/dist/dash-core-components.min.js',
-        'css': 'https://cdn.jsdelivr.net/npm/dash-core-components@2.9.0/dist/dash-core-components.min.css',
+        'js': 'static/dash/component/dash/dcc/dash_core_components.js',
+        'css': None  # Dash uses the default CSS from the CDN',
     },
     'dash_html_components': {
-        'js': 'https://cdn.jsdelivr.net/npm/dash-html-components@2.9.0/dist/dash-html-components.min.js',
-        'css': 'https://cdn.jsdelivr.net/npm/dash-html-components@2.9.0/dist/dash-html-components.min.css',
+        'js': 'static/dash/component/dash/html/dash_html_components.min.js',
+        'css': None  # Dash uses the default CSS from the CDN,
     }
 }
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
