@@ -129,6 +129,79 @@ app.layout = html.Div(
                 'gap': '20px',
                 'margin-top': '20px'
             }
+        ),
+        html.Div(
+            children=[
+                html.H2("SartoFlow Smart", style={
+                    'font-size': '28px',
+                    'color': '#ffffff',
+                    'text-align': 'center',
+                    'margin-bottom': '20px'
+                }),
+                html.Div(
+                    children=[
+                        dcc.Link(
+                            html.Button("Create Experiment", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#008080',  # Teal
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/UFDFAnalysis/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("UFDF", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#800080',  # Purple
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/UFDF/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Viral Filtration", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#B22222',  # Firebrick Red
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ViralFiltration/",
+                            target="_blank"
+                        ),
+                    ],
+                    style={
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'gap': '20px',
+                        'flex-wrap': 'wrap'
+                    }
+                )
+            ],
+            style={
+                'text-align': 'center',
+                'padding': '30px 20px',
+                'background-color': '#343a40',
+                'border-radius': '8px',
+                'margin-top': '30px',
+                'width': '100%'
+            }
         )
     ],
     style={

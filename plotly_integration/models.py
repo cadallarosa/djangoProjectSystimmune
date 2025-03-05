@@ -56,12 +56,6 @@ class PeakResults(models.Model):
 
 class ChromMetadata(models.Model):
     id = models.AutoField(primary_key=True)
-    sample_metadata = models.OneToOneField(
-        'SampleMetadata',
-        on_delete=models.CASCADE,  # Delete ChromMetadata if SampleMetadata is deleted
-        related_name="chrom_metadata",  # Enables reverse lookup: sample.chrom_metadata
-        db_column="sample_metadata_id"
-    )
     result_id = models.IntegerField()
     system_name = models.CharField(max_length=255)
     sample_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
@@ -239,8 +233,47 @@ class ProjectInformation(models.Model):
         db_table = 'project_information'
         managed = True
 
+class UFDFMetadata(models.Model):
+    result_id = models.AutoField(primary_key=True)  # Auto-incremented result ID
+    molecule_name = models.TextField()
+    experiment_name = models.TextField()
+    experimental_notes = models.TextField(blank=True, null=True)
+
+    cassette_type = models.TextField(null=True, blank=True)
+    load_concentration = models.FloatField(null=True, blank=True)
+    load_volume = models.FloatField(null=True, blank=True)
+    load_mass = models.FloatField(null=True, blank=True)
+
+    system_void_volume = models.FloatField(null=True, blank=True)
+    target_diafiltration_concentration = models.FloatField(null=True, blank=True)
+
+    uf1_target_reservoir_mass = models.FloatField(null=True, blank=True)
+    diavolumes = models.IntegerField(null=True, blank=True)
+    permeate_target_mass = models.FloatField(null=True, blank=True)
+    diafiltration_volume_required = models.FloatField(null=True, blank=True)
+
+    lmh_target = models.FloatField(null=True, blank=True)
+    flow_rate = models.FloatField(null=True, blank=True)
+    target_flow_rate = models.FloatField(null=True, blank=True)
+    target_p2500_setpoint = models.FloatField(null=True, blank=True)
+    target_p3000_setpoint = models.FloatField(null=True, blank=True)
+
+    recovery = models.FloatField(null=True, blank=True)
+    final_volume = models.FloatField(null=True, blank=True)
+    final_concentration = models.FloatField(null=True, blank=True)
+    product_mass = models.FloatField(null=True, blank=True)
+    yield_percentage = models.FloatField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for record creation
+
+    class Meta:
+        db_table = "ufdf_metadata"
+
+
 
 class SartoflowTimeSeriesData(models.Model):
+    id = models.AutoField(primary_key=True)
+    result_id = models.ForeignKey(UFDFMetadata, on_delete=models.CASCADE,null=True, blank=True)
     batch_id = models.CharField(max_length=255)
     pdat_time = models.DateTimeField()
     process_time = models.FloatField(null=True, blank=True)
@@ -294,6 +327,9 @@ class SartoflowTimeSeriesData(models.Model):
     class Meta:
         db_table = "sartoflow_time_series_data"
         managed = True
+
+
+
 
 # '''Akta Models for table'''
 

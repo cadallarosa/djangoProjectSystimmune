@@ -17,6 +17,7 @@ class PlotlyIntegrationConfig(AppConfig):
             # import plotly_integration.sartoflow_smart.viral_filtration_app
             # import plotly_integration.sartoflow_smart.process_sartoflow_data
             # import plotly_integration.sartoflow_smart.ufdf_app
+            import plotly_integration.sartoflow_smart.create_experiment
             import plotly_integration.akta.akta_data_import
             import plotly_integration.akta.akta_app
             import plotly_integration.process_development.cld_mass_check.cld_mass_check_import_app
