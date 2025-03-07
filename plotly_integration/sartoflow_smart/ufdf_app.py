@@ -12,17 +12,19 @@ batch_ids = SartoflowTimeSeriesData.objects.values_list("batch_id", flat=True).d
 
 # Define selectable columns (except BatchId and ProcessTime)
 selectable_columns = [
-    "AG2100_Value", "AG2100_Setpoint", "AG2100_Mode", "AG2100_Output",
-    "DPRESS_Value", "DPRESS_Output", "DPRESS_Mode", "DPRESS_Setpoint",
-    "F_PERM_Value",
-    "P2500_Setpoint", "P2500_Value", "P2500_Output", "P2500_Mode",
-    "P3000_Setpoint", "P3000_Mode", "P3000_Output", "P3000_Value", "P3000_T",
-    "PIR2600", "PIR2700",
-    "PIRC2500_Output", "PIRC2500_Value", "PIRC2500_Setpoint", "PIRC2500_Mode",
-    "QIR2000", "QIR2100",
-    "TIR2100", "TMP",
-    "WIR2700",
-    "WIRC2100_Output", "WIRC2100_Setpoint", "WIRC2100_Mode"
+    {"label": "Agitator Speed (AG_2100)", "value": "AG2100_Value"},
+    {"label": "Differential Pressure (DPRESS)", "value": "DPRESS_Value"},
+    {"label": "Filtrate Flow Rate (F_PERM)", "value": "F_PERM_Value"},
+    {"label": "Feed Pump Output (P2500)", "value": "P2500_Output"},
+    {"label": "Fill Pump Output (P3000 Output)", "value": "P3000_Output"},
+    {"label": "Fill Pump Totalizer (P3000_T)", "value": "P3000_T"},
+    {"label": "Retentate Pressure (PIR2600)", "value": "PIR2600"},
+    {"label": "Permeate Pressure (PIR2700)", "value": "PIR2700"},
+    {"label": "Feed Pressure (PIRC2500)", "value": "PIRC2500_Value"},
+    {"label": "Process Temperature (TIR2100)", "value": "TIR2100"},
+    {"label": "TMP (bar)", "value": "TMP"},
+    {"label": "Permeate Weight (WIR2700)", "value": "WIR2700"},
+    {"label": "Retain Vessel Weight (WIRC2100)", "value": "WIRC2100_SETPOINT"},
 ]
 
 # Dash Layout
@@ -43,8 +45,8 @@ app.layout = html.Div(
                 html.H3("Select Data to Plot"),
                 dcc.Checklist(
                     id="data-selection",
-                    options=[{"label": col, "value": col} for col in selectable_columns],
-                    value=["AG2100_Value"],  # Default selection
+                    options=selectable_columns,
+                    value=["TMP"],  # Default selection
                     style={"display": "flex", "flexDirection": "column"}
                 ),
             ],

@@ -201,3 +201,7 @@ PLOTLY_COMPONENTS = {
     }
 }
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Increase Django's file upload size limit (e.g., 100MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100MB

@@ -10,7 +10,7 @@ app.layout = html.Div(
         # Header section
         html.Div(
             children=[
-                html.H1("Process Development Sample Analysis", style={
+                html.H1("Process Development", style={
                     'font-size': '36px',
                     'color': '#ffffff',
                     'margin-bottom': '20px',
@@ -25,114 +25,14 @@ app.layout = html.Div(
                 'padding': '30px 20px',
                 'background-color': '#0056b3',
                 'border-radius': '8px',
-                'margin-bottom': '30px',
+                'margin-bottom': '10px',
             }
         ),
-        # Button section
-        html.Div(
-            children=[
-                dcc.Link(
-                    html.Button("Database Management", style={
-                        'width': '250px',
-                        'height': '60px',
-                        'font-size': '18px',
-                        'color': '#ffffff',
-                        'background-color': '#007bff',
-                        'border': 'none',
-                        'border-radius': '8px',
-                        'cursor': 'pointer',
-                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
-                    }),
-                    href="http://localhost:8000/plotly_integration/dash-app/app/DatabaseManagerApp/",
-                    target="_blank"
-                ),
-                dcc.Link(
-                    html.Button("Create Report", style={
-                        'width': '250px',
-                        'height': '60px',
-                        'font-size': '18px',
-                        'color': '#ffffff',
-                        'background-color': '#28a745',
-                        'border': 'none',
-                        'border-radius': '8px',
-                        'cursor': 'pointer',
-                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
-                    }),
-                    href="http://localhost:8000/plotly_integration/dash-app/app/ReportApp/",
-                    target="_blank"
-                ),
-                dcc.Link(
-                    html.Button("Report", style={
-                        'width': '250px',
-                        'height': '60px',
-                        'font-size': '18px',
-                        'color': '#ffffff',
-                        'background-color': '#ffc107',
-                        'border': 'none',
-                        'border-radius': '8px',
-                        'cursor': 'pointer',
-                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
-                    }),
-                    href="http://localhost:8000/plotly_integration/dash-app/app/TimeSeriesApp/",
-                    target="_blank"
-                ),
-                dcc.Link(
-                    html.Button("Column Analysis", style={
-                        'width': '250px',
-                        'height': '60px',
-                        'font-size': '18px',
-                        'color': '#ffffff',
-                        'background-color': '#ff7f00',
-                        'border': 'none',
-                        'border-radius': '8px',
-                        'cursor': 'pointer',
-                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
-                    }),
-                    href="http://localhost:8000/plotly_integration/dash-app/app/ColumnUsageApp/",
-                    target="_blank"
-                ),
 
-                dcc.Link(
-                    html.Button("Akta App", style={
-                        'width': '250px',
-                        'height': '60px',
-                        'font-size': '18px',
-                        'color': '#ffffff',
-                        'background-color': '#9966CC',
-                        'border': 'none',
-                        'border-radius': '8px',
-                        'cursor': 'pointer',
-                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
-                    }),
-                    href="http://localhost:8000/plotly_integration/dash-app/app/AktaChromatogramApp/",
-                    target="_blank"
-                ),
-                dcc.Link(
-                    html.Button("Akta Data Import", style={
-                        'width': '250px',
-                        'height': '60px',
-                        'font-size': '18px',
-                        'color': '#ffffff',
-                        'background-color': '#FFB6C1',
-                        'border': 'none',
-                        'border-radius': '8px',
-                        'cursor': 'pointer',
-                        'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
-                    }),
-                    href="http://localhost:8000/plotly_integration/dash-app/app/ImportAktaData/",
-                    target="_blank"
-                ),
-            ],
-            style={
-                'display': 'flex',
-                'justify-content': 'center',
-                'gap': '20px',
-                'margin-top': '20px'
-            }
-        ),
+        # Empower Section
         html.Div(
             children=[
-                html.H2("SartoFlow Smart", style={
+                html.H2("Empower", style={
                     'font-size': '28px',
                     'color': '#ffffff',
                     'text-align': 'center',
@@ -141,48 +41,63 @@ app.layout = html.Div(
                 html.Div(
                     children=[
                         dcc.Link(
-                            html.Button("Create Experiment", style={
+                            html.Button("Database Management", style={
                                 'width': '250px',
                                 'height': '60px',
                                 'font-size': '18px',
                                 'color': '#ffffff',
-                                'background-color': '#008080',  # Teal
+                                'background-color': '#007bff',
                                 'border': 'none',
                                 'border-radius': '8px',
                                 'cursor': 'pointer',
                                 'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
                             }),
-                            href="http://localhost:8000/plotly_integration/dash-app/app/UFDFAnalysis/",
+                            href="http://localhost:8000/plotly_integration/dash-app/app/DatabaseManagerApp/",
                             target="_blank"
                         ),
                         dcc.Link(
-                            html.Button("UFDF", style={
+                            html.Button("Create Report", style={
                                 'width': '250px',
                                 'height': '60px',
                                 'font-size': '18px',
                                 'color': '#ffffff',
-                                'background-color': '#800080',  # Purple
+                                'background-color': '#28a745',
                                 'border': 'none',
                                 'border-radius': '8px',
                                 'cursor': 'pointer',
                                 'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
                             }),
-                            href="http://localhost:8000/plotly_integration/dash-app/app/UFDF/",
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ReportApp/",
                             target="_blank"
                         ),
                         dcc.Link(
-                            html.Button("Viral Filtration", style={
+                            html.Button("Report", style={
                                 'width': '250px',
                                 'height': '60px',
                                 'font-size': '18px',
                                 'color': '#ffffff',
-                                'background-color': '#B22222',  # Firebrick Red
+                                'background-color': '#ffc107',
                                 'border': 'none',
                                 'border-radius': '8px',
                                 'cursor': 'pointer',
                                 'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
                             }),
-                            href="http://localhost:8000/plotly_integration/dash-app/app/ViralFiltration/",
+                            href="http://localhost:8000/plotly_integration/dash-app/app/TimeSeriesApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Column Analysis", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#ff7f00',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ColumnUsageApp/",
                             target="_blank"
                         ),
                     ],
@@ -202,7 +117,188 @@ app.layout = html.Div(
                 'margin-top': '30px',
                 'width': '100%'
             }
-        )
+        ),
+
+        # AKTA Section
+        html.Div(
+            children=[
+                html.H2("AKTA", style={
+                    'font-size': '28px',
+                    'color': '#ffffff',
+                    'text-align': 'center',
+                    'margin-bottom': '20px'
+                }),
+                html.Div(
+                    children=[
+                        dcc.Link(
+                            html.Button("Akta App", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#9966CC',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/AktaChromatogramApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Akta Data Import", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#FFB6C1',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ImportAktaData/",
+                            target="_blank"
+                        ),
+                    ],
+                    style={
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'gap': '20px',
+                        'flex-wrap': 'wrap'
+                    }
+                )
+            ],
+            style={
+                'text-align': 'center',
+                'padding': '30px 20px',
+                'background-color': '#3a3f44',
+                'border-radius': '8px',
+                'margin-top': '30px',
+                'width': '100%'
+            }
+        ),
+
+        # SartoFlow Smart Section
+        html.Div(
+            children=[
+                html.H2("Ultrafiltration/Diafiltration", style={
+                    'font-size': '28px',
+                    'color': '#ffffff',
+                    'text-align': 'center',
+                    'margin-bottom': '20px'
+                }),
+                html.Div(
+                    children=[
+                        dcc.Link(
+                            html.Button("Import UFDF Experiment", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#008080',  # Teal
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/UFDFAnalysis/",
+                            target="_blank"
+                        ),
+
+                        dcc.Link(
+                            html.Button("Analyze Experiment", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#800080',  # Purple
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/UFDFApp/",
+                            target="_blank"
+                        ),
+
+                    ],
+                    style={
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'gap': '20px',
+                        'flex-wrap': 'wrap'
+                    }
+                )
+            ],
+            style={
+                'text-align': 'center',
+                'padding': '30px 20px',
+                'background-color': '#343a40',
+                'border-radius': '8px',
+                'margin-top': '30px',
+                'width': '100%'
+            }
+        ),
+        # Viral Filtration Section (NEW DIV)
+        html.Div(
+            children=[
+                html.H2("Viral Filtration", style={
+                    'font-size': '28px',
+                    'color': '#ffffff',
+                    'text-align': 'center',
+                    'margin-bottom': '20px'
+                }),
+                html.Div(
+                    children=[
+                        dcc.Link(
+                            html.Button("Import Experiment", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#008080',  # Teal
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ViralFiltrationExperimentImport/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Analyze Experiment", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#B22222',  # Firebrick Red
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ViralFiltrationApp/",
+                            target="_blank"
+                        ),
+                    ],
+                    style={
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'gap': '20px',
+                        'flex-wrap': 'wrap'
+                    }
+                )
+            ],
+            style={
+                'text-align': 'center',
+                'padding': '30px 20px',
+                'background-color': '#343a40', #2c3e50
+                'border-radius': '8px',
+                'margin-top': '30px',
+                'width': '100%'
+            }
+        ),
     ],
     style={
         'display': 'flex',

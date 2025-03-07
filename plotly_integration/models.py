@@ -233,6 +233,9 @@ class ProjectInformation(models.Model):
         db_table = 'project_information'
         managed = True
 
+
+###UFDF/Viral Filtration Models
+
 class UFDFMetadata(models.Model):
     result_id = models.AutoField(primary_key=True)  # Auto-incremented result ID
     molecule_name = models.TextField()
@@ -328,8 +331,42 @@ class SartoflowTimeSeriesData(models.Model):
         db_table = "sartoflow_time_series_data"
         managed = True
 
+class VFMetadata(models.Model):
+    result_id = models.AutoField(primary_key=True)  # Auto-incremented result ID
+    molecule_name = models.TextField()
+    experiment_name = models.TextField()
+    experimental_notes = models.TextField(blank=True, null=True)
+    filter_type = models.TextField(null=True, blank=True)
+    load_concentration = models.FloatField(null=True, blank=True)
+    load_volume = models.FloatField(null=True, blank=True)
+    load_mass = models.FloatField(null=True, blank=True)
+    target_pressure = models.FloatField(null=True, blank=True)
+    final_volume = models.FloatField(null=True, blank=True)
+    final_concentration = models.FloatField(null=True, blank=True)
+    product_mass = models.FloatField(null=True, blank=True)
+    yield_percentage = models.FloatField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for record creation
 
+    class Meta:
+        db_table = "vf_metadata"
 
+class VFTimeSeriesData(models.Model):
+    id = models.AutoField(primary_key=True)
+    result_id = models.ForeignKey(VFMetadata, on_delete=models.CASCADE,null=True, blank=True)
+    unit_step = models.BigIntegerField(null=True, blank=True) # 1= Water Flush, 2= Buffer Flush, 3=Product Filtration
+    batch_id = models.CharField(max_length=255)
+    pdat_time = models.DateTimeField()
+    process_time = models.FloatField(null=True, blank=True)
+    pir2700 = models.FloatField(null=True, blank=True)
+    wir2700 = models.FloatField(null=True, blank=True)
+    f_perm_value = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.batch_id} - {self.pdat_time}"
+
+    class Meta:
+        db_table = "vf_time_series_data"
+        managed = True
 
 # '''Akta Models for table'''
 
