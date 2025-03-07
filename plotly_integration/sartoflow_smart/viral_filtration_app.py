@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from django_plotly_dash import DjangoDash
 from dash import dcc, html, Input, Output
+from paramiko.agent import value
+
 from plotly_integration.models import VFMetadata, VFTimeSeriesData
 import numpy as np
 from dash.dependencies import ALL, State
@@ -22,9 +24,10 @@ experiments = VFMetadata.objects.values("result_id", "experiment_name").distinct
 selectable_columns = [
     {"label": "Permeate Pressure (PIR2700)", "value": "pir2700"},
     {"label": "Permeate Weight (WIR2700)", "value": "wir2700"},
-    {"label": "L/m²/hr", "value": "L_m2_hr"},
-    {"label": "mL/m²/hr", "value": "mL_m2_hr"},
+    {"label": "L/m²/hr", "value": "L/m²/hr"},
+    {"label": "mL/m²/hr", "value": "mL/m²/hr"},
     {"label": "mL/min", "value": "mL_min"},
+    {"label": "Flux Decay", "value": "flux_decay"}
 ]
 
 # Define styles for the app
@@ -71,16 +74,6 @@ app.layout = html.Div(
                     placeholder="Select unit step...",
                     style={"marginBottom": "10px"},
                 ),
-
-                html.Label("Select Data to Plot:", style={"fontWeight": "bold"}),
-                dcc.Dropdown(
-                    id="data-selection",
-                    options=selectable_columns,
-                    multi=True,  # Multi-select dropdown
-                    placeholder="Choose data to plot...",
-                    style={"marginBottom": "10px"},
-                ),
-
                 # Water Flush Flux Input
                 html.Label("Water Flush Flux (L/m²/hr):", style={"fontWeight": "bold"}),
                 dcc.Input(
@@ -90,16 +83,31 @@ app.layout = html.Div(
                     style={"width": "100%", "marginBottom": "10px"},
                 ),
 
+                html.Label("Select Data to Plot:", style={"fontWeight": "bold"}),
+                dcc.Dropdown(
+                    id="data-selection",
+                    options=selectable_columns,
+                    value=["wir2700","L/m²/hr"],
+                    multi=True,  # Multi-select dropdown
+                    placeholder="Choose data to plot...",
+                    style={"marginBottom": "10px"},
+                ),
+                # Smoothing Control
+                html.Label("Smoothing (Seconds):", style={"fontWeight": "bold"}),
+                dcc.Input(id="smoothing-input", type="number", min=10, step=1, placeholder="Min 10 sec",
+                          style=input_style),
+
                 html.Label("Y-Min:", style={"fontWeight": "bold"}),
                 dcc.Input(
                     id="y-min-input",
                     type="number",
                     placeholder="Enter Y-min",
+                    value=0,
                     style={"marginRight": "10px"},
                 ),
 
                 html.Label("Y-Max:", style={"fontWeight": "bold"}),
-                dcc.Input(id="y-max-input", type="number", placeholder="Enter Y-max"),
+                dcc.Input(id="y-max-input", type="number", value=75, placeholder="Enter Y-max"),
             ],
         ),
 
@@ -131,10 +139,12 @@ app.layout = html.Div(
     Input("experiment-dropdown", "value"),
     Input("unit-step-dropdown", "value"),
     Input("data-selection", "value"),
-    Input("y-min-input", "value"),  # Custom Y-Min for L/m²/hr
-    Input("y-max-input", "value"),  # Custom Y-Max for L/m²/hr
+    Input("y-min-input", "value"),
+    Input("y-max-input", "value"),
+    Input("smoothing-input", "value"),
+    Input("water-flush-flux", "value")
 )
-def update_graph(selected_experiment, selected_unit_step, selected_columns, y_min, y_max):
+def update_graph(selected_experiment, selected_unit_step, selected_columns, y_min, y_max, smoothing_seconds, water_flux):
     if not selected_experiment or not selected_unit_step:
         return go.Figure()
 
@@ -158,11 +168,8 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
 
     df = df.sort_values(by="process_time")
 
-    # Round numerical columns to a fixed number of decimal places
+    # Data Preprocessing
     df = df.round({"wir2700": 1, "process_time": 6})
-
-    # df = df.loc[df['wir2700'].shift() != df['wir2700']].reset_index(drop=True)
-
     df = df.drop_duplicates(subset=['wir2700'], keep='first').reset_index(drop=True)
 
     # Create a new DataFrame for flow rate calculation
@@ -186,10 +193,21 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
     df_flux = df_flux[df_flux['L/hr'] > 0]
     df_flux["L/hr_moving_average"] = df_flux['L/hr'].rolling(window=15).mean()
 
-    # Compute L/m²/hr
-    df_flux["L/m²/hr"] = df_flux["L/hr_moving_average"] / filter_area
+    # # Dynamic Smoothing
+    # if smoothing_seconds and smoothing_seconds >= 10:
+    #     rolling_window = max(1, int(smoothing_seconds / df_flux["diff_time"].median()))
+    #     df_flux["L/hr_moving_average"] = df_flux['L/hr'].rolling(window=rolling_window).mean()
+    # else:
+    #     df_flux["L/hr_moving_average"] = df_flux['L/hr']
 
-    df_flux = df_flux[df_flux['L/m²/hr'] > 0]
+    # Compute L/m²/hr
+    if filter_area > 0:
+            df_flux["L/m²/hr"] = df_flux["L/hr_moving_average"] / filter_area
+            df_flux = df_flux[df_flux['L/m²/hr'] > 0]
+
+    #Compute Flux Decay based on Water Flush Flux
+    if water_flux:
+        df_flux["flux_decay"] =  ((water_flux - df_flux["L/m²/hr"]) / (water_flux)) *100
 
     df_flux.to_csv("viral_filtration_data.csv", index=False)
     print("CSV saved: viral_filtration_data.csv")
@@ -201,61 +219,42 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
     # Define colors for each sensor
     colors = ["blue", "red", "green", "orange", "purple", "brown", "pink", "gray"]
 
-    # Create multiple y-axes dynamically with better spacing
+    # Plot selected sensors
     for i, column in enumerate(selected_columns):
         if column in df.columns:
-            axis_name = f"y{i + 1}" if i > 0 else "y"
-
             fig.add_trace(go.Scatter(
                 x=df["process_time"],
                 y=df[column],
                 mode="lines",
                 name=column,
-                yaxis=axis_name,  # Assign trace to specific y-axis
-                line=dict(color=colors[i % len(colors)])
+                yaxis=f"y{i + 1}" if i > 0 else "y",
+                line=dict(color=colors[i % len(colors)]),
             ))
 
-    # Plot L/m²/hr from df_flux
-    if not df_flux.empty and "L/m²/hr" in df_flux.columns:
+    # Plot L/m²/hr and Flux Decay
+    if "L/m²/hr" in selected_columns:
         fig.add_trace(go.Scatter(
             x=df_flux["process_time"],
             y=df_flux["L/m²/hr"],
             mode="lines",
             name="L/m²/hr",
-            yaxis=f"y{len(selected_columns) + 1}",  # Assign a new y-axis
-            line=dict(color="black")  # Black dashed line for distinction
+            yaxis="y2",
+            line=dict(color="black", dash="dot"),
         ))
 
-    # Update layout for multiple y-axes
-    layout = {
-        "title": f"Experiment {selected_experiment} - Unit Step {selected_unit_step}",
-        "xaxis": {"title": "Process Time"},
-        "yaxis": {"title": selected_columns[0], "side": "left", "position": 0},  # Primary Y-axis
+    if "flux_decay" in selected_columns:
+        fig.add_trace(go.Scatter(
+            x=df_flux["process_time"],
+            y=df_flux["flux_decay"],
+            mode="lines",
+            name="flux_decay",
+            yaxis="y3",
+            line=dict(color="purple", dash="dash"),
+        ))
 
-        # Configure additional y-axes to avoid overlap
-        **{
-            f"yaxis{i + 1}": {
-                "title": selected_columns[i],
-                "overlaying": "y",
-                "side": "right" if i % 2 == 0 else "left",
-                "position": 0.05 + (i * 0.05),  # Adjust position to space them out
-                "showgrid": False,
-            }
-            for i in range(1, len(selected_columns))
-        },
-        # L/m²/hr y-axis (on the right) with user-defined limits
-        f"yaxis{len(selected_columns) + 1}": {
-            "title": "L/m²/hr",
-            "overlaying": "y",
-            "side": "right",
-            "position": 1.0,  # Ensure it's fully on the right
-            "showgrid": False,
-            "color": "black",
-            "range": [y_min, y_max] if y_min is not None and y_max is not None else None,  # Apply user-defined range
-        }
-    }
-
-    fig.update_layout(layout)
+    fig.update_layout(title=f"Experiment {selected_experiment} - Unit Step {selected_unit_step}",
+                      xaxis_title="Process Time",
+                      hovermode="x unified")
 
     return fig
 
@@ -291,6 +290,7 @@ def populate_metadata_fields(selected_experiment):
         ))
 
     return fields
+
 
 @app.callback(
     Output("update-status", "children"),
@@ -331,6 +331,7 @@ def calculate_load_mass(load_concentration, load_volume):
         return round(load_mass, 2)
     except:
         return ""
+
 
 @app.callback(
     [Output({"type": "metadata-field", "field": "product_mass"}, "value"),
