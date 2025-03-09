@@ -116,7 +116,7 @@ app.layout = html.Div(
             style=card_style,
             children=[
                 html.H3("Time Series Data", style={"color": "#0047b3"}),
-                dcc.Graph(id="time-series-graph"),
+                dcc.Graph(id="time-series-graph",config={"autosizable":"True"}),
             ],
         ),
 
@@ -219,43 +219,44 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
     # Define colors for each sensor
     colors = ["blue", "red", "green", "orange", "purple", "brown", "pink", "gray"]
 
-    # Plot selected sensors
+    # Dictionary to store y-axis configurations
+    y_axes = {}
+
+    # Iterate over all selected columns and assign traces dynamically
     for i, column in enumerate(selected_columns):
-        if column in df.columns:
+        # Determine which DataFrame to use
+        data_source = df_flux if column in df_flux.columns else df  # Choose the appropriate DataFrame
+
+        if column in data_source.columns:
+            yaxis_name = f"y{i + 1}" if i > 0 else "y"  # First axis is 'y', others are 'y2', 'y3', etc.
+
             fig.add_trace(go.Scatter(
-                x=df["process_time"],
-                y=df[column],
+                x=data_source["process_time"],  # Shared x-axis
+                y=data_source[column],
                 mode="lines",
                 name=column,
-                yaxis=f"y{i + 1}" if i > 0 else "y",
+                yaxis=yaxis_name,  # Assign a unique y-axis
                 line=dict(color=colors[i % len(colors)]),
             ))
 
-    # Plot L/m²/hr and Flux Decay
-    if "L/m²/hr" in selected_columns:
-        fig.add_trace(go.Scatter(
-            x=df_flux["process_time"],
-            y=df_flux["L/m²/hr"],
-            mode="lines",
-            name="L/m²/hr",
-            yaxis="y2",
-            line=dict(color="black", dash="dot"),
-        ))
+            # Store y-axis configuration (Correctly formatted for Plotly Layout)
+            layout_axis_name = "yaxis" if i == 0 else f"yaxis{i + 1}"  # First axis is 'yaxis', others 'yaxis2', 'yaxis3'
+            y_axes[layout_axis_name] = {
+                "title": column,
+                "overlaying": "y" if i > 0 else None,  # First y-axis is standalone, others overlay it
+                "side": "right" if i % 2 == 0 else "left",
+                "showgrid": False
+            }
 
-    if "flux_decay" in selected_columns:
-        fig.add_trace(go.Scatter(
-            x=df_flux["process_time"],
-            y=df_flux["flux_decay"],
-            mode="lines",
-            name="flux_decay",
-            yaxis="y3",
-            line=dict(color="purple", dash="dash"),
-        ))
+    # Update layout with dynamically created y-axes
+    fig.update_layout(
+        title=f"Experiment {selected_experiment} - Unit Step {selected_unit_step}",
+        xaxis=dict(title="Process Time"),
+        hovermode="x unified",
+        **y_axes  # Add all y-axes configurations dynamically
+    )
 
-    fig.update_layout(title=f"Experiment {selected_experiment} - Unit Step {selected_unit_step}",
-                      xaxis_title="Process Time",
-                      hovermode="x unified")
-
+    # ✅ Ensure `fig` is returned at the end
     return fig
 
 

@@ -10,6 +10,7 @@ class SampleMetadata(models.Model):
     sample_number = models.IntegerField(null=True, blank=True)
     sample_suffix = models.CharField(max_length=255, null=True, blank=True)
     sample_type = models.CharField(max_length=255, null=True, blank=True)
+    analysis_type = models.IntegerField(null=True, blank=True) #1:SEC,2:PROA
     sample_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
     sample_set_id = models.IntegerField(null=True, blank=True)
     sample_set_name = models.CharField(max_length=255, null=True, blank=True)
@@ -148,7 +149,7 @@ class Report(models.Model):
     report_id = models.AutoField(primary_key=True)
     report_name = models.CharField(max_length=255, null=True, blank=True)
     project_id = models.CharField(max_length=255, null=True, blank=True)
-    analysis_type = models.CharField(max_length=255, null=True, blank=True)
+    analysis_type = models.IntegerField(null=True, blank=True)
     sample_type = models.CharField(max_length=255, null=True, blank=True)
     selected_samples = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)

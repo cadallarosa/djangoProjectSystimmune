@@ -71,7 +71,7 @@ app.layout = html.Div(
                             target="_blank"
                         ),
                         dcc.Link(
-                            html.Button("Report", style={
+                            html.Button("Sec Analysis", style={
                                 'width': '250px',
                                 'height': '60px',
                                 'font-size': '18px',
@@ -82,7 +82,22 @@ app.layout = html.Div(
                                 'cursor': 'pointer',
                                 'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
                             }),
-                            href="http://localhost:8000/plotly_integration/dash-app/app/TimeSeriesApp/",
+                            href="http://localhost:8000/plotly_integration/dash-app/app/SecReportApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Titer Analysis", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#008080',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/TiterReportApp/",
                             target="_blank"
                         ),
                         dcc.Link(
@@ -293,7 +308,7 @@ app.layout = html.Div(
             style={
                 'text-align': 'center',
                 'padding': '30px 20px',
-                'background-color': '#343a40', #2c3e50
+                'background-color': '#343a40',  # 2c3e50
                 'border-radius': '8px',
                 'margin-top': '30px',
                 'width': '100%'

@@ -81,6 +81,19 @@ app.layout = html.Div(
         html.Div(
             style={"marginBottom": "20px"},
             children=[
+                html.Label("Select Analysis Type:", style={"fontWeight": "bold"}),
+                dcc.Dropdown(
+                    id="analysis_type_filter",
+                    options=[
+                        {"label": "SEC", "value": "1"},
+                        {"label": "Titer", "value": "2"}
+                    ],
+                    placeholder="Select analysis type",
+                    multi=False,  # ✅ Only one option can be selected
+                    clearable=False,  # ✅ Forces selection (prevents blank state)
+                    style={"marginBottom": "10px"},
+                    value=["SEC"],
+                ),
                 html.Label("Filter by Sample Type:", style={"fontWeight": "bold"}),
                 dcc.Dropdown(
                     id="sample_type_filter",
@@ -323,9 +336,10 @@ app.layout = html.Div(
      Output("sample_table", "data")],
     [Input("sample_type_filter", "value"),
      Input("sample_set_name_filter", "value"),
-     Input("column_selection", "value")]
+     Input("column_selection", "value"),
+     Input("analysis_type_filter", "value")]
 )
-def update_table(sample_types, sample_set_names, selected_columns):
+def update_table(sample_types, sample_set_names, selected_columns, analysis_type):
     # Default columns
     if not selected_columns:
         selected_columns = ["sample_name", "result_id", "date_acquired", "sample_set_name", "column_name"]
@@ -338,6 +352,8 @@ def update_table(sample_types, sample_set_names, selected_columns):
         query = query.filter(sample_prefix__in=sample_types)
     if sample_set_names:
         query = query.filter(sample_set_name__in=sample_set_names)
+    if analysis_type:  # ✅ Apply filter based on selected Analysis Type
+        query = query.filter(sample_type=analysis_type)
 
     data = []
     for sample in query:
@@ -379,10 +395,13 @@ def update_table(sample_types, sample_set_names, selected_columns):
 # Dynamically populate Sample Set Name options based on Sample Type
 @app.callback(
     Output("sample_set_name_filter", "options"),
-    Input("sample_type_filter", "value")
+    Input("sample_type_filter", "value"),
+    Input("analysis_type_filter", "value")
 )
-def update_sample_set_options(sample_types):
+def update_sample_set_options(sample_types, analysis_type):
     query = SampleMetadata.objects.all()
+    if analysis_type:  # ✅ Filter based on selected analysis type
+        query = query.filter(sample_type=analysis_type)
     if sample_types:
         query = query.filter(sample_prefix__in=sample_types)
 
@@ -471,6 +490,7 @@ def populate_user_ids(selected_user_id):
 @app.callback(
     Output("submission_status", "children"),
     Input("submit_button", "n_clicks"),
+    Input("analysis_type_filter", "value"),
     [
         State("report_name_input", "value"),
         State("project_id_dropdown", "value"),
@@ -479,10 +499,12 @@ def populate_user_ids(selected_user_id):
         State("new_user_id_input", "value"),
         State("comments_input", "value"),
         State("sample_table", "data"),
-        State("sample_table", "selected_rows")
+        State("sample_table", "selected_rows"),
+
     ]
 )
-def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, new_user_id, comments, table_data,
+def submit_report(n_clicks, analysis_type, report_name, project_id, new_project_id, user_id, new_user_id, comments,
+                  table_data,
                   selected_rows):
     if n_clicks > 0:
         if not selected_rows:
@@ -525,10 +547,10 @@ def submit_report(n_clicks, report_name, project_id, new_project_id, user_id, ne
             comments=comments,
             selected_samples=sample_names_str,
             selected_result_ids=result_ids_str,
-            date_created=timestamp
+            date_created=timestamp,
+            analysis_type=analysis_type
         )
 
         return f"Report '{report_name}' created successfully with {len(sorted_samples)} samples."
 
     return "No action performed."
-

@@ -84,6 +84,15 @@ def clean_injection_volume(injection_volume):
     print(f"⚠️ Unexpected format for injection_volume: {injection_volume}. Returning None.")
     return None  # ✅ Fallback if format is unexpected
 
+def determine_sample_type(instrument_method_name):
+    """
+    Determines the sample type based on the instrument method name.
+    """
+    if instrument_method_name and "sec" in instrument_method_name.lower():
+        return 1
+    elif instrument_method_name and "proa" in instrument_method_name.lower():
+        return 2
+    return "unknown"
 
 def convert_dict_to_df(metadata_dict):
     if metadata_dict is None:
@@ -148,6 +157,9 @@ def insert_metadata(metadata_dict, use_orm=True):
     metadata_dict["Instrument Method Id"] = int(metadata_dict.get("Instrument Method Id", 0) or 0)
     metadata_dict["Sample Set Id"] = int(metadata_dict.get("Sample Set Id", 0) or 0)
     # print(metadata_dict)
+    # ✅ Determine sample type based on the instrument method name
+    instrument_method_name = metadata_dict.get("Instrument Method Name", "")
+    metadata_dict["Sample Type"] = determine_sample_type(instrument_method_name)
     if use_orm:
         # ✅ Insert using Django ORM
         SampleMetadata.objects.update_or_create(
@@ -269,7 +281,7 @@ def extract_peak_results(file_path, result_id):
             continue  # Skip the header row
 
         # Start collecting peak data
-        elif check and any(keyword in row for keyword in ["ACQUITY TUV ChA", "2998 Ch1 280nm@6.0nm"]):
+        elif check and any(keyword in row for keyword in ["ACQUITY TUV ChA", "2998 Ch1 280nm@6.0nm","DAD.0.0"]):
             # print(row)
             # Ensure correct header row exists before adding data
             if not report:

@@ -255,13 +255,19 @@ app.layout = html.Div([
                                     title="Sample Plot",
                                     xaxis_title="Time",
                                     yaxis_title="UV280",
-                                    height=800  # Adjust height (default is 400)
+                                    height=800,  # Adjust height (default is 400)
+                                    dragmode="select",
+                                    annotations=[
+                                        {
+                                            "showarrow": True
+                                        }
+                                    ]
                                 )
                             ),
                             config={  # ✅ Correct placement
                                 'toImageButtonOptions': {
-                                    'filename': 'custom_name'
-                                }}
+                                    'filename': 'custom_name'},
+                                'edits': {"annotationPosition": True}}
 
                         )
                     ],
