@@ -921,21 +921,17 @@ def update_regression_plot(selected_rows, table_data):
     )
 
 
-def calculate_sample_concentration(peak_area, slope, intercept):
-    """Calculate sample concentration from peak area using regression equation."""
-    if slope is None or intercept is None:
-        return None  # Regression model not ready
-    return (peak_area - intercept) / slope if slope else None
+
 
 
 @app.callback(
     [
-        Output("result-table", "data"),  # ✅ Populate and update concentrations
-        Output("result-table", "selected_rows")  # ✅ Select all rows by default
+        Output("result-table", "columns"),  # ✅ Table column structure
+        Output("result-table", "data"),  # ✅ Populate the result table
+        Output("selected-report", "data")  # ✅ Preserve selected report
     ],
     [
-        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),
-        # ✅ Trigger when a report is selected
+        Input({'type': 'report', 'report_name': dash.dependencies.ALL}, 'n_clicks'),  # ✅ Trigger on report selection
         Input("regression-parameters", "data")  # ✅ Trigger when regression parameters change
     ],
     [State("selected-report", "data")],  # ✅ Use stored selected report
@@ -943,16 +939,17 @@ def calculate_sample_concentration(peak_area, slope, intercept):
 )
 def update_result_table(report_clicks, regression_params, selected_report):
     """Populate result-table with all report samples and update calculated concentrations using regression parameters."""
-    print(regression_params)
+
     ctx = dash.callback_context
 
-    # ✅ Preserve report selection
+    # ✅ Determine which input triggered the callback
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
     try:
         triggered_data = json.loads(triggered_id.replace("'", '"'))
     except json.JSONDecodeError:
         triggered_data = {}
 
+    # ✅ Preserve report selection when regression parameters change
     report_name = selected_report
     if 'report_name' in triggered_data:
         report_name = triggered_data['report_name']
@@ -960,12 +957,14 @@ def update_result_table(report_clicks, regression_params, selected_report):
         report_name = selected_report
 
     if not report_name:
-        return [], []
+        print("⚠️ No report found or selected. Returning empty table.")
+        return [], [], None
 
     # ✅ Retrieve selected report
     report = Report.objects.filter(report_id=report_name).first()
     if not report:
-        return [], []
+        print(f"⚠️ Report '{report_name}' not found in database.")
+        return [], [], report_name
 
     # ✅ Extract all samples from the report
     all_samples = [s.strip() for s in report.selected_samples.split(",") if s.strip()]
@@ -974,7 +973,8 @@ def update_result_table(report_clicks, regression_params, selected_report):
     )
 
     if not report_samples:
-        return [], []
+        print(f"⚠️ No samples found in report '{report_name}'.")
+        return [], [], report_name
 
     # ✅ Extract regression parameters
     slope = regression_params.get("slope")
@@ -1017,10 +1017,17 @@ def update_result_table(report_clicks, regression_params, selected_report):
         key=lambda x: ("Std_" in x["Sample Name"], x["Result ID"])
     )
 
-    # ✅ Select all rows by default
-    selected_rows = list(range(len(result_data_sorted)))  # ✅ Select all rows
+    # ✅ Define table columns dynamically
+    table_columns = [
+        {"name": "Sample Name", "id": "Sample Name"},
+        {"name": "Peak Start", "id": "Peak Start"},
+        {"name": "Peak End", "id": "Peak End"},
+        {"name": "Main Peak Area", "id": "Main Peak Area"},
+        {"name": "Concentration (mg/mL)", "id": "Concentration (mg/mL)"},
+        {"name": "Injection Volume (uL)", "id": "Injection Volume (uL)"},
+    ]
 
-    return result_data_sorted, selected_rows
+    return table_columns, result_data_sorted, report_name
 
 # def generate_subplots_with_shading(selected_result_ids, sample_list, channels, enable_shading, enable_peak_labeling,
 #                                    main_peak_rt, slope,
