@@ -26,6 +26,7 @@ class SampleMetadata(models.Model):
     column_id = models.ForeignKey('EmpowerColumnLogbook',on_delete=models.SET_NULL,null=True,db_column="column_id",to_field="id")
     instrument_method_id = models.IntegerField(null=True, blank=True)
     instrument_method_name = models.CharField(max_length=255, null=True, blank=True)
+    dilution = models.FloatField(null=True, blank=True)
 
 
     class Meta:

@@ -114,21 +114,20 @@ def extract_metadata(file_path):
     start_found = False
     metadata = []
     for row in data:
-        if row == ['#', 'Inj Summary Report CAD Final  ']:
+        if row == ['#', 'Inj Summary Report CAD Final 2  ']:
             start_found = True
             continue
         if start_found and ("Project Name:" in row and "Reported by User:" in row):
             break
         if start_found:
             metadata.append(row[0])
-
     # Process metadata into a dictionary
     metadata_dict = {
         key.strip(): value.strip()
         for row in metadata if ":" in row
         for key, value in [row.split(":", 1)]
     }
-
+    print(metadata_dict['Dilution'])
     # Extract `result_id` from "Injection Id" field in metadata
     result_id = int(metadata_dict.get("Injection Id", 0))
 
@@ -137,7 +136,8 @@ def extract_metadata(file_path):
         return None, None  # Return None to skip further processing
     # print(metadata_dict)
     metadata_dict['Result Id'] = result_id
-    # print(metadata_dict)
+    print(metadata_dict)
+
     return metadata_dict, result_id
 
 
@@ -184,6 +184,7 @@ def insert_metadata(metadata_dict, use_orm=True):
                 "column_serial_number": metadata_dict.get("Column Serial Number"),
                 "instrument_method_id": metadata_dict.get("Instrument Method Id"),
                 "instrument_method_name": metadata_dict.get("Instrument Method Name"),
+                "dilution": metadata_dict.get("Dilution"),
             }
         )
         print(f"✅ Metadata inserted via ORM for result_id {metadata_dict['Result Id']}")
@@ -195,7 +196,7 @@ def insert_metadata(metadata_dict, use_orm=True):
                 sample_suffix, sample_type, sample_name, sample_set_id, sample_set_name,
                 date_acquired, acquired_by, run_time, processing_method,
                 processed_channel_description, injection_volume, injection_id,
-                column_name, column_serial_number, instrument_method_id, instrument_method_name
+                column_name, column_serial_number, instrument_method_id, instrument_method_name, dilution
             ) VALUES (
                 %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
             );
@@ -211,7 +212,8 @@ def insert_metadata(metadata_dict, use_orm=True):
             metadata_dict.get("Processed Channel Description"), metadata_dict.get("Injection Volume"),
             metadata_dict.get("Injection Id"), metadata_dict.get("Column Name"),
             metadata_dict.get("Column Serial Number"), metadata_dict.get("Instrument Method Id"),
-            metadata_dict.get("Instrument Method Name"),
+            metadata_dict.get("Instrument Method Name"), metadata_dict.get("Dilution"),
+
         )
 
         with connection.cursor() as cursor:
