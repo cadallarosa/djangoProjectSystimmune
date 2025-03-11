@@ -10,6 +10,15 @@ from django.conf import settings
 from plotly_integration.models import SampleMetadata  # Adjust based on your app
 import plotly_integration.database.process_ars as process_ars
 import plotly_integration.database.process_arw as process_arw
+from plotly_integration.database.column_logbook import (
+    populate_column_logbook,
+    transfer_column_names,
+    update_total_injections,
+    assign_column_ids_to_samples,
+    update_most_recent_injections,
+    backfill_missing_pressure_data
+)
+
 
 # Get database name from settings
 DB_NAME = settings.DATABASES['default']['NAME']
@@ -203,6 +212,14 @@ def start_import(n_clicks, folder_path, reported_folder):
         # Process .arw files
         for file in arw_files:
             process_arw.process_files(directory=folder_path, reported_folder=reported_folder)
+
+        # 🚀 **Run Column Processing Functions AFTER file import completes**
+        populate_column_logbook()
+        transfer_column_names()
+        update_total_injections()
+        assign_column_ids_to_samples()
+        update_most_recent_injections()
+        backfill_missing_pressure_data()
 
         return "File import completed successfully!"
     except Exception as e:

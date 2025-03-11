@@ -28,7 +28,7 @@ def populate_column_logbook():
                 print(f"Inserted column {column_serial} into empower_column_logbook.")
 
 
-populate_column_logbook()
+# populate_column_logbook()
 
 
 def transfer_column_names():
@@ -55,7 +55,7 @@ def transfer_column_names():
             print(f"Updated column {column_serial} with name '{column_name}'.")
 
 
-transfer_column_names()
+# transfer_column_names()
 
 from django.db import connection
 
@@ -86,7 +86,7 @@ def update_total_injections():
             print(f"Updated column {column_serial} with total_injections = {injection_count}.")
 
 
-update_total_injections()
+# update_total_injections()
 
 
 def insert_sample(result_id, system_name, sample_name, sample_set_id, column_serial):
@@ -194,7 +194,7 @@ def backfill_missing_pressure_data():
     print("🚀 Backfill complete! All missing values have been updated.")
 
 # Run the script
-backfill_missing_pressure_data()
+# backfill_missing_pressure_data()
 
 
 
@@ -239,7 +239,7 @@ def assign_column_ids_to_samples():
         print(f"🚀 Finished updating {updated_count} samples with correct column_id.")
 
 # Run the update function
-assign_column_ids_to_samples()
+# assign_column_ids_to_samples()
 
 
 from django.db import connection
@@ -285,4 +285,4 @@ def update_most_recent_injections():
         print(f"🚀 Finished updating {updated_count} columns with their most recent injection.")
 
 # Run the function
-update_most_recent_injections()
+# update_most_recent_injections()
