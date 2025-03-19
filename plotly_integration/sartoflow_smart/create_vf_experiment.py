@@ -13,7 +13,8 @@ app = DjangoDash("ViralFiltrationExperimentImport")
 molecule_options = [{"label": "SI-50E15", "value": "SI-50E15"}]
 filter_options = [
     {"label": "Viresolve Pro 40", "value": "0.0003"},
-    {"label": "Planova BioEX", "value": "0.001"},
+    {"label": "Planova BioEX - 0.001m", "value": "0.001"},
+    {"label": "Planova BioEX - 0.0003m", "value": "0.0003"},
 
 ]
 # Define common input box styles

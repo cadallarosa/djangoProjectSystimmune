@@ -314,6 +314,157 @@ app.layout = html.Div(
                 'width': '100%'
             }
         ),
+        # Nova Flex Section
+        html.Div(
+            children=[
+                html.H2("Nova Flex", style={
+                    'font-size': '28px',
+                    'color': '#ffffff',
+                    'text-align': 'center',
+                    'margin-bottom': '20px'
+                }),
+                html.Div(
+                    children=[
+                        dcc.Link(
+                            html.Button("Nova Flex 2 Data Import", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#007bff',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/NovaFlex2DataUploadApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Create Nova Flex 2 Report", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#28a745',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/NovaFlex2ReportApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Analyze Nova Report", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#ffc107',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/NovaDataReportApp/",
+                            target="_blank"
+                        ),
+
+                    ],
+                    style={
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'gap': '20px',
+                        'flex-wrap': 'wrap'
+                    }
+                )
+            ],
+            style={
+                'text-align': 'center',
+                'padding': '30px 20px',
+                'background-color': '#343a40',
+                'border-radius': '8px',
+                'margin-top': '30px',
+                'width': '100%'
+            }
+        ),
+# Nova Vi Cell Section
+        html.Div(
+            children=[
+                html.H2("Vi Cell", style={
+                    'font-size': '28px',
+                    'color': '#ffffff',
+                    'text-align': 'center',
+                    'margin-bottom': '20px'
+                }),
+                html.Div(
+                    children=[
+
+                        dcc.Link(
+                            html.Button("ViCell Data Import", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#007bff',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ViCellDataUploadApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Create ViCell Report", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#28a745',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/CreateViCellReportApp/",
+                            target="_blank"
+                        ),
+                        dcc.Link(
+                            html.Button("Analyze ViCell Report", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#ffc107',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/ViCellReportApp/",
+                            target="_blank"
+                        ),
+
+                    ],
+                    style={
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'gap': '20px',
+                        'flex-wrap': 'wrap'
+                    }
+                )
+            ],
+            style={
+                'text-align': 'center',
+                'padding': '30px 20px',
+                'background-color': '#343a40',
+                'border-radius': '8px',
+                'margin-top': '30px',
+                'width': '100%'
+            }
+        ),
     ],
     style={
         'display': 'flex',

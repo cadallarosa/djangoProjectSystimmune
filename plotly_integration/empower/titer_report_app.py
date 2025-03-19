@@ -586,11 +586,18 @@ def plot_standard_time_series(report_clicks, selected_report):
     print(f"✅ Selected Report: {report_name}")
     print(f"📢 Found Samples: {selected_samples}")
 
-    # ✅ Retrieve standard samples (`Std_`) that belong to this report
+    # ✅ Extract standard samples from the selected report
+    result_ids = [r.strip() for r in report.selected_result_ids.split(",") if r.strip()]
+
+    # Step 1: Retrieve sample_set_ids associated with these result_ids
+    sample_set_ids = SampleMetadata.objects.filter(result_id__in=result_ids).values_list("sample_set_id",
+                                                                                         flat=True).distinct()
+
+    # Step 2: Filter standard samples within the identified sample_set_ids
     std_samples = SampleMetadata.objects.filter(
-        sample_name__in=selected_samples,  # 🔥 Only include samples from the report
-        sample_name__contains="Std_"  # 🔥 Only include standards
-    ).values("sample_name", "result_id")
+        sample_set_id__in=sample_set_ids,
+        sample_name__contains="Std_"
+    ).values("sample_name", "injection_volume", "result_id")
 
     if not std_samples:
         print(f"🚨 No standard samples found in report: {report_name}")
@@ -672,9 +679,15 @@ def update_standard_table(report_clicks, selected_report):
         return [], []
 
     # ✅ Extract standard samples from the selected report
-    all_samples = [s.strip() for s in report.selected_samples.split(",") if s.strip()]
+    result_ids = [r.strip() for r in report.selected_result_ids.split(",") if r.strip()]
+
+    # Step 1: Retrieve sample_set_ids associated with these result_ids
+    sample_set_ids = SampleMetadata.objects.filter(result_id__in=result_ids).values_list("sample_set_id",
+                                                                                         flat=True).distinct()
+
+    # Step 2: Filter standard samples within the identified sample_set_ids
     std_samples = SampleMetadata.objects.filter(
-        sample_name__in=all_samples,
+        sample_set_id__in=sample_set_ids,
         sample_name__contains="Std_"
     ).values("sample_name", "injection_volume", "result_id")
 
@@ -896,9 +909,10 @@ def update_result_table(report_clicks, regression_params, selected_report):
 
         print(dilution_factor)  # ✅ Check the output
 
-        # ✅ Fetch Peak Area, Peak Start, and Peak End from PeakResults Table
-        peak_result = PeakResults.objects.filter(result_id=result_id).values("area", "peak_start_time",
-                                                                             "peak_end_time").first()
+        # ✅ Fetch Peak Area, Peak Start, and Peak End from PeakResults Table, choosing the row with the largest peak height
+        peak_result = PeakResults.objects.filter(result_id=result_id,channel_name='DAD.0.0').order_by("-height").values(
+            "area", "peak_start_time", "peak_end_time", "height").first()
+
         peak_area = peak_result["area"] if peak_result else None
         peak_start = peak_result["peak_start_time"] if peak_result else None
         peak_end = peak_result["peak_end_time"] if peak_result else None

@@ -18,15 +18,16 @@ unit_step_options = [
     {"label": "Product Filtration", "value": 3},
 ]
 # Query the database for unique experiment names and result IDs
-experiments = VFMetadata.objects.values("result_id", "experiment_name").distinct()
+experiments = VFMetadata.objects.values("result_id", "experiment_name").distinct().order_by("-result_id")
 
 # Define selectable columns (including derived metrics)
 selectable_columns = [
-    {"label": "Permeate Pressure (PIR2700)", "value": "pir2700"},
-    {"label": "Permeate Weight (WIR2700)", "value": "wir2700"},
+    {"label": "Pressure", "value": "pir2700"},
+    {"label": "Filtrate Weight", "value": "wir2700"},
     {"label": "L/m²/hr", "value": "L/m²/hr"},
-    {"label": "mL/m²/hr", "value": "mL/m²/hr"},
-    {"label": "mL/min", "value": "mL_min"},
+    {"label": "g/m²/hr", "value": "g/m²/hr"},
+    # {"label": "mL/m²/hr", "value": "mL/m²/hr"},
+    # {"label": "mL/min", "value": "mL_min"},
     {"label": "Flux Decay", "value": "flux_decay"}
 ]
 
@@ -45,7 +46,8 @@ card_style = {
 }
 
 # Define styling
-input_style = {"width": "100%", "padding": "8px", "borderRadius": "5px", "border": "1px solid #ccc"}
+input_style = {"width": "100%", "padding": "8px", "borderRadius": "5px", "border": "1px solid #ccc",
+               "marginBottom": "10px"}
 readonly_style = input_style.copy()
 readonly_style["backgroundColor"] = "#e9f1fb"
 
@@ -54,6 +56,7 @@ app.layout = html.Div(
     style=app_style,
     children=[
         html.H2("Viral Filtration Experiment Data", style={"textAlign": "center", "color": "#0047b3"}),
+        html.Button("Refresh Reports", id="refresh-button", n_clicks=0),
 
         # Experiment selection
         html.Div(
@@ -80,71 +83,150 @@ app.layout = html.Div(
                     id="water-flush-flux",
                     type="number",
                     placeholder="Enter Water Flush Flux",
-                    style={"width": "100%", "marginBottom": "10px"},
+                    style=input_style,
                 ),
-
-                html.Label("Select Data to Plot:", style={"fontWeight": "bold"}),
-                dcc.Dropdown(
-                    id="data-selection",
-                    options=selectable_columns,
-                    value=["wir2700","L/m²/hr"],
-                    multi=True,  # Multi-select dropdown
-                    placeholder="Choose data to plot...",
-                    style={"marginBottom": "10px"},
-                ),
-                # Smoothing Control
-                html.Label("Smoothing (Seconds):", style={"fontWeight": "bold"}),
-                dcc.Input(id="smoothing-input", type="number", min=10, step=1, placeholder="Min 10 sec",
-                          style=input_style),
-
-                html.Label("Y-Min:", style={"fontWeight": "bold"}),
-                dcc.Input(
-                    id="y-min-input",
-                    type="number",
-                    placeholder="Enter Y-min",
-                    value=0,
-                    style={"marginRight": "10px"},
-                ),
-
-                html.Label("Y-Max:", style={"fontWeight": "bold"}),
-                dcc.Input(id="y-max-input", type="number", value=75, placeholder="Enter Y-max"),
-            ],
+            ]
         ),
+        html.Div([  # Main content container
+            dcc.Tabs(id="main-tabs", value="tab-1", children=[
+                # 🔹 Tab 1: Sample Analysis
+                dcc.Tab(label="Viral Filtration Plot", value="tab-1", children=[
+                    html.Div(
+                        style={**card_style, "display": "flex", "justifyContent": "space-between",
+                               "alignItems": "flex-start","flexGrow": 1,},
+                        children=[
+                            # Left side: Graph
+                            html.Div(
+                                style={"flex": "2"},  # Allows the graph to take more space
+                                children=[
+                                    html.H3("Time Series Data", style={"color": "#0047b3"}),
+                                    dcc.Graph(id="time-series-graph", config={"autosizable": "True","editable": True, "edits": {"titleText": True}}),
 
-        # Graph Output
-        html.Div(
-            style=card_style,
-            children=[
-                html.H3("Time Series Data", style={"color": "#0047b3"}),
-                dcc.Graph(id="time-series-graph",config={"autosizable":"True"}),
-            ],
-        ),
+                                    # Display Overall LMH below the graph
+                                    html.Div(
+                                        children=[
+                                            html.Label("Overall LMH:", style={"fontWeight": "bold"}),
+                                            html.Span(id="overall-lmh-output",
+                                                      style={"marginLeft": "10px", "color": "#d9534f",
+                                                             "fontSize": "16px"})
+                                        ],
+                                        style={"marginTop": "15px", "textAlign": "left"}
+                                    ),
+                                ],
+                            ),
 
-        # Metadata Edit Section
-        html.Div(
-            style=card_style,
-            children=[
-                html.H3("Experiment Metadata", style={"color": "#0047b3"}),
-                html.Div(id="metadata-fields"),  # Placeholder for dynamically generated metadata fields
-                html.Button("Update Experiment", id="update-button", n_clicks=0, style={"marginTop": "10px"}),
-                html.Div(id="update-status", style={"marginTop": "10px", "color": "green"}),
-            ],
-        ),
-    ],
+                            # Right side: Controls
+                            html.Div(
+                                style={
+                                    "flex": "1",  # Smaller width for the controls
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "flex-start",
+                                    "paddingLeft": "20px",  # Space between graph and controls
+                                    "maxWidth": "300px",  # Prevents the control panel from becoming too wide
+                                },
+                                children=[
+                                    html.Label("Select Data to Plot:", style={"fontWeight": "bold"}),
+                                    dcc.Dropdown(
+                                        id="data-selection",
+                                        options=selectable_columns,
+                                        value=["wir2700", "L/m²/hr"],
+                                        multi=True,
+                                        placeholder="Choose data to plot...",
+                                        style={"marginBottom": "10px", "width": "100%"},
+                                    ),
+
+                                    html.Label("Select X Axis:", style={"fontWeight": "bold"}),
+                                    dcc.Dropdown(
+                                        id="xaxis-selection",
+                                        options=[
+                                            {"label": "Process Time", "value": "process_time"},
+                                            {"label": "g/m²", "value": "g/m²"},
+                                        ],
+                                        value="process_time",
+                                        multi=False,
+                                        placeholder="Choose data to plot...",
+                                        style={"marginBottom": "10px", "width": "100%"},
+                                    ),
+
+                                    html.Label("Smoothing (Seconds):", style={"fontWeight": "bold"}),
+                                    dcc.Input(
+                                        id="smoothing-input",
+                                        type="number",
+                                        min=10,
+                                        step=1,
+                                        placeholder="Min 10 sec",
+                                        value=60,
+                                        style={**input_style, "width": "100%", "marginBottom": "10px"},
+                                    ),
+
+                                    html.Label("Y-Min:", style={"fontWeight": "bold"}),
+                                    dcc.Input(
+                                        id="y-min-input",
+                                        type="number",
+                                        placeholder="Enter Y-min",
+                                        value=0,
+                                        style={"width": "100%", "marginBottom": "10px"},
+                                    ),
+
+                                    html.Label("Y-Max:", style={"fontWeight": "bold"}),
+                                    dcc.Input(
+                                        id="y-max-input",
+                                        type="number",
+                                        value=75,
+                                        placeholder="Enter Y-max",
+                                        style={"width": "100%"},
+                                    ),
+                                ],
+                            ),
+                        ],
+                    ),
+                ]),
+                # 🔹 Tab 2: Experiment Information
+                dcc.Tab(label="Experiment Information", value="tab-2", children=[
+                    # Graph Output
+
+                    # Metadata Edit Section
+                    html.Div(
+                        style=card_style,
+                        children=[
+                            html.H3("Experiment Metadata", style={"color": "#0047b3"}),
+                            html.Div(id="metadata-fields"),  # Placeholder for dynamically generated metadata fields
+                            html.Button("Update Experiment", id="update-button", n_clicks=0,
+                                        style={"marginTop": "10px"}),
+                            html.Div(id="update-status", style={"marginTop": "10px", "color": "green"}),
+                        ],
+                    ),
+                ]),
+            ])
+        ])
+    ])
+
+
+@app.callback(
+    Output("experiment-dropdown", "options"),
+    Input("refresh-button", "n_clicks")
 )
+def update_experiment_list(n_clicks):
+    experiments = VFMetadata.objects.values("result_id", "experiment_name").distinct().order_by("-result_id")
+    return [{"label": exp["experiment_name"], "value": exp["result_id"]} for exp in experiments]
 
 
 @app.callback(
     Output("time-series-graph", "figure"),
+    Output("overall-lmh-output", "children"),
     Input("experiment-dropdown", "value"),
     Input("unit-step-dropdown", "value"),
     Input("data-selection", "value"),
+    Input("xaxis-selection", "value"),
     Input("y-min-input", "value"),
     Input("y-max-input", "value"),
     Input("smoothing-input", "value"),
-    Input("water-flush-flux", "value")
+    Input("water-flush-flux", "value"),
+    Input({"type": "metadata-field", "field": "load_concentration"}, "value"),
 )
-def update_graph(selected_experiment, selected_unit_step, selected_columns, y_min, y_max, smoothing_seconds, water_flux):
+def update_graph(selected_experiment, selected_unit_step, selected_columns, x_axis, y_min, y_max, smoothing_seconds,
+                 water_flux, load_concentration):
     if not selected_experiment or not selected_unit_step:
         return go.Figure()
 
@@ -172,6 +254,8 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
     df = df.round({"wir2700": 1, "process_time": 6})
     df = df.drop_duplicates(subset=['wir2700'], keep='first').reset_index(drop=True)
 
+    df['g/m²'] = ((df['wir2700'] * load_concentration) / 1000) / filter_area
+
     # Create a new DataFrame for flow rate calculation
     df_flux = df[["process_time", "wir2700"]].copy()
 
@@ -184,6 +268,9 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
 
     df_flux['diff_wir2700'] = df_flux['wir2700'].diff() / 1000
 
+    # Calculate x axis g/m^2
+    df_flux['g/m²'] = ((df_flux['wir2700'] * load_concentration) / 1000) / filter_area
+
     df_flux['diff_time'] = df_flux['process_time'].diff()
 
     df_flux['L/hr'] = df_flux['diff_wir2700'] / df_flux['diff_time']
@@ -191,28 +278,46 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
     df_flux['mL/min'] = df_flux['L/hr'] * 16.666
 
     df_flux = df_flux[df_flux['L/hr'] > 0]
-    df_flux["L/hr_moving_average"] = df_flux['L/hr'].rolling(window=15).mean()
+    # df_flux["L/hr_moving_average"] = df_flux['L/hr'].rolling(window=15).mean()
 
-    # # Dynamic Smoothing
-    # if smoothing_seconds and smoothing_seconds >= 10:
-    #     rolling_window = max(1, int(smoothing_seconds / df_flux["diff_time"].median()))
-    #     df_flux["L/hr_moving_average"] = df_flux['L/hr'].rolling(window=rolling_window).mean()
-    # else:
-    #     df_flux["L/hr_moving_average"] = df_flux['L/hr']
+    # Dynamic Smoothing
+    if smoothing_seconds and smoothing_seconds >= 10:
+        rolling_window = max(1, int(smoothing_seconds / df_flux["diff_time"].median()))
+        df_flux["L/hr_moving_average"] = df_flux['L/hr'].rolling(window=smoothing_seconds).mean()
+    else:
+        df_flux["L/hr_moving_average"] = df_flux['L/hr']
 
     # Compute L/m²/hr
     if filter_area > 0:
-            df_flux["L/m²/hr"] = df_flux["L/hr_moving_average"] / filter_area
-            df_flux = df_flux[df_flux['L/m²/hr'] > 0]
+        df_flux["L/m²/hr"] = df_flux["L/hr_moving_average"] / filter_area
+        df_flux["g/m²/hr"] = df_flux["L/m²/hr"] * load_concentration
+        df_flux = df_flux[df_flux['L/m²/hr'] > 0]
 
-    #Compute Flux Decay based on Water Flush Flux
+    # Compute Flux Decay based on Water Flush Flux
     if water_flux:
-        df_flux["flux_decay"] =  ((water_flux - df_flux["L/m²/hr"]) / (water_flux)) *100
+        df_flux["flux_decay"] = ((water_flux - df_flux["L/m²/hr"]) / (water_flux)) * 100
+
+    # Overall LMH Calculation
+    final_time = df["process_time"].iloc[-1]  # Last process time
+    final_weight = (df["wir2700"].iloc[-1]) / 1000
+    overall_lmh = (final_weight / final_time) / filter_area
 
     df_flux.to_csv("viral_filtration_data.csv", index=False)
     print("CSV saved: viral_filtration_data.csv")
 
     print(df_flux)
+
+    # Define a dictionary for more descriptive axis labels
+    axis_labels = {
+        "process_time": "Time (hours)",
+        "g/m²": "Load Density (g/m²)",
+        "wir2700": "Volume (mL)",
+        "L/hr": "Flow Rate (L/hr)",
+        "mL/min": "Flow Rate (mL/min)",
+        "L/m²/hr": "Flux (L/m²/hr)",
+        "g/m²/hr": "Mass Flux (g/m²/hr)",
+        "flux_decay": "Flux Decay (%)"
+    }
 
     fig = go.Figure()
 
@@ -231,10 +336,10 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
             yaxis_name = f"y{i + 1}" if i > 0 else "y"  # First axis is 'y', others are 'y2', 'y3', etc.
 
             fig.add_trace(go.Scatter(
-                x=data_source["process_time"],  # Shared x-axis
+                x=data_source[x_axis],  # Shared x-axis
                 y=data_source[column],
                 mode="lines",
-                name=column,
+                name=axis_labels.get(column, column),  # Use the descriptive label if available
                 yaxis=yaxis_name,  # Assign a unique y-axis
                 line=dict(color=colors[i % len(colors)]),
             ))
@@ -242,22 +347,28 @@ def update_graph(selected_experiment, selected_unit_step, selected_columns, y_mi
             # Store y-axis configuration (Correctly formatted for Plotly Layout)
             layout_axis_name = "yaxis" if i == 0 else f"yaxis{i + 1}"  # First axis is 'yaxis', others 'yaxis2', 'yaxis3'
             y_axes[layout_axis_name] = {
-                "title": column,
+                "title": axis_labels.get(column, column),  # Use descriptive labels
                 "overlaying": "y" if i > 0 else None,  # First y-axis is standalone, others overlay it
                 "side": "right" if i % 2 == 0 else "left",
                 "showgrid": False
             }
 
-    # Update layout with dynamically created y-axes
+    # Update layout with dynamically created y-axes and new x-axis label
     fig.update_layout(
-        title=f"Experiment {selected_experiment} - Unit Step {selected_unit_step}",
-        xaxis=dict(title="Process Time"),
+        title={
+            "text": f"Experiment {selected_experiment} - Unit Step {selected_unit_step}",
+            "x": 0.5,  # Centers the title
+            "xanchor": "center",  # Ensures proper centering
+            "yanchor": "top"  # Aligns title at the top
+        },
+        xaxis=dict(title=axis_labels.get(x_axis, x_axis)),  # Set descriptive x-axis title
         hovermode="x unified",
+        height=800,
         **y_axes  # Add all y-axes configurations dynamically
     )
-
     # ✅ Ensure `fig` is returned at the end
-    return fig
+
+    return fig, f"{overall_lmh:.2f} L/m²/hr"
 
 
 @app.callback(

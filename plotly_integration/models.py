@@ -38,6 +38,7 @@ class SampleMetadata(models.Model):
 class PeakResults(models.Model):
     id = models.AutoField(primary_key=True)
     result_id = models.IntegerField()
+    system_name = models.CharField(max_length=255, null=True, blank=True)
     channel_name = models.CharField(max_length=255, null=True, blank=True)  # ✅ Fixed
     peak_name = models.CharField(max_length=255, null=True, blank=True)
     peak_retention_time = models.FloatField(null=True, blank=True)
@@ -157,6 +158,7 @@ class Report(models.Model):
     user_id = models.CharField(max_length=255, null=True, blank=True)
     date_created = models.DateTimeField(null=True, blank=True)
     selected_result_ids = models.TextField(null=True, blank=True)
+    department = models.IntegerField(null=True, blank=True) #1 = Process Development, 2 = Protein Engineering
 
     class Meta:
         db_table = 'report'
@@ -536,3 +538,87 @@ class DnAssignment(models.Model):
 
     class Meta:
         db_table = 'dn_assignment'
+
+
+
+#Cell Culture Models
+
+#Nova Flex 2 Models
+class NovaFlex2(models.Model):
+    id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
+    date_time = models.DateTimeField()
+    sample_id = models.CharField(max_length=255)
+    sample_type = models.IntegerField(null=True, blank=True) # 1 = UP, 2 = CLD , 3 = Uncategorized
+    gln = models.FloatField(null=True, blank=True)
+    glu = models.FloatField(null=True, blank=True)
+    gluc = models.FloatField(null=True, blank=True)
+    lac = models.FloatField(null=True, blank=True)
+    nh4 = models.FloatField(null=True, blank=True)
+    pH = models.FloatField(null=True, blank=True)
+    po2 = models.FloatField(null=True, blank=True)
+    pco2 = models.FloatField(null=True, blank=True)
+    osm = models.FloatField(null=True, blank=True)
+
+    # New fields to store parsed sample information
+    experiment = models.CharField(max_length=50, null=True, blank=True)
+    day = models.IntegerField(null=True, blank=True)
+    reactor_type = models.CharField(max_length=10, null=True, blank=True)
+    reactor_number = models.IntegerField(null=True, blank=True)
+    special = models.CharField(max_length=50, null=True, blank=True)
+
+    class Meta:
+        db_table = 'nova_flex_2'
+        unique_together = ('date_time', 'sample_id')  # Enforce uniqueness
+
+class NovaReport(models.Model):
+    id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
+    report_name = models.CharField(max_length=255)
+    project_id = models.CharField(max_length=255, null=True, blank=True)
+    user_id = models.CharField(max_length=255, null=True, blank=True)
+    department = models.IntegerField(null=True, blank=True) # 1 = UP, 2 = CLD , 3 = Uncategorized
+    comments = models.TextField(null=True, blank=True)
+    selected_result_ids = models.TextField()  # Stores comma-separated result IDs
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'nova_report'
+
+
+#Vicell Models
+class ViCellData(models.Model):
+    id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
+    sample_id = models.CharField(max_length=100, unique=True)
+    date_time = models.DateTimeField(null=True, blank=True)
+    experiment = models.CharField(max_length=50, null=True, blank=True)
+    day = models.IntegerField(null=True, blank=True)
+    reactor_type = models.CharField(max_length=10, null=True, blank=True)
+    reactor_number = models.IntegerField(null=True, blank=True)
+    special = models.CharField(max_length=50, null=True, blank=True)
+    cell_count = models.FloatField(null=True, blank=True)
+    viable_cells = models.FloatField(null=True, blank=True)
+    total_cells_per_ml = models.FloatField(null=True, blank=True)
+    viable_cells_per_ml = models.FloatField(null=True, blank=True)
+    viability = models.FloatField(null=True, blank=True)
+    average_diameter = models.FloatField(null=True, blank=True)
+    average_viable_diameter = models.FloatField(null=True, blank=True)
+    average_circularity = models.FloatField(null=True, blank=True)
+    average_viable_circularity = models.FloatField(null=True, blank=True)
+    sample_type = models.IntegerField(null=True, blank=True)  # 1 = UP, 2 = CLD , 3 = Uncategorized
+
+
+    class Meta:
+        db_table = 'vicell_data'
+        unique_together = ('date_time', 'sample_id')  # Enforce uniqueness
+
+class ViCellReport(models.Model):
+    id = models.AutoField(primary_key=True)  # Ensure primary key is explicitly set
+    report_name = models.CharField(max_length=255)
+    project_id = models.CharField(max_length=255, null=True, blank=True)
+    user_id = models.CharField(max_length=255, null=True, blank=True)
+    department = models.IntegerField(null=True, blank=True)  # 1 = UP, 2 = CLD , 3 = Uncategorized
+    comments = models.TextField(null=True, blank=True)
+    selected_result_ids = models.TextField()  # Stores comma-separated result IDs
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'vicell_report'

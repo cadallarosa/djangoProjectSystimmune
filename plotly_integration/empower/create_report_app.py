@@ -92,7 +92,7 @@ app.layout = html.Div(
                     multi=False,  # ✅ Only one option can be selected
                     clearable=False,  # ✅ Forces selection (prevents blank state)
                     style={"marginBottom": "10px"},
-                    value=["SEC"],
+                    value='1',
                 ),
                 html.Label("Filter by Sample Type:", style={"fontWeight": "bold"}),
                 dcc.Dropdown(
@@ -548,7 +548,8 @@ def submit_report(n_clicks, analysis_type, report_name, project_id, new_project_
             selected_samples=sample_names_str,
             selected_result_ids=result_ids_str,
             date_created=timestamp,
-            analysis_type=analysis_type
+            analysis_type=analysis_type,
+            department=1
         )
 
         return f"Report '{report_name}' created successfully with {len(sorted_samples)} samples."

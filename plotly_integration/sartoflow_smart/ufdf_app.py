@@ -89,17 +89,47 @@ def update_graph(selected_batch, selected_columns):
 
     fig = go.Figure()
 
-    for column in selected_columns:
+    # Define axis mappings dynamically
+    axis_map = {}
+    y_axis_count = 1
+
+    for i, column in enumerate(selected_columns):
         if column in df.columns:
-            fig.add_trace(go.Scatter(x=df["process_time"], y=df[column], mode="lines", name=column))
+            y_axis_name = "y" if y_axis_count == 1 else f"y{y_axis_count}"
+            axis_map[column] = y_axis_name
+
+            fig.add_trace(go.Scatter(
+                x=df["process_time"],
+                y=df[column],
+                mode="lines",
+                name=column,
+                yaxis=y_axis_name
+            ))
+
+            y_axis_count += 1
         else:
             print(f"Warning: Column {column} not found in DataFrame")
 
-    fig.update_layout(
-        title=f"Batch {selected_batch} - Time Series Data",
-        xaxis_title="Process Time",
-        yaxis_title="Value",
-        template="plotly_white"
-    )
+    # Layout with multiple y-axes
+    layout = {
+        "title": f"Batch {selected_batch} - Time Series Data",
+        "xaxis": {"title": "Process Time"},
+        "yaxis": {
+            "title": selected_columns[0] if selected_columns else "Value",
+            "side": "left",
+            "showgrid": True
+        }
+    }
+
+    # Dynamically add secondary axes
+    for i, column in enumerate(selected_columns[1:], start=2):
+        layout[f"yaxis{i}"] = {
+            "title": column,
+            "overlaying": "y",  # Overlay on primary y-axis
+            "side": "right" if i % 2 == 0 else "left",  # Alternate sides
+            "showgrid": False
+        }
+
+    fig.update_layout(layout, template="plotly_white")
 
     return fig

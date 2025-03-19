@@ -256,7 +256,7 @@ def normalize_sample_names(metadata_dict):
     return metadata_dict
 
 
-def extract_peak_results(file_path, result_id):
+def extract_peak_results(file_path, result_id, system_name):
     with open(file_path) as file_obj:
         reader = csv.reader(file_obj, delimiter='\t')
         data = [row for row in reader]
@@ -323,7 +323,7 @@ def extract_peak_results(file_path, result_id):
             }
 
             expected_columns = [
-                'result_id', 'channel_name', 'peak_name', 'peak_retention_time', 'area',
+                'result_id', 'system_name','channel_name', 'peak_name', 'peak_retention_time', 'area',
                 'percent_area', 'height', 'asym_at_10', 'plate_count',
                 'res_hh', 'peak_start_time', 'peak_end_time'
             ]
@@ -335,7 +335,12 @@ def extract_peak_results(file_path, result_id):
 
             # Add result_id column
             df["result_id"] = result_id
-            # print(df)
+
+            #Add System Name
+            df['system_name'] = system_name
+
+
+            print(df)
             df = df[expected_columns]
             # Ensure all expected columns exist, filling missing ones with NaN
             for col in expected_columns:
@@ -384,7 +389,8 @@ def insert_peak_results(peak_results_df, use_orm=True):
                     height=row["height"],
                     asym_at_10=string_to_float(row["asym_at_10"]),
                     plate_count=string_to_float(row["plate_count"]),
-                    res_hh=string_to_float(row["res_hh"])
+                    res_hh=string_to_float(row["res_hh"]),
+                    system_name=row["system_name"],
                 )
                 for _, row in peak_results_df.iterrows()
             ]
@@ -397,8 +403,8 @@ def insert_peak_results(peak_results_df, use_orm=True):
         REPLACE INTO peak_results (
             result_id, channel_name, peak_name, peak_retention_time,
             peak_start_time, peak_end_time, area, percent_area, height,
-            asym_at_10, plate_count, res_hh
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            asym_at_10, plate_count, res_hh, system_name
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
         """
 
         values = [
@@ -406,7 +412,7 @@ def insert_peak_results(peak_results_df, use_orm=True):
                 row["result_id"], row["channel_name"], row["peak_name"],
                 row["peak_retention_time"], row["peak_start_time"], row["peak_end_time"],
                 row["area"], row["percent_area"], row["height"], row["asym_at_10"],
-                row["plate_count"], row["res_hh"]
+                row["plate_count"], row["res_hh"], row['system_name']
             )
             for _, row in peak_results_df.iterrows()
         ]
@@ -464,8 +470,9 @@ def process_files(directory, reported_folder):
 
             # Extract peak results using the result_id (assuming result_id comes from process_file)
             metadata_dict, result_id = extract_metadata(file_path)
+            system_name = metadata_dict['System Name']
             if result_id != 0:
-                peak_results_df = extract_peak_results(file_path, result_id)
+                peak_results_df = extract_peak_results(file_path, result_id,system_name)
 
                 # Step 2: Insert peak results into the DB if the dataframe is not None
                 if peak_results_df is not None:

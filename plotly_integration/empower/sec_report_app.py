@@ -40,7 +40,7 @@ def parse_date(date_value):
 def fetch_reports():
     projects = {}
     # ✅ Filter only reports with analysis_type = 1 (SEC)
-    filtered_reports = Report.objects.filter(analysis_type=1).values(
+    filtered_reports = Report.objects.filter(analysis_type=1, department=1).values(
         'project_id',
         'report_id',
         'report_name',
@@ -435,7 +435,10 @@ app.layout = html.Div([
                                     {"label": "LMW Area", "value": "LMW Area"},
                                     {"label": "HMW %", "value": "HMW"},
                                     {"label": "Main Peak %", "value": "Main Peak"},
-                                    {"label": "LMW %", "value": "LMW"}
+                                    {"label": "LMW %", "value": "LMW"},
+                                    {"label": "Total Area", "value": "Total Area"},
+                                    {"label": "Injection Volume", "value": "Injection Volume"},
+                                    {"label": "Total Area/uL", "value": "Total Area/uL"}
                                 ],
                                 value=["Sample Name", "HMW", "Main Peak", "LMW"],  # Default columns
                                 multi=True,
@@ -1235,19 +1238,21 @@ def generate_subplots_with_shading(selected_result_ids, sample_list, channels, e
                                     x_offset = label_offsets[region]["x_offset"] + max_retention_time
                                     y_offset = label_offsets[region]["y_offset"] + max_peak_value
 
-                                    fig.add_annotation(
-                                        x=x_offset,
-                                        y=y_offset,
-                                        text=f"{region}:{percentages[region]}%<br>MW:{mw} kD",
-                                        showarrow=False,
-                                        font=dict(size=12, color="black"),
-                                        align="center",
-                                        # bgcolor="rgba(255, 255, 255, 0.8)",
-                                        bgcolor=region_colors[region],
-                                        bordercolor=region_colors[region],
-                                        row=row,
-                                        col=col
-                                    )
+                                    if percentages[region] > 0:
+                                        fig.add_annotation(
+                                            x=x_offset,
+                                            y=y_offset,
+                                            text=f"{region}:{percentages[region]}%<br>RT:{round(max_retention_time, 2)} min<br>MW:{mw} kD",
+                                            showarrow=False,
+                                            font=dict(size=12, color="black"),
+                                            align="center",
+                                            # bgcolor="rgba(255, 255, 255, 0.8)",
+                                            bgcolor=region_colors[region],
+                                            bordercolor=region_colors[region],
+                                            row=row,
+                                            col=col
+                                        )
+
                                 except Exception as e:
                                     print(f"Error annotating MW for {sample_name}, {region}: {e}")
 
@@ -1382,6 +1387,7 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
 
     for result_id in selected_result_ids:
         sample = SampleMetadata.objects.filter(result_id=result_id).first()
+        injection_volume = sample.injection_volume
         if not sample:
             continue
 
@@ -1434,6 +1440,7 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
             )
 
             total_area = main_peak_area + hmw_area + lmw_area
+            total_area_normalized = round(total_area / injection_volume, 2)
             hmw_percent = round((hmw_area / total_area) * 100, 2) if total_area > 0 else 0
             main_peak_percent = round((main_peak_area / total_area) * 100, 2) if total_area > 0 else 0
             lmw_percent = round((lmw_area / total_area) * 100, 2) if total_area > 0 else 0
@@ -1461,7 +1468,10 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
                 'LMW': lmw_percent,
                 'HMW Area': hmw_area,
                 'Main Peak Area': main_peak_area,
-                'LMW Area': lmw_area
+                'LMW Area': lmw_area,
+                'Total Area': total_area,
+                'Injection Volume': injection_volume,
+                'Total Area/uL': total_area_normalized
             })
 
     # Debug the generated summary data
@@ -1471,7 +1481,7 @@ def update_hmw_table(selected_columns, report_clicks, main_peak_rt, low_mw_cutof
     desired_order = [
         'Sample Name', 'HMW', 'HMW Area', 'HMW Start', 'HMW End',
         'Main Peak', "Main Peak Area", 'Main Peak Start', 'Main Peak End',
-        'LMW', 'LMW Area', 'LMW Start', 'LMW End'
+        'LMW', 'LMW Area', 'LMW Start', 'LMW End', 'Total Area', 'Injection Volume', 'Total Area/uL'
     ]
 
     selected_columns = selected_columns if selected_columns else []
