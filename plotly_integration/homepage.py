@@ -175,6 +175,21 @@ app.layout = html.Div(
                             href="http://localhost:8000/plotly_integration/dash-app/app/ImportAktaData/",
                             target="_blank"
                         ),
+                        dcc.Link(
+                            html.Button("OPCUA Server Client", style={
+                                'width': '250px',
+                                'height': '60px',
+                                'font-size': '18px',
+                                'color': '#ffffff',
+                                'background-color': '#FFB6C1',
+                                'border': 'none',
+                                'border-radius': '8px',
+                                'cursor': 'pointer',
+                                'box-shadow': '2px 2px 5px rgba(0, 0, 0, 0.2)'
+                            }),
+                            href="http://localhost:8000/plotly_integration/dash-app/app/OPCBrowserApp/",
+                            target="_blank"
+                        ),
                     ],
                     style={
                         'display': 'flex',
@@ -389,7 +404,7 @@ app.layout = html.Div(
                 'width': '100%'
             }
         ),
-# Nova Vi Cell Section
+        # Nova Vi Cell Section
         html.Div(
             children=[
                 html.H2("Vi Cell", style={

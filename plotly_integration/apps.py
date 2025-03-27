@@ -23,8 +23,8 @@ class PlotlyIntegrationConfig(AppConfig):
                 import plotly_integration.sartoflow_smart.ufdf_app
                 import plotly_integration.sartoflow_smart.create_experiment
                 import plotly_integration.sartoflow_smart.create_vf_experiment
-                import plotly_integration.akta.akta_data_import
-                import plotly_integration.akta.akta_app
+                import plotly_integration.akta.akta_app.akta_data_import
+                import plotly_integration.akta.akta_app.akta_app
                 import plotly_integration.process_development.cld_mass_check.cld_mass_check_import_app
                 import protein_engineering.homepage
                 import protein_engineering.sec_report_app
@@ -35,6 +35,7 @@ class PlotlyIntegrationConfig(AppConfig):
                 import plotly_integration.process_development.cell_culture.vicell.vicell_data_import_app
                 import plotly_integration.process_development.cell_culture.vicell.vicell_create_report_app
                 import plotly_integration.process_development.cell_culture.vicell.vicell_report_app
+                import plotly_integration.akta.opcua_server.opcua_client_app
             except Exception as e:
                 print(f"Error loading modules: {e}")
 
