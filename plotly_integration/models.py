@@ -622,3 +622,6 @@ class ViCellReport(models.Model):
 
     class Meta:
         db_table = 'vicell_report'
+
+
+#Cell Culture Aggregated Data

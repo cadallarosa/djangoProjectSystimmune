@@ -360,70 +360,7 @@ def update_reactor_number_dropdown(selected_report_id):
     # ✅ Create dropdown options
     options = [{"label": f"Reactor {reactor}", "value": reactor} for reactor in sorted_reactors]
 
-    return options, sorted_reactors[0]
-
-
-# @app.callback(
-#     Output("subset-table", "data"),
-#     [Input("subset-dropdown", "value"),
-#      Input("report-dropdown", "value")]
-# )
-# def update_summary_table(selected_reactor, selected_report_id):
-#     """ Populate table with data when a reactor number is selected from the selected report. """
-#     if not selected_report_id or not selected_reactor:
-#         print("⚠️ No reactor or report selected.")
-#         return []
-#
-#     # ✅ Fetch the selected report
-#     report = ViCellReport.objects.filter(id=selected_report_id).first()
-#     if not report or not report.selected_result_ids:
-#         print("⚠️ Report not found or contains no selected results.")
-#         return []
-#
-#     # ✅ Extract sample IDs associated with the report
-#     sample_ids = [s.strip() for s in report.selected_result_ids.split(",") if s.strip()]
-#     print(f"🔍 Selected Sample IDs: {sample_ids}")
-#
-#     if not sample_ids:
-#         print("⚠️ No sample IDs found in the selected report.")
-#         return []
-#
-#     # ✅ Ensure `selected_reactor` is an integer
-#     try:
-#         selected_reactor = int(selected_reactor)
-#     except ValueError:
-#         print(f"⚠️ Reactor number '{selected_reactor}' is not a valid integer.")
-#         return []
-#
-#     # ✅ Query by `reactor_number` and `sample_id`
-#     subset_data = ViCellData.objects.filter(id__in=sample_ids, reactor_number=selected_reactor).values(
-#         "date_time", "sample_id", "day", "cell_count", "viable_cells", "total_cells_per_ml", "viable_cells_per_ml",
-#         "viability", "average_diameter", "average_viable_diameter", "average_circularity", "average_viable_circularity"
-#     )
-#
-#     subset_data_list = list(subset_data)
-#
-#     # ✅ Debugging: Check if data was retrieved
-#     print(f"✅ Found {len(subset_data_list)} rows for Reactor {selected_reactor}.")
-#     print(subset_data_list[:5])  # Print first 5 rows to verify structure
-#
-#     if not subset_data_list:
-#         print(f"⚠️ No data found for Reactor {selected_reactor} in the selected report.")
-#         return []
-#
-#     # ✅ Convert to DataFrame for better formatting
-#     df = pd.DataFrame(subset_data_list)
-#
-#     if df.empty:
-#         print("⚠️ DataFrame is empty after conversion.")
-#         return []
-#
-#     # ✅ Convert datetime column to string for display
-#     if "date_time" in df.columns:
-#         df["date_time"] = df["date_time"].astype(str)
-#
-#     # ✅ Return updated data and column headers
-#     return df.to_dict("records")
+    return options, (sorted_reactors[0] if sorted_reactors else None)
 
 
 @app.callback(
@@ -509,6 +446,8 @@ def update_summary_table(selected_reactor, selected_report_id):
                 abs(np.log2(df.loc[i, "viable_cells_per_ml"] / df.loc[i - 1, "viable_cells_per_ml"]))
                 + df.loc[i - 1, "cumulative_generations"]
         )
+    # Handle potential NaN values (e.g., at Day 0)
+    df["cumulative_generations"] = df["cumulative_generations"].fillna(0)
 
     # ✅ Calculate doubling time
     df["doubling_time"] = np.nan  # Initialize column with NaN
@@ -520,19 +459,14 @@ def update_summary_table(selected_reactor, selected_report_id):
         t2 = df.loc[i, "process_time_hours"]
 
         if vcd1 > 0 and vcd2 > 0 and t2 > t1:
-            # df.loc[i, "doubling_time"] = abs(np.log(2) * (t2 - t1)) / (np.log(vcd2) - np.log(vcd1))
-            df.loc[i, "doubling_time"] = abs((np.log(2) / np.log((vcd2 / vcd1)))) / (t2 - t1)
+            df.loc[i, "doubling_time"] = abs(np.log(2) * (t2 - t1) / np.log(vcd2 / vcd1))
 
     # df["doubling_time"] = df["process_time_hours"] / df["cumulative_generations"]
-
-    # Handle potential NaN values (e.g., at Day 0)
-    df["cumulative_generations"] = df["cumulative_generations"].fillna(0)
-
 
     # ✅ Convert datetime column to string for display
     df["date_time"] = df["date_time"].astype(str)
 
-    #Round Calculated Values
+    # Round Calculated Values
     df["process_time_hours"] = df["process_time_hours"].round(2)
     df["cumulative_generations"] = df["cumulative_generations"].round(2)
     df["doubling_time"] = df["doubling_time"].round(2)
