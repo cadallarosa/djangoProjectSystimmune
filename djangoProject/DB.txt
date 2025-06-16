@@ -1,0 +1,13 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'djangoP1_db',
+        'USER': 'django_user',
+        'PASSWORD': '$ystImmun3!2022',
+        'HOST': '127.0.0.1',  # Use server IP if remote
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
+}+

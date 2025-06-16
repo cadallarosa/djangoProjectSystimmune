@@ -1,0 +1,7 @@
+glycan_name,composition,monoisotopic_mass
+G0F,Hex3HexNAc4Fuc1,1460.535
+G1F,Hex4HexNAc4Fuc1,1622.588
+G2F,Hex5HexNAc4Fuc1,1784.640
+A1F,Hex4HexNAc5Fuc1NeuAc1,1950.698
+A2F,Hex5HexNAc6Fuc1NeuAc2,2262.803
+

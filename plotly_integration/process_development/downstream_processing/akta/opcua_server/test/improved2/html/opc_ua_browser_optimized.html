@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Optimized OPC UA Browser</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2196F3;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+        }
+
+        .btn-success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #FF9800;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .panel h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2196F3 0%, #21CBF3 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .status-paused {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        .status-complete {
+            background: #E8F5E9;
+            color: #388E3C;
+        }
+
+        .status-error {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .status-idle {
+            background: #F5F5F5;
+            color: #616161;
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+
+        .log-time {
+            color: #858585;
+        }
+
+        .log-info { color: #4EC9B0; }
+        .log-warn { color: #DCDCAA; }
+        .log-error { color: #F48771; }
+        .log-success { color: #B5CEA8; }
+
+        .performance-chart {
+            height: 200px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: #f8f9fa;
+            border-radius: 4px;
+            color: #999;
+        }
+
+        .info-section {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .info-section h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .improvement {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Optimized OPC UA Browser</h1>
+            <p>High-performance parallel traversal with intelligent caching and batch processing</p>
+        </div>
+
+        <div class="info-section">
+            <h3>⚡ Performance Improvements</h3>
+            <ul>
+                <li>Parallel browsing with up to 10 concurrent operations</li>
+                <li>Intelligent caching reduces redundant server calls</li>
+                <li>Batch database inserts for optimal performance</li>
+                <li>Session pooling for connection reuse</li>
+                <li>Real-time progress tracking and ETA calculation</li>
+            </ul>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn-primary" onclick="startOptimizedTraversal()">
+                <span>🚀</span> Start Optimized Traversal
+            </button>
+            <button id="pauseBtn" class="btn-warning" onclick="pauseTraversal()" disabled>
+                <span>⏸️</span> Pause
+            </button>
+            <button id="resumeBtn" class="btn-success" onclick="resumeTraversal()" disabled>
+                <span>▶️</span> Resume
+            </button>
+            <button id="stopBtn" class="btn-danger" onclick="stopTraversal()" disabled>
+                <span>⏹️</span> Stop
+            </button>
+            <button onclick="refreshStats()" class="btn-primary">
+                <span>🔄</span> Refresh Stats
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="panel">
+                <h2>📊 Real-time Progress</h2>
+
+                <div class="progress-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Folder Processing</span>
+                        <span id="statusBadge" class="status-indicator status-idle">
+                            <span class="pulse"></span>
+                            <span id="statusText">Idle</span>
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill" style="width: 0%">0%</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                        <span id="progressText">0 / 0 folders</span>
+                        <span id="etaText">ETA: --</span>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Folders Processed</div>
+                        <div class="stat-value" id="foldersProcessed">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Variables Found</div>
+                        <div class="stat-value" id="variablesFound">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Records Inserted</div>
+                        <div class="stat-value" id="recordsInserted">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Processing Rate</div>
+                        <div class="stat-value" id="processingRate">0/s</div>
+                    </div>
+                </div>
+
+                <div class="performance-chart">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>📋 Activity Log</h2>
+                <div class="log-container" id="logContainer">
+                    <div class="log-entry log-info">
+                        <span class="log-time">[00:00:00]</span> System ready. Click "Start Optimized Traversal" to begin.
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 20px;">🔍 Current Status</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Current Path</td>
+                        <td id="currentPath" style="font-family: monospace; font-size: 12px;">--</td>
+                    </tr>
+                    <tr>
+                        <td>Errors</td>
+                        <td id="errorCount">0</td>
+                    </tr>
+                    <tr>
+                        <td>Skipped Branches</td>
+                        <td id="skippedBranches">0</td>
+                    </tr>
+                    <tr>
+                        <td>Success Rate</td>
+                        <td id="successRate">100%</td>
+                    </tr>
+                    <tr>
+                        <td>Database Status</td>
+                        <td id="dbStatus">Connected</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let eventSource = null;
+        let performanceChart = null;
+        let chartData = {
+            labels: [],
+            datasets: [{
+                label: 'Folders/sec',
+                data: [],
+                borderColor: '#2196F3',
+                backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                tension: 0.4
+            }]
+        };
+
+        // Initialize performance chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        performanceChart = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Folders/sec'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function log(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function startOptimizedTraversal() {
+            try {
+                log('Starting optimized traversal...', 'info');
+
+                const response = await fetch('/api/traverse/start-optimized', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    log('✅ Traversal started successfully', 'success');
+                    updateButtons('running');
+                    startProgressStream();
+                } else {
+                    log(`❌ Failed to start: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function pauseTraversal() {
+            try {
+                const response = await fetch('/api/traverse/pause', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('⏸️ Traversal paused', 'warn');
+                    updateButtons('paused');
+                }
+            } catch (error) {
+                log(`❌ Failed to pause: ${error.message}`, 'error');
+            }
+        }
+
+        async function resumeTraversal() {
+            try {
+                const response = await fetch('/api/traverse/resume', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('▶️ Traversal resumed', 'success');
+                    updateButtons('running');
+                }
+            } catch (error) {
+                log(`❌ Failed to resume: ${error.message}`, 'error');
+            }
+        }
+
+        async function stopTraversal() {
+            try {
+                const response = await fetch('/api/traverse/stop', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('⏹️ Traversal stopped', 'warn');
+                    updateButtons('idle');
+                    if (eventSource) {
+                        eventSource.close();
+                        eventSource = null;
+                    }
+                }
+            } catch (error) {
+                log(`❌ Failed to stop: ${error.message}`, 'error');
+            }
+        }
+
+        function startProgressStream() {
+            if (eventSource) {
+                eventSource.close();
+            }
+
+            eventSource = new EventSource('/api/traverse/stream');
+
+            eventSource.onmessage = (event) => {
+                const progress = JSON.parse(event.data);
+                updateProgress(progress);
+            };
+
+            eventSource.onerror = () => {
+                log('Connection to server lost', 'error');
+                updateButtons('idle');
+            };
+        }
+
+        function updateProgress(progress) {
+            // Update progress bar
+            const percent = progress.totalFolders > 0
+                ? (progress.processedFolders / progress.totalFolders * 100).toFixed(1)
+                : 0;
+
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressFill').textContent = `${percent}%`;
+            document.getElementById('progressText').textContent =
+                `${progress.processedFolders} / ${progress.totalFolders} folders`;
+
+            // Update stats
+            document.getElementById('foldersProcessed').textContent = progress.processedFolders;
+            document.getElementById('variablesFound').textContent = progress.discoveredVariables;
+            document.getElementById('recordsInserted').textContent = progress.insertedRecords;
+            document.getElementById('processingRate').textContent =
+                `${progress.rate.toFixed(1)}/s`;
+
+            // Update ETA
+            const remaining = progress.totalFolders - progress.processedFolders;
+            const eta = progress.rate > 0 ? (remaining / progress.rate / 60).toFixed(1) : '--';
+            document.getElementById('etaText').textContent = `ETA: ${eta} min`;
+
+            // Update current path
+            document.getElementById('currentPath').textContent = progress.currentPath || '--';
+            document.getElementById('errorCount').textContent = progress.errors;
+            document.getElementById('skippedBranches').textContent = progress.skippedBranches;
+
+            // Update success rate
+            const total = progress.processedFolders + progress.errors;
+            const successRate = total > 0
+                ? ((progress.processedFolders / total) * 100).toFixed(1)
+                : 100;
+            document.getElementById('successRate').textContent = `${successRate}%`;
+
+            // Update status
+            updateStatus(progress);
+
+            // Update performance chart
+            updateChart(progress.rate);
+
+            // Check if complete
+            if (!progress.active && progress.processedFolders > 0) {
+                log(`✅ Traversal complete! Processed ${progress.processedFolders} folders, found ${progress.discoveredVariables} variables`, 'success');
+                updateButtons('idle');
+            }
+        }
+
+        function updateStatus(progress) {
+            const badge = document.getElementById('statusBadge');
+            const text = document.getElementById('statusText');
+
+            badge.className = 'status-indicator';
+
+            if (progress.active && !progress.paused) {
+                badge.classList.add('status-active');
+                text.textContent = 'Running';
+            } else if (progress.paused) {
+                badge.classList.add('status-paused');
+                text.textContent = 'Paused';
+            } else if (progress.errors > 0 && progress.errors > progress.processedFolders * 0.1) {
+                badge.classList.add('status-error');
+                text.textContent = 'Errors';
+            } else if (progress.processedFolders > 0 && !progress.active) {
+                badge.classList.add('status-complete');
+                text.textContent = 'Complete';
+            } else {
+                badge.classList.add('status-idle');
+                text.textContent = 'Idle';
+            }
+        }
+
+        function updateChart(rate) {
+            const now = new Date().toLocaleTimeString();
+
+            chartData.labels.push(now);
+            chartData.datasets[0].data.push(rate);
+
+            // Keep only last 20 data points
+            if (chartData.labels.length > 20) {
+                chartData.labels.shift();
+                chartData.datasets[0].data.shift();
+            }
+
+            performanceChart.update();
+        }
+
+        function updateButtons(state) {
+            const startBtn = document.getElementById('startBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resumeBtn = document.getElementById('resumeBtn');
+            const stopBtn = document.getElementById('stopBtn');
+
+            switch(state) {
+                case 'running':
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    resumeBtn.disabled = true;
+                    stopBtn.disabled = false;
+                    break;
+                case 'paused':
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = true;
+                    resumeBtn.disabled = false;
+                    stopBtn.disabled = false;
+                    break;
+                case 'idle':
+                    startBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    resumeBtn.disabled = true;
+                    stopBtn.disabled = true;
+                    break;
+            }
+        }
+
+        async function refreshStats() {
+            try {
+                const response = await fetch('/api/traverse/stats');
+                const stats = await response.json();
+
+                if (stats.message) {
+                    log(stats.message, 'info');
+                } else {
+                    updateProgress(stats);
+                }
+            } catch (error) {
+                log(`Failed to refresh stats: ${error.message}`, 'error');
+            }
+        }
+
+        // Check database status periodically
+        async function checkDatabaseStatus() {
+            try {
+                const response = await fetch('/api/database/status');
+                const status = await response.json();
+
+                const dbStatusEl = document.getElementById('dbStatus');
+                if (status.poolReady) {
+                    dbStatusEl.textContent = 'Connected';
+                    dbStatusEl.style.color = '#4CAF50';
+                } else if (status.fallbackMode) {
+                    dbStatusEl.textContent = `Fallback Mode (${status.fallbackRecords} records)`;
+                    dbStatusEl.style.color = '#FF9800';
+                } else {
+                    dbStatusEl.textContent = 'Disconnected';
+                    dbStatusEl.style.color = '#f44336';
+                }
+            } catch (error) {
+                console.error('Database status check failed:', error);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateButtons('idle');
+            checkDatabaseStatus();
+            setInterval(checkDatabaseStatus, 5000);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (eventSource) {
+                eventSource.close();
+            }
+        });
+    </script>
+</body>
+</html>

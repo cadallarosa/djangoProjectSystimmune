@@ -1,0 +1,3 @@
+"Protein name","Modifiers","Response","Observed mass (Da)","Expected mass (Da)","Mass error (mDa)","Mass error (ppm)","Observed RT (min)","Alternate assignments"
+"SI-77E13 HC","","192979225","101432.8191","101439.35060","-6531.5","-64.4","4.16",False
+"SI-77E13 LC","","262847799","51010.1465","51008.85610","1290.4","25.3","4.00",False

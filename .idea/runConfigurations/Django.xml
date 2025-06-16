@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Django" type="CompoundRunConfigurationType">
+    <toRun name="djangoProject" type="Python.DjangoServer" />
+    <toRun name="opcua_browse" type="NodeJSConfigurationType" />
+    <toRun name="Celery Beat" type="PythonConfigurationType" />
+    <toRun name="Celery Worker" type="PythonConfigurationType" />
+    <toRun name="Redis" type="ShConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

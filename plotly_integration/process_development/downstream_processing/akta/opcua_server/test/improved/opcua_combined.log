@@ -1,0 +1,3 @@
+{"level":"info","message":"🚀 Server running on 0.0.0.0:3000","timestamp":"2025-06-13T18:18:06.364Z"}
+{"level":"info","message":"📊 Database status: {\"poolReady\":false,\"fallbackMode\":false,\"fallbackRecords\":0,\"reconnectAttempts\":0,\"tunnel\":{\"connected\":false,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}}","timestamp":"2025-06-13T18:18:06.365Z"}
+{"level":"info","message":"🛑 Shutting down gracefully...","timestamp":"2025-06-13T18:20:32.283Z"}

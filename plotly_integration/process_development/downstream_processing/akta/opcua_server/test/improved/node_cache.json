@@ -1,0 +1,1754 @@
+[
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography DN 304-2",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241123 DN315 CHT Chromatography DN315",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT DoE",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448 (1)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (1)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (3)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (4)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250228_CHT_conformance_DN 544-546",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/YYYYMMDD AEX DN#### - Flowthrough Mode",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/ DN 562 CHT Confirmation Run 001 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 PRA Chromatography - 306 mL - Equil 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250401 AEX Flowthrough DN 577-578",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CEX NanoGel-50SP DN 571 001 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CHT NMCHT Type I DN 572 001 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 DN 572 CHT NMCHT Type I_elution 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250327 CEX NH2-750F DN 573 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography(2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/DN608",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/DN608(2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/DN609",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX DN 610-613",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX screen - DN 610-613",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screen - pH gradient",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/YYYYMMDD - 49T5",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/YYYYMMDD - 49T5 (1)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screening - pH gradient",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX resin screen - DN682-684",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 - AEX resin screen - DN 685-686",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 (2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 (2)(2)"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)/DN607 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 614 NMAB 40 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 615 Unimab 40 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 617 Sure LX 40 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 618 PrismA 40 005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 619 NMAB 35 006",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 620 Unimab 35 007",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 622 Sure LX 35 009",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 623 PrismA 35 010",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN616 EXE 40 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN621 EXE 35 008"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 35 mgl 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 45 mgl 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 673 30mgl 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 674 30mgl 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 675 40 mgl 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250604 - 49T5 - HIC resin screen - DN 689-690",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250609 - 49T5 - MMCEX pH gradient - DN 703-704"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test0.5 mlmin 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)/SI-50E16 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening/SI-50E15 - No DN"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15/SI-50E15 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX/SI-50E15 - Eshumno CMX - Screening"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/DN 323 CHT Chromatography pH 6_5",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/SI-50E15 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  006",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  007",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  008",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  009",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  010"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR/DN 270 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography/DN273 - NMAB 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN274 - UniMAB 50 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN275 - UniMAB EXE 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN276 - MabSelect SuRe LX 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN277 - MabSelect PrismA 005"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN273 - NMAB 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN274 - UniMAB 50 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN275 - UniMAB EXE 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN276 - MabSelect SuRe LX 004"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)/DN279 SI-50E15 CHT 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280/DN280 - NMAB 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN281 - UniMAB 50 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN282 - UniMAB EXE 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Diamond SP Mustang 005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Monomix Mab 60 SP - DN 313",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel - 50SP - DN 310",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel 50 SP HP - DN 311",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NW Rose Plus SP HP - DN 312"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/DN342_50E15_NMCHT_20241227",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_10cm_wash_study",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Equil_Buffer_Comp_Exp_DN 389-392_20250109",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 394-395_20250114",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 396-398_20250115",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_glycine_gradient_phos_conc_study_DN 401-405_20250122",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 407",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 409",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 425",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 426",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432(2)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432(3)",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 433",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 434",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 435",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 436",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 470",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_76mL_Column_50E15_DN 478",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_76mL_Column_50E15_DN 479",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 480",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 481",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 482-484",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250303_CHT_gly conc test_DN 547-549",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250305_CHT_Load Capacity Study_DN 554-557",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250306_CHT_load cond. adj exp_DN 559-561",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/ DN 562 re-equil and load 001 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/DN 304 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/DN 341_50E15_CHT-XT_20241223 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography DN 304-2",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography DN 304-2/DN 304-2 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241123 DN315 CHT Chromatography DN315",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241123 DN315 CHT Chromatography DN315/DN315 NMCHT 19 ml assessment 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT DoE",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT DoE/CHT DoE"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)/DN366 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)/DN367 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)/DN368 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)/DN369 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (1)/DN370 005"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)/DN371 006",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)/DN382 007",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)/DN383 008",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)/DN384 009",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240102 Protein A Chromatography Dn366-386 load and elution pH NMAB (2)/DN385 010"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448/DN 442 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448 (1)",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 442 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 443 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 444 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 445 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 446 005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 447 006",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250206 Protein A Chromatography Unimab EXE DN442-448_2(2)/DN 448 007"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX/20250210 AEX DN 464 - Flowthrough Mode",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX/20250211 AEX - Flowthrough Mode",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX/20250224_AEX_pH screen_DN 523",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX/20250225 AEX DN 524-526 - Flowthrough Mode",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX/Conformance Run - DN 539",
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/AEX/20250227 AEX DN539 - Flowthrough Mode - load"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494/DN491 35 mgl pH 3.2 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494/DN492 30 mgl 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494/DN493 25 mgl 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494/DN494 20 mgl 004"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (1)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (1)/DN504 - 30mg-mL 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (2)/DN505 - Air 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (3)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (3)/DN504 - 30mg-mL 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (4)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (4)/DN505 - Air 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250228_CHT_conformance_DN 544-546",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250228_CHT_conformance_DN 544-546/DN 544 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250228_CHT_conformance_DN 544-546/DN 545 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250228_CHT_conformance_DN 544-546/DN 546 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/YYYYMMDD AEX DN#### - Flowthrough Mode",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/YYYYMMDD AEX DN#### - Flowthrough Mode/ 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/ DN 562 CHT Confirmation Run 001 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/ DN 562 CHT Confirmation Run 001 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/ DN 562 CHT Confirmation Run 001 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/ DN 562 CHT Confirmation Run 001 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 PRA Chromatography - 306 mL - Equil 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 PRA Chromatography - 306 mL - Equil 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 PRA Chromatography - 306 mL - Equil 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 PRA Chromatography - 306 mL - Equil 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200  003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/FracPoolTables",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/PeakTables",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250401 AEX Flowthrough DN 577-578",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250401 AEX Flowthrough DN 577-578/DN 577 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250401 AEX Flowthrough DN 577-578/DN 578 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CEX NanoGel-50SP DN 571 001 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CEX NanoGel-50SP DN 571 001 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CEX NanoGel-50SP DN 571 001 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CEX NanoGel-50SP DN 571 001 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CHT NMCHT Type I DN 572 001 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CHT NMCHT Type I DN 572 001 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CHT NMCHT Type I DN 572 001 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 CHT NMCHT Type I DN 572 001 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 DN 572 CHT NMCHT Type I_elution 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 DN 572 CHT NMCHT Type I_elution 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 DN 572 CHT NMCHT Type I_elution 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250325 DN 572 CHT NMCHT Type I_elution 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250327 CEX NH2-750F DN 573 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250327 CEX NH2-750F DN 573 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250327 CEX NH2-750F DN 573 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Resin Screen 20250325/20250327 CEX NH2-750F DN 573 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography/DN599 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography(2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography(2)/DN600 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/DN608",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/DN608/DN608 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN615 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN624 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN625 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN626 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN627 005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN628 006",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN629 007",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN630 008",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN631 009",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (3)/DN632 010"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 633 50mgl 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 634 45 mgl 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 635 40 mgl 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 636 35 mgl 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 637 30 mgl 005",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 638 25 mgl 006",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/ProA/Protein A Chromatography (4)/DN 639 20 mgl 007"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/DN608(2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/DN608(2)/DN608 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/DN609",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/DN609/DN609 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX DN 610-613",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX screen - DN 610-613",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX screen - DN 610-613/DN 610 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX screen - DN 610-613/DN 611 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX screen - DN 610-613/DN 612 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250519 - 49T5 - AEX screen - DN 610-613/DN 613 004"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screen - pH gradient",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screen - pH gradient/DN 680 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5/DN681 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/YYYYMMDD - 49T5",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/YYYYMMDD - 49T5 (1)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/YYYYMMDD - 49T5 (1)/DN681 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screening - pH gradient",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screening - pH gradient/DN 677 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screening - pH gradient/DN 678 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screening - pH gradient/DN 679 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX screening - pH gradient/DN 680 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX resin screen - DN682-684",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX resin screen - DN682-684/DN 682 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX resin screen - DN682-684/DN 683 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250527 - 49T5 - AEX resin screen - DN682-684/DN 684 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 - AEX resin screen - DN 685-686",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 - AEX resin screen - DN 685-686/DN 685 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 - AEX resin screen - DN 685-686/DN 686 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 (2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 (2)/DN687 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 (2)(2)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX/20250528 - 49T5 (2)(2)/DN688 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)/DN607 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)/DN607 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)/DN607 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/AEX(2)/DN607 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 614 NMAB 40 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 614 NMAB 40 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 614 NMAB 40 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 614 NMAB 40 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 615 Unimab 40 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 615 Unimab 40 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 615 Unimab 40 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 615 Unimab 40 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 617 Sure LX 40 004",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 617 Sure LX 40 004/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 617 Sure LX 40 004/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 617 Sure LX 40 004/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 618 PrismA 40 005",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 618 PrismA 40 005/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 618 PrismA 40 005/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 618 PrismA 40 005/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 619 NMAB 35 006",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 619 NMAB 35 006/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 619 NMAB 35 006/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 619 NMAB 35 006/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 620 Unimab 35 007",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 620 Unimab 35 007/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 620 Unimab 35 007/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 620 Unimab 35 007/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 622 Sure LX 35 009",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 622 Sure LX 35 009/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 622 Sure LX 35 009/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 622 Sure LX 35 009/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 623 PrismA 35 010",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 623 PrismA 35 010/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 623 PrismA 35 010/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN 623 PrismA 35 010/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN616 EXE 40 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN616 EXE 40 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN616 EXE 40 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN616 EXE 40 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN621 EXE 35 008",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN621 EXE 35 008/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN621 EXE 35 008/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography/DN621 EXE 35 008/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 35 mgl 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 35 mgl 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 35 mgl 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 35 mgl 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 45 mgl 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 45 mgl 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 45 mgl 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A DN664 - 665/DN 664 45 mgl 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 673 30mgl 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 673 30mgl 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 673 30mgl 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 673 30mgl 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 674 30mgl 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 674 30mgl 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 674 30mgl 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 674 30mgl 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 675 40 mgl 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 675 40 mgl 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 675 40 mgl 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (2)/DN 675 40 mgl 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250604 - 49T5 - HIC resin screen - DN 689-690",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250604 - 49T5 - HIC resin screen - DN 689-690/DN 689 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250604 - 49T5 - HIC resin screen - DN 689-690/DN 690 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710/DN 708 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710/DN 709 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710/DN 710 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695/DN 691 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695/DN 692 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695/DN 693 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695/DN 694 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250605 - 49T5 - CEX resin screen - DN 691-695/DN 695 005"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250609 - 49T5 - MMCEX pH gradient - DN 703-704",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250609 - 49T5 - MMCEX pH gradient - DN 703-704/DN 703 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/CEX/20250609 - 49T5 - MMCEX pH gradient - DN 703-704/DN 704 005"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 004",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 004/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 004/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 004/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 005",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 005/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 005/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 005/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test 1.0 mLmin 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test0.5 mlmin 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test0.5 mlmin 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test0.5 mlmin 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SEC Column Performance Test Results/PE SEC Column Performance Test0.5 mlmin 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)/SI-50E16 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)/SI-50E16 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)/SI-50E16 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E16(2)/SI-50E16 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening/SI-50E15 - No DN",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening/SI-50E15 - No DN/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening/SI-50E15 - No DN/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240821 SI-50E15 CEX screening/SI-50E15 - No DN/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15/SI-50E15 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15/SI-50E15 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15/SI-50E15 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15/SI-50E15 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX/SI-50E15 - Eshumno CMX - Screening",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX/SI-50E15 - Eshumno CMX - Screening/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX/SI-50E15 - Eshumno CMX - Screening/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20240917 SI-50E15 CMX/SI-50E15 - Eshumno CMX - Screening/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/DN 323 CHT Chromatography pH 6_5",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/DN 323 CHT Chromatography pH 6_5/DN 323 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/SI-50E15 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/SI-50E15 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/SI-50E15 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography/SI-50E15 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  004",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  004/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  004/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  004/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  005",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  005/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  005/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  005/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  006",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  006/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  006/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  006/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  007",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  007/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  007/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  007/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  008",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  008/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  008/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  008/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  009",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  009/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  009/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  009/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  010",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  010/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  010/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/SI-50E15 - PSEC - Superdex Increase 200/SI-50E15 - PSEC - Superdex Increase 200  010/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR/DN 270 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR/DN 270 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR/DN 270 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20241002_CHT Chromatography_SRR/DN 270 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography/DN273 - NMAB 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography/DN273 - NMAB 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography/DN273 - NMAB 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography/DN273 - NMAB 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN274 - UniMAB 50 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN274 - UniMAB 50 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN274 - UniMAB 50 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN274 - UniMAB 50 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN275 - UniMAB EXE 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN275 - UniMAB EXE 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN275 - UniMAB EXE 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN275 - UniMAB EXE 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN276 - MabSelect SuRe LX 004",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN276 - MabSelect SuRe LX 004/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN276 - MabSelect SuRe LX 004/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN276 - MabSelect SuRe LX 004/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN277 - MabSelect PrismA 005",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN277 - MabSelect PrismA 005/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN277 - MabSelect PrismA 005/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN274-277/DN277 - MabSelect PrismA 005/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN273 - NMAB 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN273 - NMAB 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN273 - NMAB 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN273 - NMAB 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN274 - UniMAB 50 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN274 - UniMAB 50 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN274 - UniMAB 50 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN274 - UniMAB 50 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN275 - UniMAB EXE 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN275 - UniMAB EXE 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN275 - UniMAB EXE 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN275 - UniMAB EXE 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN276 - MabSelect SuRe LX 004",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN276 - MabSelect SuRe LX 004/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN276 - MabSelect SuRe LX 004/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN273-276/DN276 - MabSelect SuRe LX 004/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)/DN279 SI-50E15 CHT 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)/DN279 SI-50E15 CHT 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)/DN279 SI-50E15 CHT 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT Chromatography (1)/DN279 SI-50E15 CHT 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280/DN280 - NMAB 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280/DN280 - NMAB 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280/DN280 - NMAB 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN280/DN280 - NMAB 001/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN281 - UniMAB 50 002",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN281 - UniMAB 50 002/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN281 - UniMAB 50 002/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN281 - UniMAB 50 002/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN282 - UniMAB EXE 003",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN282 - UniMAB EXE 003/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN282 - UniMAB EXE 003/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/Protein A Chromatography DN281-282/DN282 - UniMAB EXE 003/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Diamond SP Mustang 005",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Diamond SP Mustang 005/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Diamond SP Mustang 005/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Diamond SP Mustang 005/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Monomix Mab 60 SP - DN 313",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Monomix Mab 60 SP - DN 313/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Monomix Mab 60 SP - DN 313/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/Monomix Mab 60 SP - DN 313/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel - 50SP - DN 310",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel - 50SP - DN 310/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel - 50SP - DN 310/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel - 50SP - DN 310/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel 50 SP HP - DN 311",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel 50 SP HP - DN 311/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel 50 SP HP - DN 311/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NanoGel 50 SP HP - DN 311/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NW Rose Plus SP HP - DN 312",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NW Rose Plus SP HP - DN 312/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NW Rose Plus SP HP - DN 312/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CEX Resin Screening/NW Rose Plus SP HP - DN 312/PeakTables"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/DN342_50E15_NMCHT_20241227",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/DN342_50E15_NMCHT_20241227/DN 342 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_10cm_wash_study",
+    {
+      "childNodes": [
+        "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_10cm_wash_study/CHT_Pre-equil wash exp_DN 393_20250113"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Equil_Buffer_Comp_Exp_DN 389-392_20250109",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Equil_Buffer_Comp_Exp_DN 389-392_20250109/DN 389 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Equil_Buffer_Comp_Exp_DN 389-392_20250109/DN 390 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Equil_Buffer_Comp_Exp_DN 389-392_20250109/DN 391 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Equil_Buffer_Comp_Exp_DN 389-392_20250109/DN 392 004"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 394-395_20250114",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 394-395_20250114/DN 394 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 394-395_20250114/DN 395 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 396-398_20250115",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 396-398_20250115/DN 396 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 396-398_20250115/DN 397 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Gradient Elution Exp_DN 396-398_20250115/DN 398 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116/DN 400 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116/DN 402 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116/DN 404 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116/DN 406 004",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Phos_gradient_phos_conc_study_DN 400-408_20250116/DN 408 005"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_glycine_gradient_phos_conc_study_DN 401-405_20250122",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_glycine_gradient_phos_conc_study_DN 401-405_20250122/DN 401 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_glycine_gradient_phos_conc_study_DN 401-405_20250122/DN 403 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_glycine_gradient_phos_conc_study_DN 401-405_20250122/DN 405 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 407",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 407/DN 407 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 409",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 409/DN 409 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 425",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 425/DN 425 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 426",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 426/DN 426 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432(2)",
+    {
+      "childNodes": []
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432(3)",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432(3)/DN 431 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_Load_Conditioning_Study_DN 431-432(3)/DN 432 002"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 433",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 433/DN 433 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 434",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 434/DN 434 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 435",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 435/DN 435 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 436",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 436/DN 436 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 470",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 470/DN 470 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_76mL_Column_50E15_DN 478",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_76mL_Column_50E15_DN 478/DN 478 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_76mL_Column_50E15_DN 479",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_76mL_Column_50E15_DN 479/DN 479 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 480",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 480/DN 480 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 481",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 481/DN 481 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 482-484",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 482-484/DN 482 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 482-484/DN 483 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/CHT_20cm_Column_50E15_DN 482-484/DN 484 004"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250303_CHT_gly conc test_DN 547-549",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250303_CHT_gly conc test_DN 547-549/DN 547 003",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250303_CHT_gly conc test_DN 547-549/DN 548 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250303_CHT_gly conc test_DN 547-549/DN 549 001"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250305_CHT_Load Capacity Study_DN 554-557",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250305_CHT_Load Capacity Study_DN 554-557/DN 554 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250305_CHT_Load Capacity Study_DN 554-557/DN 555 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250305_CHT_Load Capacity Study_DN 554-557/DN 556 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250306_CHT_load cond. adj exp_DN 559-561",
+    {
+      "childNodes": [
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250306_CHT_load cond. adj exp_DN 559-561/DN 559 001",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250306_CHT_load cond. adj exp_DN 559-561/DN 560 002",
+        "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/20250306_CHT_load cond. adj exp_DN 559-561/DN 561 003"
+      ]
+    }
+  ],
+  [
+    "ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/ DN 562 re-equil and load 001 001",
+    {
+      "childNodes": [
+        "ns=2;s=14:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/ DN 562 re-equil and load 001 001/FracPoolTables",
+        "ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/ DN 562 re-equil and load 001 001/Documentation",
+        "ns=2;s=16:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/CHT dev/ DN 562 re-equil and load 001 001/PeakTables"
+      ]
+    }
+  ]
+]

@@ -1,0 +1,3 @@
+"Protein name","Modifiers","Response","Observed mass (Da)","Expected mass (Da)","Mass error (mDa)","Mass error (ppm)","Observed RT (min)","Alternate assignments"
+"SI-130T2 HC","","62082221","75508.0319","75509.34580","-1313.9","-17.4","3.80",False
+"SI-130T2 LC","","57605705","51008.5716","51010.87200","-2300.4","-45.1","3.44",False

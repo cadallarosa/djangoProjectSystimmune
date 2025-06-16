@@ -1,0 +1,127 @@
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T22:45:29.759Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T22:45:30.092Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T22:45:30.100Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:46:29.595Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-13T22:46:29.596Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:46:29.608Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T22:46:31.362Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T22:46:31.688Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T22:46:31.696Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:54:24.094Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-13T22:54:24.096Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-13T22:54:24.111Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-13T22:54:24.112Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:54:24.114Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T22:54:26.605Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T22:54:26.933Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T22:54:26.942Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:58:03.615Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-13T22:58:03.617Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-13T22:58:03.631Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-13T22:58:03.633Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:58:03.644Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T23:03:48.844Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T23:03:49.167Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T23:03:49.176Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T23:12:44.328Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-13T23:12:44.334Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T23:12:44.349Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T23:51:20.542Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T23:51:21.399Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T23:51:21.405Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T23:54:29.948Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-13T23:54:29.967Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-13T23:54:30.003Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-13T23:54:30.004Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T23:54:30.015Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T00:05:25.540Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T00:05:26.031Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T00:05:26.037Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:10:42.361Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T00:10:42.364Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T00:10:42.405Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T00:10:42.406Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:10:42.425Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T00:10:51.616Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T00:10:52.183Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T00:10:52.189Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:18:53.027Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T00:18:53.046Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T00:18:53.198Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T00:18:53.199Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:18:53.227Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T00:24:04.753Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T00:24:05.275Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T00:24:05.286Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:24:25.073Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T00:24:25.079Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T00:24:25.108Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T00:24:25.110Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:24:25.130Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T00:29:36.446Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T00:29:36.951Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T00:29:36.961Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:30:39.173Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T00:30:39.175Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T00:30:39.205Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T00:30:39.206Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T00:30:39.226Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T00:31:24.544Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T00:31:25.086Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T00:31:25.096Z"}
+{"code":"ECONNRESET","errno":-4077,"level":"error","message":"❌ SSH client error: read ECONNRESET","stack":"Error: read ECONNRESET\n    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)","syscall":"read","timestamp":"2025-06-14T01:00:26.534Z"}
+{"level":"info","message":"⏳ Reconnecting SSH tunnel in 5000ms (attempt 1)","timestamp":"2025-06-14T01:00:26.603Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T01:00:26.631Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T03:58:06.649Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T03:58:07.419Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T03:58:07.428Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T04:00:21.881Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T04:00:21.883Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T04:00:21.935Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T04:00:21.936Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T04:00:21.951Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T04:00:23.772Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T04:00:24.443Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T04:00:24.451Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T04:07:51.780Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T04:07:51.783Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T04:07:51.813Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T04:07:51.814Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T04:07:51.829Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T04:07:53.682Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T04:07:54.190Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T04:07:54.199Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T04:43:17.295Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T04:43:17.297Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T04:43:17.328Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T04:43:17.329Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T04:43:17.344Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T04:55:52.149Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T04:55:52.867Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T04:55:52.876Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T05:02:05.511Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T05:02:05.512Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T05:02:05.542Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T05:02:05.543Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T05:02:05.566Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T05:11:35.662Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T05:11:36.130Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T05:11:36.134Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T05:20:03.415Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T05:20:03.417Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T05:20:03.457Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T05:20:03.458Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T05:20:03.474Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T05:27:39.722Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T05:27:40.228Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T05:27:40.237Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T05:37:56.655Z"}
+{"level":"info","message":"✅ SSH tunnel stopped","timestamp":"2025-06-14T05:37:56.656Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T05:37:56.690Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T05:37:56.691Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-14T05:37:56.710Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-14T05:37:59.408Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-14T05:37:59.895Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-14T05:37:59.905Z"}
+{"level":"warn","message":"⚠️ SSH connection ended","timestamp":"2025-06-14T05:50:49.592Z"}
+{"level":"warn","message":"⚠️ SSH connection closed","timestamp":"2025-06-14T05:50:49.593Z"}

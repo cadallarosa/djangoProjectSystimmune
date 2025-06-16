@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPC UA Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.connected { background-color: #d4edda; color: #155724; }
+        .status.disconnected { background-color: #f8d7da; color: #721c24; }
+        .status.running { background-color: #cce5ff; color: #004085; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        .progress-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #28a745;
+            transition: width 0.3s ease;
+        }
+        .log-container {
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 20px 0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 OPC UA Browser & Auto Traversal</h1>
+        
+        <div id="connectionStatus" class="status">
+            🔄 Checking connection...
+        </div>
+
+        <div class="controls">
+            <button id="startAutoBtn" onclick="startAutoTraversal()">🚀 Start Auto Traverse</button>
+            <button id="stopBtn" onclick="stopTraversal()" disabled>⏹️ Stop</button>
+            <button id="pauseBtn" onclick="pauseTraversal()" disabled>⏸️ Pause</button>
+            <button id="resumeBtn" onclick="resumeTraversal()" disabled>▶️ Resume</button>
+            <button onclick="checkHealth()">🔍 Check Health</button>
+            <button onclick="clearLog()">🧹 Clear Log</button>
+        </div>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <h3>📊 Traversal Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div id="progressText">0% - Idle</div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="foldersProcessed">0</div>
+                    <div class="stat-label">Folders Processed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="variablesFound">0</div>
+                    <div class="stat-label">Variables Found</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="elapsedTime">0s</div>
+                    <div class="stat-label">Elapsed Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="currentStatus">Idle</div>
+                    <div class="stat-label">Status</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="log-container" id="logContainer">
+            <div id="logContent">📋 Ready to start traversal...</div>
+        </div>
+    </div>
+
+    <script>
+        let progressInterval = null;
+        let isTraversing = false;
+
+        // Check initial connection status
+        window.onload = function() {
+            checkHealth();
+        };
+
+        async function checkHealth() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                const statusEl = document.getElementById('connectionStatus');
+                if (data.status === 'connected') {
+                    statusEl.className = 'status connected';
+                    statusEl.innerHTML = '✅ Connected to OPC UA Server';
+                } else {
+                    statusEl.className = 'status disconnected';
+                    statusEl.innerHTML = '❌ OPC UA Server Disconnected';
+                }
+            } catch (error) {
+                document.getElementById('connectionStatus').innerHTML = '❌ Failed to check connection';
+                document.getElementById('connectionStatus').className = 'status disconnected';
+            }
+        }
+
+        async function startAutoTraversal() {
+            if (isTraversing) {
+                addLog('⚠️ Traversal already in progress');
+                return;
+            }
+
+            try {
+                addLog('🚀 Starting auto traversal...');
+                updateButtonStates(true);
+                showProgress(true);
+                
+                const response = await fetch('/api/traverse/start-auto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    addLog('✅ ' + data.message);
+                    if (data.stats) {
+                        addLog(`📊 Stats: ${data.stats.foldersProcessed} folders, ${data.stats.variablesFound} variables`);
+                    }
+                } else {
+                    addLog('❌ Error: ' + data.error);
+                }
+                
+                // Start progress monitoring
+                startProgressMonitoring();
+                
+            } catch (error) {
+                addLog('❌ Failed to start traversal: ' + error.message);
+                updateButtonStates(false);
+            }
+        }
+
+        async function stopTraversal() {
+            try {
+                addLog('⏹️ Stopping traversal...');
+                const response = await fetch('/api/traverse/stop', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                addLog(data.success ? '✅ Traversal stopped' : '❌ Failed to stop');
+                updateButtonStates(false);
+                stopProgressMonitoring();
+            } catch (error) {
+                addLog('❌ Stop error: ' + error.message);
+            }
+        }
+
+        async function pauseTraversal() {
+            try {
+                const response = await fetch('/api/traverse/pause', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                addLog(data.success ? '⏸️ Traversal paused' : '❌ Failed to pause');
+                document.getElementById('pauseBtn').disabled = true;
+                document.getElementById('resumeBtn').disabled = false;
+            } catch (error) {
+                addLog('❌ Pause error: ' + error.message);
+            }
+        }
+
+        async function resumeTraversal() {
+            try {
+                const response = await fetch('/api/traverse/resume', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                addLog(data.success ? '▶️ Traversal resumed' : '❌ Failed to resume');
+                document.getElementById('pauseBtn').disabled = false;
+                document.getElementById('resumeBtn').disabled = true;
+            } catch (error) {
+                addLog('❌ Resume error: ' + error.message);
+            }
+        }
+
+        function startProgressMonitoring() {
+            if (progressInterval) clearInterval(progressInterval);
+            
+            progressInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/progress');
+                    const progress = await response.json();
+                    updateProgress(progress);
+                    
+                    if (progress.complete || progress.stats.status.includes('complete')) {
+                        stopProgressMonitoring();
+                        updateButtonStates(false);
+                        addLog('🎉 Traversal completed!');
+                    }
+                } catch (error) {
+                    console.error('Progress monitoring error:', error);
+                }
+            }, 1000);
+        }
+
+        function stopProgressMonitoring() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            isTraversing = false;
+        }
+
+        function updateProgress(progress) {
+            if (!progress || !progress.stats) return;
+
+            const stats = progress.stats;
+            const percentage = stats.totalFolders > 0 
+                ? Math.round((stats.completedFolders / stats.totalFolders) * 100) 
+                : 0;
+
+            // Update progress bar
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `${percentage}% - ${stats.status || 'Processing'}`;
+
+            // Update stats
+            document.getElementById('foldersProcessed').textContent = stats.completedFolders || 0;
+            document.getElementById('variablesFound').textContent = stats.variablesFound || 0;
+            document.getElementById('currentStatus').textContent = stats.status || 'Unknown';
+
+            // Calculate elapsed time
+            if (stats.startTime) {
+                const start = new Date(stats.startTime);
+                const elapsed = Math.round((Date.now() - start.getTime()) / 1000);
+                document.getElementById('elapsedTime').textContent = elapsed + 's';
+            }
+
+            // Log current folder being processed
+            if (stats.currentPath && stats.currentPath !== window.lastLoggedPath) {
+                addLog(`📂 Processing: ${stats.currentPath}`);
+                window.lastLoggedPath = stats.currentPath;
+            }
+        }
+
+        function updateButtonStates(traversing) {
+            isTraversing = traversing;
+            document.getElementById('startAutoBtn').disabled = traversing;
+            document.getElementById('stopBtn').disabled = !traversing;
+            document.getElementById('pauseBtn').disabled = !traversing;
+            document.getElementById('resumeBtn').disabled = true;
+        }
+
+        function showProgress(show) {
+            document.getElementById('progressContainer').style.display = show ? 'block' : 'none';
+        }
+
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logContent = document.getElementById('logContent');
+            logContent.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            
+            // Auto-scroll to bottom
+            const logContainer = document.getElementById('logContainer');
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('logContent').innerHTML = '📋 Log cleared...';
+        }
+    </script>
+</body>
+</html>

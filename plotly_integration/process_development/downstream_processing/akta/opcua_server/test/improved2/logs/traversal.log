@@ -1,0 +1,236 @@
+2025-06-13T21:19:14.494Z [info]: Initializing OPC UA client...
+2025-06-13T21:19:14.665Z [info]: Connected to OPC UA server
+2025-06-13T21:19:15.511Z [info]: Created 2 sessions in pool
+2025-06-13T21:19:15.512Z [info]: [Traversal 0] Starting from: ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods
+2025-06-13T21:19:17.526Z [info]: Progress: 0/1 folders | 0 variables | 0 records | Rate: 0.0 folders/s | ETA: 0s
+2025-06-13T21:19:19.537Z [info]: Progress: 0/1 folders | 0 variables | 0 records | Rate: 0.0 folders/s | ETA: 0s
+2025-06-13T21:19:21.551Z [info]: Progress: 0/1 folders | 0 variables | 0 records | Rate: 0.0 folders/s | ETA: 0s
+2025-06-13T21:19:23.554Z [info]: Progress: 1/5 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 36s
+2025-06-13T21:19:25.561Z [info]: Progress: 1/5 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 44s
+2025-06-13T21:19:27.571Z [info]: Progress: 1/5 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 52s
+2025-06-13T21:19:29.572Z [info]: Progress: 2/15 folders | 2 variables | 0 records | Rate: 0.1 folders/s | ETA: 98s
+2025-06-13T21:19:31.575Z [info]: Progress: 2/15 folders | 12 variables | 0 records | Rate: 0.1 folders/s | ETA: 111s
+2025-06-13T21:19:33.578Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.2 folders/s | ETA: 95s
+2025-06-13T21:19:35.587Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 105s
+2025-06-13T21:19:37.596Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 116s
+2025-06-13T21:19:39.600Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 126s
+2025-06-13T21:19:41.604Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 136s
+2025-06-13T21:19:43.614Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 146s
+2025-06-13T21:19:45.617Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 156s
+2025-06-13T21:19:47.621Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 166s
+2025-06-13T21:19:49.623Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 176s
+2025-06-13T21:19:51.632Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 186s
+2025-06-13T21:19:52.499Z [error]: Failed to read attributes for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001:
+2025-06-13T21:19:52.500Z [error]: Failed to read attributes for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001:
+2025-06-13T21:19:53.647Z [info]: Progress: 4/59 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 538s
+2025-06-13T21:19:55.657Z [info]: Progress: 5/61 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 461s
+2025-06-13T21:19:57.666Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 432s
+2025-06-13T21:19:59.679Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 452s
+2025-06-13T21:20:01.684Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 472s
+2025-06-13T21:20:03.690Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 492s
+2025-06-13T21:20:05.701Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 512s
+2025-06-13T21:20:07.503Z [warn]: Browse retry 1 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 after 2000ms
+2025-06-13T21:20:07.706Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 532s
+2025-06-13T21:20:09.713Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 552s
+2025-06-13T21:20:11.717Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 572s
+2025-06-13T21:20:13.722Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 592s
+2025-06-13T21:20:15.727Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 612s
+2025-06-13T21:20:17.736Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 632s
+2025-06-13T21:20:19.749Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 653s
+2025-06-13T21:20:21.755Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 673s
+2025-06-13T21:20:23.767Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 693s
+2025-06-13T21:20:24.512Z [warn]: Browse retry 2 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 after 4000ms
+2025-06-13T21:20:25.780Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 713s
+2025-06-13T21:20:27.789Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 733s
+2025-06-13T21:20:29.792Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 753s
+2025-06-13T21:20:31.792Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 773s
+2025-06-13T21:20:33.798Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 793s
+2025-06-13T21:20:35.801Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 813s
+2025-06-13T21:20:37.811Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 833s
+2025-06-13T21:20:39.816Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 853s
+2025-06-13T21:20:41.816Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 873s
+2025-06-13T21:20:43.530Z [warn]: Browse retry 3 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 after 8000ms
+2025-06-13T21:20:43.826Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 893s
+2025-06-13T21:20:45.836Z [info]: Progress: 6/66 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 913s
+2025-06-13T21:26:20.670Z [info]: Initializing OPC UA client...
+2025-06-13T21:26:20.868Z [info]: Connected to OPC UA server
+2025-06-13T21:26:21.649Z [info]: Created 2 sessions in pool
+2025-06-13T21:26:21.650Z [info]: [Traversal 0] Starting from: ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods
+2025-06-13T21:26:23.661Z [info]: Progress: 0/1 folders | 0 variables | 0 records | Rate: 0.0 folders/s | ETA: 0s
+2025-06-13T21:26:25.674Z [info]: Progress: 0/1 folders | 0 variables | 0 records | Rate: 0.0 folders/s | ETA: 0s
+2025-06-13T21:26:27.679Z [info]: Progress: 0/1 folders | 0 variables | 0 records | Rate: 0.0 folders/s | ETA: 0s
+2025-06-13T21:26:29.687Z [info]: Progress: 1/5 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 36s
+2025-06-13T21:26:31.701Z [info]: Progress: 1/5 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 44s
+2025-06-13T21:26:33.710Z [info]: Progress: 1/5 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 52s
+2025-06-13T21:26:35.713Z [info]: Progress: 2/15 folders | 0 variables | 0 records | Rate: 0.1 folders/s | ETA: 98s
+2025-06-13T21:26:37.725Z [info]: Progress: 2/15 folders | 16 variables | 0 records | Rate: 0.1 folders/s | ETA: 111s
+2025-06-13T21:26:39.739Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.2 folders/s | ETA: 95s
+2025-06-13T21:26:41.746Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 105s
+2025-06-13T21:26:43.750Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 115s
+2025-06-13T21:26:43.845Z [warn]: Browse retry 1 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 after 2000ms
+2025-06-13T21:26:45.763Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 125s
+2025-06-13T21:26:47.766Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 135s
+2025-06-13T21:26:49.774Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 146s
+2025-06-13T21:26:51.779Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 156s
+2025-06-13T21:26:53.783Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 166s
+2025-06-13T21:26:55.790Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 176s
+2025-06-13T21:26:57.794Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 186s
+2025-06-13T21:26:59.794Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 196s
+2025-06-13T21:27:00.862Z [warn]: Browse retry 2 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 after 4000ms
+2025-06-13T21:27:01.799Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 206s
+2025-06-13T21:27:03.800Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 216s
+2025-06-13T21:27:05.805Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 226s
+2025-06-13T21:27:07.815Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 236s
+2025-06-13T21:27:09.821Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 246s
+2025-06-13T21:27:11.828Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 256s
+2025-06-13T21:27:13.830Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 266s
+2025-06-13T21:27:15.834Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 276s
+2025-06-13T21:27:17.843Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 286s
+2025-06-13T21:27:19.848Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 296s
+2025-06-13T21:27:19.880Z [warn]: Browse retry 3 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 after 8000ms
+2025-06-13T21:27:21.853Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 306s
+2025-06-13T21:27:23.855Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 316s
+2025-06-13T21:27:25.869Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 326s
+2025-06-13T21:27:27.880Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 336s
+2025-06-13T21:27:29.880Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 346s
+2025-06-13T21:27:31.884Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 356s
+2025-06-13T21:27:33.900Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 366s
+2025-06-13T21:27:35.911Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 376s
+2025-06-13T21:27:37.915Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 386s
+2025-06-13T21:27:39.916Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 396s
+2025-06-13T21:27:41.925Z [info]: Progress: 3/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 406s
+2025-06-13T21:27:42.888Z [error]: Browse failed after 3 retries for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15:
+2025-06-13T21:27:43.926Z [info]: Progress: 4/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 291s
+2025-06-13T21:27:45.941Z [info]: Progress: 4/18 folders | 26 variables | 0 records | Rate: 0.0 folders/s | ETA: 298s
+2025-06-13T21:27:47.943Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 233s
+2025-06-13T21:27:49.957Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 238s
+2025-06-13T21:27:51.965Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 243s
+2025-06-13T21:27:53.965Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 249s
+2025-06-13T21:27:55.973Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 254s
+2025-06-13T21:27:57.975Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 259s
+2025-06-13T21:27:59.987Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 265s
+2025-06-13T21:28:02.000Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 270s
+2025-06-13T21:28:04.002Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 276s
+2025-06-13T21:28:06.016Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 281s
+2025-06-13T21:28:08.017Z [info]: Progress: 6/22 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 286s
+2025-06-13T21:28:09.661Z [error]: Failed to read attributes for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250219 Protein A Chromatography DN481-494 (1):
+2025-06-13T21:28:09.662Z [error]: Failed to read attributes for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 001:
+2025-06-13T21:28:09.662Z [error]: Failed to read attributes for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250217 0.66x20cm UniMab 50 002:
+2025-06-13T21:28:09.663Z [error]: Failed to read attributes for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-50E15 Farnsworth/20250226 1.1x20cm UniMab 50 - Column Performance Test 001:
+2025-06-13T21:28:10.021Z [info]: Progress: 7/61 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 844s
+2025-06-13T21:28:12.023Z [info]: Progress: 7/61 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 859s
+2025-06-13T21:28:14.026Z [info]: Progress: 8/62 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 765s
+2025-06-13T21:28:16.033Z [info]: Progress: 9/67 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 743s
+2025-06-13T21:28:18.048Z [info]: Progress: 9/67 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 756s
+2025-06-13T21:28:20.053Z [info]: Progress: 9/67 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 769s
+2025-06-13T21:28:22.057Z [info]: Progress: 9/67 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 782s
+2025-06-13T21:28:24.073Z [info]: Progress: 9/67 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 795s
+2025-06-13T21:28:26.087Z [info]: Progress: 10/77 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 840s
+2025-06-13T21:28:28.092Z [info]: Progress: 11/79 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 788s
+2025-06-13T21:28:30.094Z [info]: Progress: 11/79 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 800s
+2025-06-13T21:28:32.102Z [info]: Progress: 11/79 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 812s
+2025-06-13T21:28:34.106Z [info]: Progress: 12/92 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 890s
+2025-06-13T21:28:36.119Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 875s
+2025-06-13T21:28:38.133Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 888s
+2025-06-13T21:28:40.148Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 901s
+2025-06-13T21:28:42.158Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 914s
+2025-06-13T21:28:44.160Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 927s
+2025-06-13T21:28:46.170Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 940s
+2025-06-13T21:28:48.175Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 953s
+2025-06-13T21:28:49.394Z [warn]: Browse retry 1 for ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/Documentation after 2000ms
+2025-06-13T21:28:50.177Z [info]: Progress: 13/97 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 966s
+2025-06-13T21:28:52.186Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 879s
+2025-06-13T21:28:54.189Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 890s
+2025-06-13T21:28:56.193Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 902s
+2025-06-13T21:28:58.202Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 914s
+2025-06-13T21:29:00.205Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 925s
+2025-06-13T21:29:02.216Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 937s
+2025-06-13T21:29:04.228Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 949s
+2025-06-13T21:29:06.239Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 960s
+2025-06-13T21:29:06.411Z [warn]: Browse retry 2 for ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/Documentation after 4000ms
+2025-06-13T21:29:08.244Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 972s
+2025-06-13T21:29:10.254Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 984s
+2025-06-13T21:29:12.266Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 995s
+2025-06-13T21:29:14.279Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1007s
+2025-06-13T21:29:16.288Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1019s
+2025-06-13T21:29:18.302Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1030s
+2025-06-13T21:29:20.310Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1042s
+2025-06-13T21:29:22.319Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1054s
+2025-06-13T21:29:24.329Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1065s
+2025-06-13T21:29:25.431Z [warn]: Browse retry 3 for ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/Documentation after 8000ms
+2025-06-13T21:29:26.331Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1077s
+2025-06-13T21:29:28.345Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1089s
+2025-06-13T21:29:30.360Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1100s
+2025-06-13T21:29:32.368Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1112s
+2025-06-13T21:29:34.371Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1123s
+2025-06-13T21:29:36.378Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1135s
+2025-06-13T21:29:38.379Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1147s
+2025-06-13T21:29:40.393Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1158s
+2025-06-13T21:29:42.405Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1170s
+2025-06-13T21:29:44.404Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1182s
+2025-06-13T21:29:46.406Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1193s
+2025-06-13T21:29:48.416Z [info]: Progress: 15/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1205s
+2025-06-13T21:29:48.446Z [error]: Browse failed after 3 retries for ns=2;s=15:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/ DN 562 CHT Confirmation Run 001 001/Documentation:
+2025-06-13T21:29:50.426Z [info]: Progress: 16/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1127s
+2025-06-13T21:29:52.434Z [info]: Progress: 16/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1138s
+2025-06-13T21:29:54.436Z [info]: Progress: 16/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1149s
+2025-06-13T21:29:56.441Z [info]: Progress: 16/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1160s
+2025-06-13T21:29:58.442Z [info]: Progress: 16/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1171s
+2025-06-13T21:30:00.448Z [info]: Progress: 16/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1181s
+2025-06-13T21:30:02.449Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1035s
+2025-06-13T21:30:03.449Z [warn]: Browse retry 1 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250604 - 49T5 - HIC resin screen - DN 689-690 after 2000ms
+2025-06-13T21:30:04.461Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1044s
+2025-06-13T21:30:06.467Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1054s
+2025-06-13T21:30:08.478Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1063s
+2025-06-13T21:30:10.481Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1072s
+2025-06-13T21:30:12.491Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1082s
+2025-06-13T21:30:14.503Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1091s
+2025-06-13T21:30:16.509Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1101s
+2025-06-13T21:30:18.521Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1110s
+2025-06-13T21:30:20.529Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1119s
+2025-06-13T21:30:22.542Z [info]: Progress: 18/102 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1129s
+2025-06-13T21:30:24.550Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1091s
+2025-06-13T21:30:26.564Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1100s
+2025-06-13T21:30:28.575Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1109s
+2025-06-13T21:30:30.576Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1118s
+2025-06-13T21:30:32.591Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1127s
+2025-06-13T21:30:34.605Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1136s
+2025-06-13T21:30:36.619Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1145s
+2025-06-13T21:30:37.716Z [warn]: Browse retry 1 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710 after 2000ms
+2025-06-13T21:30:37.716Z [warn]: Browse retry 1 for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001 after 2000ms
+2025-06-13T21:30:37.717Z [warn]: Browse retry 1 for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002 after 2000ms
+2025-06-13T21:30:38.623Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1154s
+2025-06-13T21:30:40.626Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1163s
+2025-06-13T21:30:42.634Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1172s
+2025-06-13T21:30:44.643Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1181s
+2025-06-13T21:30:46.645Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1190s
+2025-06-13T21:30:48.654Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1199s
+2025-06-13T21:30:50.658Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1208s
+2025-06-13T21:30:52.669Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1217s
+2025-06-13T21:30:54.673Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1226s
+2025-06-13T21:30:54.736Z [warn]: Browse retry 2 for ns=2;s=6:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/HIC/20250610 49T5 HIC screen DN 708-710 after 4000ms
+2025-06-13T21:30:54.737Z [warn]: Browse retry 2 for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001 after 4000ms
+2025-06-13T21:30:54.737Z [warn]: Browse retry 2 for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002 after 4000ms
+2025-06-13T21:30:56.675Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1235s
+2025-06-13T21:30:58.677Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1244s
+2025-06-13T21:31:00.679Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1253s
+2025-06-13T21:31:02.681Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1262s
+2025-06-13T21:31:04.687Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1271s
+2025-06-13T21:31:06.694Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1280s
+2025-06-13T21:31:08.703Z [info]: Progress: 19/104 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1289s
+2025-06-13T21:31:10.715Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1262s
+2025-06-13T21:31:12.723Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1270s
+2025-06-13T21:31:13.748Z [warn]: Browse retry 3 for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 640 40mgl 001 after 8000ms
+2025-06-13T21:31:13.749Z [warn]: Browse retry 3 for ns=2;s=12:Archive/OPCuser/Folders/DefaultHome/04_PD Results and Project Specific Methods/SI-49T5/Protein A Chromatography (1)/DN 641 40 mgl 002 after 8000ms
+2025-06-13T21:31:14.739Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1279s
+2025-06-13T21:31:16.741Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1288s
+2025-06-13T21:31:18.755Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1297s
+2025-06-13T21:31:20.766Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1305s
+2025-06-13T21:31:22.770Z [info]: Progress: 20/107 folders | 26 variables | 0 records | Rate: 0.1 folders/s | ETA: 1314s
+2025-06-13T22:13:50.469Z [info]: Initializing OPC UA client...
+2025-06-13T22:13:50.640Z [info]: Connected to OPC UA server
+2025-06-13T22:14:23.750Z [info]: Initializing OPC UA client...
+2025-06-13T22:14:24.060Z [info]: Connected to OPC UA server
+2025-06-13T22:14:39.071Z [error]: Failed to initialize: Transaction has timed out ( timeout = 15000 ms , request = CreateSessionRequest) {"stack":"Error: Transaction has timed out ( timeout = 15000 ms , request = CreateSessionRequest)\n    at Timeout._onTimeout (C:\\Users\\cdallarosa\\DataAlchemy\\djangoProject\\node_modules\\node-opcua-secure-channel\\dist\\source\\client\\client_secure_channel_layer.js:1044:27)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)"}
+2025-06-13T22:14:39.072Z [error]: Traversal failed: Transaction has timed out ( timeout = 15000 ms , request = CreateSessionRequest) {"stack":"Error: Transaction has timed out ( timeout = 15000 ms , request = CreateSessionRequest)\n    at Timeout._onTimeout (C:\\Users\\cdallarosa\\DataAlchemy\\djangoProject\\node_modules\\node-opcua-secure-channel\\dist\\source\\client\\client_secure_channel_layer.js:1044:27)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)"}
+2025-06-13T22:14:39.079Z [info]: Cleanup completed

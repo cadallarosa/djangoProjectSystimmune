@@ -1,0 +1,18 @@
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T21:19:07.837Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T21:19:10.195Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T21:19:10.199Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T21:19:10.367Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T21:26:14.300Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T21:26:16.908Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T21:26:16.910Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T21:26:17.336Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T21:35:22.814Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T21:35:25.162Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T21:35:25.165Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T21:35:25.368Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T22:13:43.558Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T22:13:43.913Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T22:13:46.232Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T22:14:14.879Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T22:14:15.382Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T22:14:17.930Z"}

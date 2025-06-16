@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OPC UA Browser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2196F3;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #2196F3;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .log-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin: 2px 0;
+        }
+
+        .log-time {
+            color: #666;
+        }
+
+        .log-info { color: #4EC9B0; }
+        .log-success { color: #B5CEA8; }
+        .log-error { color: #F48771; }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-active {
+            background: #4CAF50;
+            animation: pulse 1s infinite;
+        }
+
+        .status-idle {
+            background: #999;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .db-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .db-connected {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .db-fallback {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .db-disconnected {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 OPC UA Browser</h1>
+            <p>Simple, efficient traversal of OPC UA server nodes</p>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn-primary" onclick="startTraversal()">
+                🚀 Start Traversal
+            </button>
+            <button id="stopBtn" class="btn-danger" onclick="stopTraversal()" disabled>
+                ⏹️ Stop
+            </button>
+            <span id="dbStatus" class="db-status db-disconnected">Database: Checking...</span>
+        </div>
+
+        <div class="status-panel">
+            <h2>
+                <span id="statusIndicator" class="status-indicator status-idle"></span>
+                Status: <span id="statusText">Idle</span>
+            </h2>
+
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill" style="width: 0%">0%</div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="foldersProcessed">0</div>
+                    <div class="stat-label">Folders Processed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalFolders">0</div>
+                    <div class="stat-label">Total Folders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="variablesFound">0</div>
+                    <div class="stat-label">Variables Found</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="recordsInserted">0</div>
+                    <div class="stat-label">Records Inserted</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <strong>Current Path:</strong>
+                <div id="currentPath" style="font-family: monospace; font-size: 12px; color: #666; margin-top: 5px;">-</div>
+            </div>
+        </div>
+
+        <div class="log-panel">
+            <h2>📋 Activity Log</h2>
+            <div class="log-container" id="logContainer">
+                <div class="log-entry log-info">
+                    <span class="log-time">[00:00:00]</span> Ready to start traversal
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let progressInterval = null;
+
+        function log(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function startTraversal() {
+            try {
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+
+                log('Starting traversal...', 'info');
+
+                const response = await fetch('/api/traverse/start', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('✅ Traversal started', 'success');
+                    updateStatus('Running', true);
+                    startProgressPolling();
+                } else {
+                    log(`❌ Failed: ${result.error}`, 'error');
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = true;
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+            }
+        }
+
+        async function stopTraversal() {
+            try {
+                log('Stopping traversal...', 'info');
+
+                const response = await fetch('/api/traverse/stop', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('⏹️ Traversal stopped', 'info');
+                    stopProgressPolling();
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function startProgressPolling() {
+            if (progressInterval) clearInterval(progressInterval);
+
+            progressInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/traverse/progress');
+                    const progress = await response.json();
+                    updateProgress(progress);
+
+                    if (!progress.active) {
+                        stopProgressPolling();
+                        log('✅ Traversal completed', 'success');
+                        document.getElementById('startBtn').disabled = false;
+                        document.getElementById('stopBtn').disabled = true;
+                        updateStatus('Idle', false);
+                    }
+                } catch (error) {
+                    console.error('Progress poll error:', error);
+                }
+            }, 1000);
+        }
+
+        function stopProgressPolling() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+        }
+
+        function updateProgress(progress) {
+            document.getElementById('foldersProcessed').textContent = progress.processedFolders || 0;
+            document.getElementById('totalFolders').textContent = progress.totalFolders || 0;
+            document.getElementById('variablesFound').textContent = progress.discoveredVariables || 0;
+            document.getElementById('recordsInserted').textContent = progress.insertedRecords || 0;
+            document.getElementById('currentPath').textContent = progress.currentPath || '-';
+
+            const percent = progress.totalFolders > 0
+                ? Math.round((progress.processedFolders / progress.totalFolders) * 100)
+                : 0;
+
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressFill').textContent = `${percent}%`;
+        }
+
+        function updateStatus(text, active) {
+            document.getElementById('statusText').textContent = text;
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = active ? 'status-indicator status-active' : 'status-indicator status-idle';
+        }
+
+        async function checkDatabaseStatus() {
+            try {
+                const response = await fetch('/api/database/status');
+                const status = await response.json();
+
+                const dbStatusEl = document.getElementById('dbStatus');
+
+                if (status.poolReady) {
+                    dbStatusEl.textContent = 'Database: Connected';
+                    dbStatusEl.className = 'db-status db-connected';
+                } else if (status.fallbackMode) {
+                    dbStatusEl.textContent = `Database: Fallback (${status.fallbackRecords} records)`;
+                    dbStatusEl.className = 'db-status db-fallback';
+                } else {
+                    dbStatusEl.textContent = 'Database: Disconnected';
+                    dbStatusEl.className = 'db-status db-disconnected';
+                }
+            } catch (error) {
+                console.error('DB status check error:', error);
+            }
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            checkDatabaseStatus();
+            setInterval(checkDatabaseStatus, 5000);
+        });
+
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            stopProgressPolling();
+        });
+    </script>
+</body>
+</html>

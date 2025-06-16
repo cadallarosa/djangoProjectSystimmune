@@ -1,0 +1,30 @@
+Analysis (user flow for SEC/titer/CE)
+-select PD/FB/UP
+-select samples
+-check analytics calibration and acceptance criteria
+-mark as complete
+
+Downstream (user flow)
+-define experiment set with experimental variables
+-create experiments (DN#)
+--report source material
+--report/link PD sample numbers
+--report/link AKTA result
+-complete experiment set report
+--chromatograms
+--Summary table including % recovery and SEC
+--viewable analytical reports
+--experimental set interpretation
+
+
+Upstream (user flow)
+-define experiment set with experimental variables
+-create experiments (UP#)
+--link vicell data
+--link nova flex data
+--link dasgip data
+-complete experiment set report
+--Summary table with titer, key analytic metrics
+--add offline stats
+--experimental set interpretation
+Mark as complete

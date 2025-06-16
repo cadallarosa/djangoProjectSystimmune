@@ -1,0 +1,15 @@
+/* File: static/styles.css */
+
+.responsive-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+}
+
+.responsive-iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+    height: 100%;
+}

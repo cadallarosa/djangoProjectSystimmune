@@ -1,0 +1,3 @@
+"Protein name","Modifiers","Response","Observed mass (Da)","Expected mass (Da)","Mass error (mDa)","Mass error (ppm)","Observed RT (min)","Alternate assignments"
+"SI-50E15 HC","","368833057","101144.5055","101142.32360","2181.9","21.6","3.29",False
+"SI-50E15 LC","","135113168","51011.1532","51010.87200","281.2","5.5","3.70",False

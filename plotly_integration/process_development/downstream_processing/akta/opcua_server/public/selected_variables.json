@@ -1,0 +1,602 @@
+[
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:UV 1_280",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:UV 1_280",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:UV 1_280",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:UV 2_254",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:UV 2_254",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:UV 2_254",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:UV 3_214",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:UV 3_214",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:UV 3_214",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Cond",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Cond",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:% Cond",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:% Cond",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:% Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Conc B",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Conc B",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Conc B",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:pH",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:pH",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:pH",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:System flow",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:System flow",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:System flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:System linear flow",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:System linear flow",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:System linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:System pressure",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:System pressure",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:System pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Cond temp",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Cond temp",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Cond temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Sample flow",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Sample flow",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Sample flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Sample linear flow",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Sample linear flow",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Sample linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Sample pressure",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Sample pressure",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Sample pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:PreC pressure",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:PreC pressure",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:PreC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:DeltaC pressure",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:DeltaC pressure",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:DeltaC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:PostC pressure",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:PostC pressure",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:PostC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Conc Q1",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Conc Q1",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Conc Q1",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Conc Q2",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Conc Q2",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Conc Q2",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Conc Q3",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Conc Q3",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Conc Q3",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Conc Q4",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Conc Q4",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Conc Q4",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Frac temp",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Frac temp",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Frac temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:UV cell path length",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:UV cell path length",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:UV cell path length",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Fraction",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Fraction",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Fraction",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Injection",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Injection",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Injection",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R13 20160309/1.1cm CHT R13 001/1.1cm CHT R13 001:Chrom.1:Run Log",
+    "displayName": "1.1cm CHT R13 001:Chrom.1:Run Log",
+    "browseName": "2:1.1cm CHT R13 001:Chrom.1:Run Log",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV 1_280",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV 1_280",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV 1_280",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV 2_0",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV 2_0",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV 2_0",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV 3_0",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV 3_0",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV 3_0",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Cond",
+    "displayName": "1.1cm CHT 001:Chrom.1:Cond",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:% Cond",
+    "displayName": "1.1cm CHT 001:Chrom.1:% Cond",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:% Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc B",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc B",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc B",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:pH",
+    "displayName": "1.1cm CHT 001:Chrom.1:pH",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:pH",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:System flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:System flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:System flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:System linear flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:System linear flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:System linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:System pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:System pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:System pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Cond temp",
+    "displayName": "1.1cm CHT 001:Chrom.1:Cond temp",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Cond temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Sample flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:Sample flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Sample flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Sample linear flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:Sample linear flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Sample linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Sample pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:Sample pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Sample pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:PreC pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:PreC pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:PreC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:DeltaC pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:DeltaC pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:DeltaC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:PostC pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:PostC pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:PostC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q1",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q1",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q1",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q2",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q2",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q2",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q3",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q3",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q3",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q4",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q4",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q4",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Frac temp",
+    "displayName": "1.1cm CHT 001:Chrom.1:Frac temp",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Frac temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV cell path length",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV cell path length",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV cell path length",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Fraction",
+    "displayName": "1.1cm CHT 001:Chrom.1:Fraction",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Fraction",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Injection",
+    "displayName": "1.1cm CHT 001:Chrom.1:Injection",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Injection",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT R17 Run 2/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Run Log",
+    "displayName": "1.1cm CHT 001:Chrom.1:Run Log",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Run Log",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV 1_280",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV 1_280",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV 1_280",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV 2_0",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV 2_0",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV 2_0",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV 3_0",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV 3_0",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV 3_0",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Cond",
+    "displayName": "1.1cm CHT 001:Chrom.1:Cond",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:% Cond",
+    "displayName": "1.1cm CHT 001:Chrom.1:% Cond",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:% Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc B",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc B",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc B",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:pH",
+    "displayName": "1.1cm CHT 001:Chrom.1:pH",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:pH",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:System flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:System flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:System flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:System linear flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:System linear flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:System linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:System pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:System pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:System pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Cond temp",
+    "displayName": "1.1cm CHT 001:Chrom.1:Cond temp",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Cond temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Sample flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:Sample flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Sample flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Sample linear flow",
+    "displayName": "1.1cm CHT 001:Chrom.1:Sample linear flow",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Sample linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Sample pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:Sample pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Sample pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:PreC pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:PreC pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:PreC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:DeltaC pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:DeltaC pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:DeltaC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:PostC pressure",
+    "displayName": "1.1cm CHT 001:Chrom.1:PostC pressure",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:PostC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q1",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q1",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q1",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q2",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q2",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q2",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q3",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q3",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q3",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Conc Q4",
+    "displayName": "1.1cm CHT 001:Chrom.1:Conc Q4",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Conc Q4",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Frac temp",
+    "displayName": "1.1cm CHT 001:Chrom.1:Frac temp",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Frac temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:UV cell path length",
+    "displayName": "1.1cm CHT 001:Chrom.1:UV cell path length",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:UV cell path length",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Fraction",
+    "displayName": "1.1cm CHT 001:Chrom.1:Fraction",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Fraction",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT C3 R17 20160310/1.1cm CHT 001/1.1cm CHT 001:Chrom.1:Run Log",
+    "displayName": "1.1cm CHT 001:Chrom.1:Run Log",
+    "browseName": "2:1.1cm CHT 001:Chrom.1:Run Log",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 1_280",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 1_280",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 1_280",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 2_254",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 2_254",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 2_254",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 3_214",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 3_214",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV 3_214",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Cond",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Cond",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:% Cond",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:% Cond",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:% Cond",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc B",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc B",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc B",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:pH",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:pH",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:pH",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System flow",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System flow",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System linear flow",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System linear flow",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System pressure",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System pressure",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:System pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Cond temp",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Cond temp",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Cond temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample flow",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample flow",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample linear flow",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample linear flow",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample linear flow",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample pressure",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample pressure",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Sample pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:PreC pressure",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:PreC pressure",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:PreC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:DeltaC pressure",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:DeltaC pressure",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:DeltaC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:PostC pressure",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:PostC pressure",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:PostC pressure",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q1",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q1",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q1",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q2",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q2",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q2",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q3",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q3",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q3",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q4",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q4",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Conc Q4",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Frac temp",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Frac temp",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:Frac temp",
+    "nodeClass": "Variable"
+  },
+  {
+    "nodeId": "ns=2;s=13:Archive/OPCuser/Folders/LegacyData/LegacyData_Fry/PD Results and Project specific methods/SI-1/C3/CHT/1.1 CHT/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00)/1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV cell path length",
+    "displayName": "1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV cell path length",
+    "browseName": "2:1.1cm CHT R11 20160308 001 (Result recovered 3-9-2016 6:18:43 AM -08:00):Chrom.1:UV cell path length",
+    "nodeClass": "Variable"
+  }
+]

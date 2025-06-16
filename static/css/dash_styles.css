@@ -1,0 +1,55 @@
+.sidebar {
+    width: 25%;
+    height: 100vh;
+    background-color: #f8f9fa;
+    padding: 10px;
+    overflow-y: auto;
+    float: left;
+}
+
+.main-content {
+    width: 75%;
+    float: left;
+}
+
+.project-folder {
+    margin-bottom: 10px;
+}
+
+.folder {
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+}
+
+.result {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.folder:hover, .result:hover {
+    background-color: #e9ecef;
+}
+
+.results-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+.new-report-modal {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    width: 40%;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 1000;
+    display: none;
+}

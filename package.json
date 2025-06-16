@@ -1,0 +1,30 @@
+{
+  "name": "opcua-optimized-browser",
+  "version": "2.0.0",
+  "description": "High-performance OPC UA browser with parallel traversal",
+  "main": "OptimizedOPCUAServer.js",
+  "scripts": {
+    "start": "node OptimizedOPCUAServer.js",
+    "test-browse": "node testBrowse.js",
+    "fix-cert": "node fixCertificate.js",
+    "test-db": "node testDatabaseConnection.js"
+  },
+  "dependencies": {
+    "node-opcua": "^2.115.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "mysql2": "^3.6.5",
+    "winston": "^3.11.0",
+    "p-limit": "^3.1.0",
+    "lru-cache": "^7.18.3",
+    "uuid": "^9.0.1",
+    "axios": "^1.6.2",
+    "ssh2": "^1.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

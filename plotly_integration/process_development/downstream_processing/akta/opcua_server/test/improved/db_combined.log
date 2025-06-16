@@ -1,0 +1,215 @@
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:18:06.322Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T18:18:08.747Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T18:18:08.751Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:18:08.980Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:33:25.456Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:33:27.119Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:33:29.309Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:35:34.586Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:35:35.129Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:35:37.296Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:47:23.623Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:47:23.946Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:47:26.110Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:54:24.528Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:54:25.082Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:54:27.284Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:55:53.595Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:55:54.230Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:55:56.406Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 03b626f4-5344-5e2b-bdcc-e899f18fd0c8","timestamp":"2025-06-13T18:56:22.830Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 305768d9-f104-57a1-84ab-e175023e720f","timestamp":"2025-06-13T18:56:24.445Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 1f5e15dd-cab5-55b4-9083-0cee2c2f72c9","timestamp":"2025-06-13T18:56:26.212Z"}
+{"level":"info","message":"✅ DB: Inserted result_id db80c287-8781-5c58-b0df-f2acfa01fcc3","timestamp":"2025-06-13T18:56:28.208Z"}
+{"level":"info","message":"✅ DB: Inserted result_id df17b0e1-124a-5857-8deb-aae8e5aa10f5","timestamp":"2025-06-13T18:56:30.034Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 7f13b4a9-79ab-56a0-be57-c876fcab985f","timestamp":"2025-06-13T18:56:31.746Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 4039d6d9-8457-54ee-bdd6-48ec5987d183","timestamp":"2025-06-13T18:56:33.833Z"}
+{"level":"info","message":"✅ DB: Inserted result_id e54b5522-43df-5ae7-8ddc-421cd6063b67","timestamp":"2025-06-13T18:56:35.692Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 63e46e07-72d1-5f85-b4c2-d139c635ba0a","timestamp":"2025-06-13T18:56:37.559Z"}
+{"level":"info","message":"✅ DB: Inserted result_id f59d4259-2caf-5ea8-b8ba-784c8c2fe083","timestamp":"2025-06-13T18:56:42.928Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d8163f0f-db50-5893-a3d1-95601b23c3c1","timestamp":"2025-06-13T18:56:44.822Z"}
+{"level":"info","message":"✅ DB: Inserted result_id fbe72188-6251-526b-99d4-fe2586b2cdf7","timestamp":"2025-06-13T18:56:46.881Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:57:47.243Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:57:47.648Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:57:49.759Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T18:59:33.090Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T18:59:33.459Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T18:59:35.618Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 81105f85-7b5e-59f1-8831-d1ad1dd7e209","timestamp":"2025-06-13T18:59:50.375Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 10bf8986-97cd-5961-ba15-e7304c7c41c9","timestamp":"2025-06-13T18:59:53.135Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 69babcf6-d501-5aa1-ab53-01f4da872630","timestamp":"2025-06-13T18:59:55.975Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c8dbf51d-4efb-5727-8827-a1ce3046bcd2","timestamp":"2025-06-13T18:59:58.776Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T19:22:25.273Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T19:22:26.021Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T19:22:28.178Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T19:25:11.939Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T19:25:12.324Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T19:25:14.503Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T19:26:44.265Z"}
+{"level":"warn","message":"⚠️ SSH tunnel failed to start, trying direct connection...","timestamp":"2025-06-13T19:26:44.652Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T19:26:46.780Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T21:31:24.273Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T21:31:26.638Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T21:31:26.641Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T21:31:26.857Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T21:54:59.924Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T21:55:02.314Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T21:55:02.316Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T21:55:02.495Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T21:58:12.642Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T21:58:15.021Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T21:58:15.025Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T21:58:15.321Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 81105f85-7b5e-59f1-8831-d1ad1dd7e209","timestamp":"2025-06-13T21:58:29.615Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 10bf8986-97cd-5961-ba15-e7304c7c41c9","timestamp":"2025-06-13T21:58:31.810Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 69babcf6-d501-5aa1-ab53-01f4da872630","timestamp":"2025-06-13T21:58:34.732Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c8dbf51d-4efb-5727-8827-a1ce3046bcd2","timestamp":"2025-06-13T21:58:37.637Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 1009ab13-348a-5d86-9b10-e8e4acfb5554","timestamp":"2025-06-13T21:58:40.147Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b1b37a7a-0e78-56ba-975a-27a6e78509da","timestamp":"2025-06-13T21:58:43.094Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d2673908-d37e-5eea-9e4c-c7860435a114","timestamp":"2025-06-13T21:58:48.933Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 9039f179-e65c-55aa-a171-cc14d22d2973","timestamp":"2025-06-13T21:58:52.269Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 77706e0b-73b2-5163-b9a3-df8b1584fb2f","timestamp":"2025-06-13T21:58:54.334Z"}
+{"level":"info","message":"✅ DB: Inserted result_id ca92fa92-ecc0-5145-9d6d-e4c6cc74cb47","timestamp":"2025-06-13T21:59:01.291Z"}
+{"level":"info","message":"✅ DB: Inserted result_id a5aa8a95-e380-544d-a900-08ca90a7ac2c","timestamp":"2025-06-13T21:59:04.081Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3d06b65d-4f84-5028-a79c-e7a6a6a3c81b","timestamp":"2025-06-13T21:59:06.775Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 33c855a2-2336-564d-85d4-3882c3bb6504","timestamp":"2025-06-13T21:59:09.467Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c05cd506-f618-5534-b98f-1025473ad5b7","timestamp":"2025-06-13T21:59:12.037Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 59bbf8f5-156c-51c4-9a3b-42cc7e5992c0","timestamp":"2025-06-13T21:59:14.715Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c4bdafdf-ebd0-58c3-a657-82fec50d3f01","timestamp":"2025-06-13T21:59:17.534Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 034e2346-fa1a-5ba5-861c-1df1c33ad203","timestamp":"2025-06-13T21:59:20.880Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 65ef3ac1-4e5a-5fa1-a7fd-b6216808f6a3","timestamp":"2025-06-13T21:59:23.477Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 99141db3-756e-57c4-aa2d-53eac4f975da","timestamp":"2025-06-13T21:59:26.336Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3dc2fb55-3248-5b61-850d-894d3c153253","timestamp":"2025-06-13T21:59:32.242Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 43216819-b1ca-5ce7-959e-17c06df3d115","timestamp":"2025-06-13T21:59:34.950Z"}
+{"level":"info","message":"✅ DB: Inserted result_id cb9e52a3-2e07-5de7-8cfb-791b1df660fa","timestamp":"2025-06-13T21:59:37.650Z"}
+{"level":"info","message":"✅ DB: Inserted result_id f2aefe7d-891e-582c-81f1-3507429cd3d7","timestamp":"2025-06-13T21:59:40.311Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c548f8b8-c7b6-54cf-a9bb-b6519f10e494","timestamp":"2025-06-13T21:59:42.946Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 71527c96-372d-5c97-8beb-a23a00392d98","timestamp":"2025-06-13T21:59:45.029Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0fe84c54-4faa-5d0e-9763-1d29ea6f86ce","timestamp":"2025-06-13T21:59:47.626Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b8679f4e-77e1-5bfa-8d6b-d4650172b960","timestamp":"2025-06-13T21:59:51.872Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0e6dc5e8-225c-5353-ab37-e165a722f835","timestamp":"2025-06-13T21:59:56.012Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c076c859-f0c2-518a-a511-3d61728472f0","timestamp":"2025-06-13T22:00:00.530Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 36842d4f-442e-5c98-88e2-471ca8c77df3","timestamp":"2025-06-13T22:00:03.138Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 43ee5288-3c20-5810-89bb-c13c8b1e04f2","timestamp":"2025-06-13T22:00:05.847Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3e6d3d34-ea06-5e2c-a76b-c87f5d4e34f0","timestamp":"2025-06-13T22:00:08.539Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0afec6ff-0aec-595d-b0fb-d62d74f40a3b","timestamp":"2025-06-13T22:00:11.024Z"}
+{"level":"info","message":"✅ DB: Inserted result_id fb46ab18-d208-50ba-8b4d-902e81197bed","timestamp":"2025-06-13T22:00:13.914Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 132bf707-3a79-5a64-a022-b9f4b88e8906","timestamp":"2025-06-13T22:00:17.286Z"}
+{"level":"info","message":"✅ DB: Inserted result_id f181b6a1-1789-5b07-b2e1-b9225f5d0380","timestamp":"2025-06-13T22:00:21.605Z"}
+{"level":"info","message":"✅ DB: Inserted result_id e9d0e27a-16b2-5f9b-9115-76a9110f9f44","timestamp":"2025-06-13T22:00:24.306Z"}
+{"level":"info","message":"✅ DB: Inserted result_id ec6fbb4f-b148-546d-bec0-e4eb20f141d5","timestamp":"2025-06-13T22:00:27.675Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 553e0c81-afed-5e42-84dc-25ca221ef3b0","timestamp":"2025-06-13T22:00:30.410Z"}
+{"level":"info","message":"✅ DB: Inserted result_id fa2bb8f1-9505-5d28-bee3-085efa1a76e6","timestamp":"2025-06-13T22:00:34.178Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 17d358a5-86db-505c-b6db-156be49efa4e","timestamp":"2025-06-13T22:00:36.882Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 1e2f0486-6b37-5e9a-9f1f-b9ef01b30ce4","timestamp":"2025-06-13T22:00:39.239Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 74f5dbcf-c4bb-5881-8296-ba5dfa105aa4","timestamp":"2025-06-13T22:00:42.695Z"}
+{"level":"info","message":"✅ DB: Inserted result_id a47b8077-b528-57f9-a4f9-1d3794f58364","timestamp":"2025-06-13T22:00:45.200Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 9e1a925e-e615-5839-a4e8-7f89d53782f6","timestamp":"2025-06-13T22:00:48.463Z"}
+{"level":"info","message":"✅ DB: Inserted result_id beae36eb-e0ed-5d87-bc1a-21b6e51f522f","timestamp":"2025-06-13T22:00:52.545Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 63bdf781-5343-56cb-9961-c1efdeb59560","timestamp":"2025-06-13T22:00:55.441Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b9206e28-94d6-5488-b0b2-d680dd0e2a3a","timestamp":"2025-06-13T22:01:02.226Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 40c60ac5-88c5-57ae-a80d-b32e83402f0a","timestamp":"2025-06-13T22:01:04.575Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 96eb373a-0e15-536c-a0c6-dfb607ae546b","timestamp":"2025-06-13T22:01:07.069Z"}
+{"level":"info","message":"✅ DB: Inserted result_id c026e3da-d1fb-5381-9b94-c3b3de1ff57c","timestamp":"2025-06-13T22:01:09.735Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0964e7b5-50f4-544c-892a-c95307c5f77c","timestamp":"2025-06-13T22:01:12.228Z"}
+{"level":"info","message":"✅ DB: Inserted result_id ec06f7c3-578a-5462-b174-ed18daecc765","timestamp":"2025-06-13T22:01:14.759Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 8b167f69-47cc-5ddb-b1a9-88ad3dd3e26d","timestamp":"2025-06-13T22:01:17.403Z"}
+{"level":"info","message":"✅ DB: Inserted result_id fcdc504c-e748-57fa-839a-df1e522628ec","timestamp":"2025-06-13T22:01:19.545Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3322bbce-f2d1-5959-ae90-343ce28de97a","timestamp":"2025-06-13T22:01:23.239Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 49cdfe01-ab75-5446-aefb-e386e1d9a765","timestamp":"2025-06-13T22:01:25.708Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2906ca62-d52e-54b0-9eea-e84602eb641b","timestamp":"2025-06-13T22:01:29.563Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b7ffb181-7cb3-5c1f-94f7-33192e489acc","timestamp":"2025-06-13T22:01:32.537Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 80854dc1-de6c-5db7-97c4-11b9cecd441b","timestamp":"2025-06-13T22:01:36.448Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 17d902f5-7c22-55db-80b8-f1fc42fa00a9","timestamp":"2025-06-13T22:01:39.344Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d0079e19-6f25-58b6-97ad-287fcb5e267f","timestamp":"2025-06-13T22:01:44.328Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 70bbcbc0-e4d0-52dc-9284-ff33b360116b","timestamp":"2025-06-13T22:01:47.033Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2e6c9ff1-c14d-537a-aee7-a0719ee417a1","timestamp":"2025-06-13T22:01:50.095Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0e4f861e-79a8-516f-97e4-7641c9594672","timestamp":"2025-06-13T22:01:54.045Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0119f5d1-cba1-5bdb-8f80-10a28a8d062c","timestamp":"2025-06-13T22:01:57.275Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 009da716-c824-52fe-9aee-3b88d655b310","timestamp":"2025-06-13T22:02:01.978Z"}
+{"level":"info","message":"✅ DB: Inserted result_id f24e3b96-ee25-5aef-b816-5f983cff6a70","timestamp":"2025-06-13T22:02:04.585Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 944fd917-743c-5841-b9ea-c64bc8e9f1c5","timestamp":"2025-06-13T22:02:07.186Z"}
+{"level":"info","message":"✅ DB: Inserted result_id a29985b4-2964-58ad-9420-08c569145b62","timestamp":"2025-06-13T22:02:12.627Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 978f6497-3f63-575a-b911-01625bcf4eb5","timestamp":"2025-06-13T22:02:15.528Z"}
+{"level":"info","message":"✅ DB: Inserted result_id a03eb3cf-c595-5bd5-a5d0-fddcd8de6a0e","timestamp":"2025-06-13T22:02:18.458Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 69542489-de26-5414-83d6-6fcde106349b","timestamp":"2025-06-13T22:02:21.460Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0a1582a8-20cd-5194-a78b-67bfdf8a47d8","timestamp":"2025-06-13T22:02:24.488Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 8f2502b7-e246-5a62-b8ad-1355925a5e6d","timestamp":"2025-06-13T22:02:29.061Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 759334f9-3c86-529d-b9af-b2a11e9bd6e9","timestamp":"2025-06-13T22:02:31.902Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 096034c5-3fdc-5d00-b376-3e2a48f56d56","timestamp":"2025-06-13T22:02:50.279Z"}
+{"level":"info","message":"✅ DB: Inserted result_id a1fb48df-f739-5a25-b636-08ff80fedd26","timestamp":"2025-06-13T22:02:53.141Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d73455c4-80d3-5e4b-b1b2-ed985064ad8f","timestamp":"2025-06-13T22:02:58.319Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 29a9111f-9a17-5abf-af3a-7fab8268091d","timestamp":"2025-06-13T22:03:01.531Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 9f790ce7-d1ea-54ca-8596-cd692f7fb046","timestamp":"2025-06-13T22:03:05.902Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 54818aef-3487-5d3c-b302-23670fc29c7e","timestamp":"2025-06-13T22:03:10.890Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 65427d59-0112-5d04-b9cf-07cec03c3353","timestamp":"2025-06-13T22:03:14.506Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b3677322-79d4-5d51-aeb9-31b8c6c2974b","timestamp":"2025-06-13T22:03:20.770Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 06e40cb6-47fb-5b8c-9e02-eb04e713f883","timestamp":"2025-06-13T22:03:24.023Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b0f3e040-6feb-5e6c-9c51-8558b99a0350","timestamp":"2025-06-13T22:03:27.012Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 081516bc-e3e0-5f53-80e0-e7476728f03e","timestamp":"2025-06-13T22:03:31.165Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 8efcf5a0-56e7-5b6f-a737-103760a0d8fc","timestamp":"2025-06-13T22:03:36.348Z"}
+{"level":"info","message":"✅ DB: Inserted result_id a1be233a-fb0e-5f93-8f85-d4bac00a67d7","timestamp":"2025-06-13T22:03:40.314Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2b13ad11-5e03-5bb8-b595-e1580e209c64","timestamp":"2025-06-13T22:03:44.099Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d2413739-9a26-526f-8139-f4c45840ca47","timestamp":"2025-06-13T22:03:52.381Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 91a685fa-db92-594c-8325-f9110feeaf1e","timestamp":"2025-06-13T22:03:55.638Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 6c630512-678d-571b-99a0-7b0e28f950c4","timestamp":"2025-06-13T22:03:58.877Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2f93cbf2-24ab-5606-a5f8-ca967c729588","timestamp":"2025-06-13T22:04:02.995Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3b1aa98c-5950-561f-acb6-e9f2fb2b8865","timestamp":"2025-06-13T22:04:06.048Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 02ca97a2-0b7d-50e4-9284-621933ffe407","timestamp":"2025-06-13T22:04:08.313Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 4e4a346b-2e2b-5845-ace2-6fa77ea8af8e","timestamp":"2025-06-13T22:04:10.451Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 8c3158e8-3e9b-58d0-8231-302f9d649fdd","timestamp":"2025-06-13T22:04:12.677Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 40783bde-ae7c-5b11-a6c7-b486e1fe5200","timestamp":"2025-06-13T22:04:14.971Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 4972eeb8-6a4b-5b24-b887-65d791780f97","timestamp":"2025-06-13T22:04:17.155Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0ccd53d7-7600-5ec0-951b-57d6a802e6ac","timestamp":"2025-06-13T22:04:19.945Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 37b826aa-721d-53ed-bef0-e6eae9e906d8","timestamp":"2025-06-13T22:04:22.940Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 427f5427-38b7-559f-b19f-144b4709f4ee","timestamp":"2025-06-13T22:04:27.312Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 733584e9-8ce3-5606-92f7-0761f40d443b","timestamp":"2025-06-13T22:04:29.580Z"}
+{"level":"info","message":"✅ DB: Inserted result_id e782fe5e-64bc-58f0-b016-04aa15108dab","timestamp":"2025-06-13T22:04:32.953Z"}
+{"level":"info","message":"✅ DB: Inserted result_id af7c0fd9-8cd9-5013-9b7b-4702bd1c7b00","timestamp":"2025-06-13T22:04:34.683Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 1bac4640-2f8f-539c-be6f-7316657bb3f5","timestamp":"2025-06-13T22:04:39.164Z"}
+{"level":"info","message":"✅ DB: Inserted result_id f949e621-9287-5559-a783-13a279bac488","timestamp":"2025-06-13T22:04:41.655Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 08acdaf9-8348-5a27-9bea-e7eea5ac7de3","timestamp":"2025-06-13T22:04:44.171Z"}
+{"level":"info","message":"✅ DB: Inserted result_id e3a26895-94a9-560f-90bc-33b4e4e3b813","timestamp":"2025-06-13T22:04:47.620Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 7e58c54b-1706-5bba-abc3-84d9a210814a","timestamp":"2025-06-13T22:04:51.184Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 0b8b9482-508e-5339-965d-009d24426328","timestamp":"2025-06-13T22:04:56.535Z"}
+{"level":"info","message":"✅ DB: Inserted result_id aeb0262b-4d61-5631-8312-1633bd1aebb5","timestamp":"2025-06-13T22:05:01.190Z"}
+{"level":"info","message":"✅ DB: Inserted result_id dd08995c-97a0-5de8-8d5a-82eb828c8f24","timestamp":"2025-06-13T22:05:05.013Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 381ef24f-180b-540d-86ac-1648736e0648","timestamp":"2025-06-13T22:05:10.702Z"}
+{"level":"info","message":"✅ DB: Inserted result_id bed5ab1b-b084-5d66-8332-910dcf43b812","timestamp":"2025-06-13T22:05:13.763Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2431612d-1b03-5af5-ae5f-448e2113af3c","timestamp":"2025-06-13T22:05:17.494Z"}
+{"level":"info","message":"✅ DB: Inserted result_id f6724be2-ba75-5c06-842b-17da7f429e21","timestamp":"2025-06-13T22:05:21.233Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3e1482f6-a00e-5477-a395-7decaa7b90d9","timestamp":"2025-06-13T22:05:24.861Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d2efa16f-3367-522c-b66c-52e3f9cbe745","timestamp":"2025-06-13T22:05:32.251Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2adbe08e-c0e9-57c9-9173-f0faac28c3fb","timestamp":"2025-06-13T22:05:36.163Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 84b0ebc1-5446-5382-b0d4-7f7712e68412","timestamp":"2025-06-13T22:05:38.096Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 8497fb4d-84cd-5830-bb48-d72ce3ca3570","timestamp":"2025-06-13T22:05:42.103Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 2780b8b1-c7ca-5ef4-b8b2-7665a12790e3","timestamp":"2025-06-13T22:05:44.774Z"}
+{"level":"info","message":"✅ DB: Inserted result_id b9bb93fb-066a-5baa-a663-abea719126f9","timestamp":"2025-06-13T22:05:47.217Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 7b85e644-dc9a-5a11-97ac-6448fa6a6cee","timestamp":"2025-06-13T22:05:50.568Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 5d6562e9-065c-5de1-bbca-4097894b0ba3","timestamp":"2025-06-13T22:05:53.735Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 91d3d6a4-e122-540e-adca-78027240bc74","timestamp":"2025-06-13T22:05:56.309Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 21fd7aef-a874-5e24-abaa-ac3be4668d73","timestamp":"2025-06-13T22:05:59.815Z"}
+{"level":"info","message":"✅ DB: Inserted result_id d6bb9584-75e8-57ed-85a2-ed722f9cf5a4","timestamp":"2025-06-13T22:06:02.372Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 5a7d4353-810b-5013-b1cb-f675a5971c16","timestamp":"2025-06-13T22:06:05.514Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 3971e142-5d5c-52b2-998d-8540469a8b3c","timestamp":"2025-06-13T22:06:09.692Z"}
+{"level":"info","message":"✅ DB: Inserted result_id 8e235602-040a-5f4b-9001-97b60b23da60","timestamp":"2025-06-13T22:06:12.288Z"}
+{"level":"info","message":"✅ DB: Inserted result_id ae96b145-20a9-5739-abaa-9f05d8d57e01","timestamp":"2025-06-13T22:06:14.767Z"}
+{"level":"info","message":"✅ DB: Inserted result_id acd69ff0-294d-5715-8a4d-89933faa0440","timestamp":"2025-06-13T22:06:17.237Z"}
+{"level":"info","message":"✅ DB: Inserted result_id ae86982f-f1c8-58a2-aab5-d862fcc984fc","timestamp":"2025-06-13T22:06:20.729Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T22:06:35.821Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T22:06:38.188Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T22:06:38.193Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T22:06:38.410Z"}
+{"level":"info","message":"🔐 Starting SSH tunnel...","timestamp":"2025-06-13T22:07:00.828Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":true,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T22:07:03.212Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T22:07:03.218Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T22:07:03.434Z"}
+{"level":"warn","message":"Query attempt 1/3 failed:","timestamp":"2025-06-13T22:12:27.977Z"}
+{"level":"error","message":"❌ Batch insert failed:","timestamp":"2025-06-13T22:12:27.978Z"}
+{"level":"warn","message":"Query attempt 1/3 failed:","timestamp":"2025-06-13T22:14:07.899Z"}
+{"level":"info","message":"🔗 Tunnel status: {\"connected\":false,\"reconnectAttempts\":0,\"config\":{\"sshHost\":\"10.0.0.235\",\"localPort\":3306,\"remotePort\":3306}}","timestamp":"2025-06-13T22:14:07.900Z"}
+{"level":"warn","message":"⚠️ SSH tunnel not connected, attempting to start...","timestamp":"2025-06-13T22:14:07.901Z"}
+{"level":"info","message":"✅ SSH tunnel is working properly","timestamp":"2025-06-13T22:14:10.265Z"}
+{"level":"info","message":"✅ MySQL pool created and tested successfully","timestamp":"2025-06-13T22:14:10.414Z"}
+{"level":"warn","message":"Query attempt 2/3 failed:","timestamp":"2025-06-13T22:14:10.462Z"}
+{"level":"error","message":"❌ Batch insert failed:","timestamp":"2025-06-13T22:14:10.462Z"}

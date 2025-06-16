@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OPC UA Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 1rem;
+        }
+
+        .node {
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .folder::before {
+            content: "📁 ";
+        }
+
+        .variable::before {
+            content: "📄 ";
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+            list-style: none;
+        }
+
+        .spinner {
+            font-size: 12px;
+            color: #888;
+            margin-right: 5px;
+        }
+
+        #sidebar {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 360px;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #progress-container {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .control-buttons {
+            margin: 10px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-buttons button {
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        #status-text {
+            font-weight: bold;
+        }
+
+        .status-active {
+            color: #2196F3;
+        }
+
+        .status-complete {
+            color: #4CAF50;
+        }
+
+        .status-error {
+            color: #F44336;
+        }
+
+        #current-path {
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .progress-stat {
+            background: #f0f0f0;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .progress-stat span {
+            font-weight: bold;
+        }
+
+        #variables-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .variable-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .variable-name {
+            font-weight: bold;
+        }
+
+        .variable-id {
+            font-family: monospace;
+            color: #666;
+            font-size: 0.8em;
+            word-break: break-all;
+        }
+
+        .container {
+            display: flex;
+            gap: 2rem;
+        }
+
+        #opc-tree {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+<h1>OPC UA Browser</h1>
+<label>
+    <input type="checkbox" id="toggle-tree-checkbox">
+    Show OPC UA File Tree
+</label>
+<div class="control-buttons">
+    <button id="traverse-btn">Traverse All Folders</button>
+    <button id="cancel-btn" disabled>Cancel</button>
+    <button onclick="fetch('/api/traverse/start-auto', { method: 'POST' })">
+        Start Auto Traverse
+    </button>
+    <button onclick="fetch('/api/traverse/stop-auto', { method: 'POST' })">
+        Stop Auto Traverse
+    </button>
+    <button id="test-python-btn">Run Python Script</button>
+    <pre id="python-output" style="margin-top: 10px; background: #eee; padding: 10px;"></pre>
+</div>
+
+<div id="progress-container">
+    <div id="progress-status">Status: <span id="status-text">Ready</span></div>
+    <div class="progress-bar">
+        <div id="progress-bar-fill"></div>
+    </div>
+    <div class="progress-stats">
+        <div class="progress-stat">Folders: <span id="folders-processed">0</span>/<span id="total-folders">0</span>
+        </div>
+        <div class="progress-stat">Variables: <span id="variables-found">0</span></div>
+    </div>
+    <div>Current Path:</div>
+    <div id="current-path">-</div>
+</div>
+
+<div class="container">
+    <div id="tree-container" style="display: none;">
+        <div id="opc-tree"></div>
+    </div>
+    <div id="sidebar">
+        <h3>Node Info</h3>
+        <div id="node-info">
+            <em>Select a node to see details</em>
+        </div>
+        <h3>Discovered Variables</h3>
+        <div id="variables-list">
+            <em>Variables will appear here during traversal</em>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM elements
+    const traverseBtn = document.getElementById("traverse-btn");
+    const cancelBtn = document.getElementById("cancel-btn");
+    const statusText = document.getElementById("status-text");
+    const progressBarFill = document.getElementById("progress-bar-fill");
+    const foldersProcessed = document.getElementById("folders-processed");
+    const totalFolders = document.getElementById("total-folders");
+    const variablesFound = document.getElementById("variables-found");
+    const currentPath = document.getElementById("current-path");
+    const variablesList = document.getElementById("variables-list");
+    const nodeInfo = document.getElementById("node-info");
+
+    // Global variables
+    let eventSource;
+    let traversalActive = false;
+
+    // Button event handlers
+    traverseBtn.addEventListener("click", startTraversal);
+    cancelBtn.addEventListener("click", cancelTraversal);
+
+    function startTraversal() {
+        if (traversalActive) return;
+
+        traversalActive = true;
+        updateControls();
+        variablesList.innerHTML = "<em>Starting traversal...</em>";
+
+        // Start SSE connection for progress updates
+        startProgressUpdates();
+
+        // Start the traversal
+        fetch("/api/traverse/start")
+            .catch(err => {
+                console.error("Traverse error:", err);
+                statusText.textContent = "Error";
+                statusText.className = "status-error";
+                traversalActive = false;
+                updateControls();
+            });
+    }
+
+    function cancelTraversal() {
+        if (confirm("Are you sure you want to cancel the traversal?")) {
+            fetch("/api/traverse/cancel", {method: "POST"})
+                .catch(err => console.error("Cancel error:", err));
+        }
+    }
+
+    // Progress updates via Server-Sent Events
+    function startProgressUpdates() {
+        if (eventSource) eventSource.close();
+
+        eventSource = new EventSource('/api/traverse/progress');
+
+        eventSource.onmessage = (event) => {
+            const progress = JSON.parse(event.data);
+            updateProgressUI(progress);
+
+            // Update global active state
+            traversalActive = progress.active;
+            updateControls();
+
+            // Update variables list if we have new variables
+            if (progress.complete && progress.stats.variablesFound > 0) {
+                displayVariables();
+            }
+        };
+
+        eventSource.onerror = () => {
+            eventSource.close();
+            traversalActive = false;
+            updateControls();
+        };
+    }
+
+    function updateProgressUI(progress) {
+        // Update status
+        let statusTextContent = "Ready";
+        let statusClass = "";
+
+        if (progress.active) {
+            statusTextContent = progress.complete ? "Complete" : progress.stats.status || "Processing";
+            statusClass = progress.complete ? "status-complete" : "status-active";
+        } else if (progress.stats.status && progress.stats.status.includes("error")) {
+            statusTextContent = "Error";
+            statusClass = "status-error";
+        }
+
+        statusText.textContent = statusTextContent;
+        statusText.className = statusClass;
+
+        // Update progress bar
+        const percent = progress.stats.totalFolders > 0
+            ? (progress.stats.completedFolders / progress.stats.totalFolders * 100)
+            : 0;
+        progressBarFill.style.width = `${percent}%`;
+
+        // Update stats
+        foldersProcessed.textContent = progress.stats.completedFolders;
+        totalFolders.textContent = progress.stats.totalFolders;
+        variablesFound.textContent = progress.stats.variablesFound;
+        currentPath.textContent = progress.stats.currentPath || '-';
+    }
+
+    async function displayVariables() {
+        try {
+            const response = await fetch("/api/variables");
+            const data = await response.json();
+
+            if (data.variables && data.variables.length > 0) {
+                variablesList.innerHTML = "";
+                data.variables.forEach(variable => {
+                    const item = document.createElement("div");
+                    item.className = "variable-item";
+                    item.innerHTML = `
+                        <div class="variable-name">${variable.displayName}</div>
+                        <div class="variable-id">${variable.nodeId}</div>
+                    `;
+                    variablesList.appendChild(item);
+                });
+            }
+        } catch (err) {
+            console.error("Error fetching variables:", err);
+            variablesList.innerHTML = "<em>Error loading variables</em>";
+        }
+    }
+
+    function updateControls() {
+        traverseBtn.disabled = traversalActive;
+        cancelBtn.disabled = !traversalActive;
+    }
+
+    // Tree browser functions
+    async function fetchChildren(nodeId) {
+        const response = await fetch(`/api/browse?nodeId=${encodeURIComponent(nodeId)}`);
+        const data = await response.json();
+        return data.nodes || [];
+    }
+
+    function showNodeDetails(node) {
+        nodeInfo.innerHTML = `
+            <strong>${node.displayName}</strong><br/>
+            <strong>Node ID:</strong> ${node.nodeId}<br/>
+            <strong>Class:</strong> ${node.nodeClass}<br/>
+            ${node.dataType ? `<strong>Data Type:</strong> ${node.dataType}<br/>` : ''}
+            ${node.value !== undefined ? `<strong>Value:</strong> ${node.value}<br/>` : ''}
+            ${node.status ? `<strong>Status:</strong> ${node.status}<br/>` : ''}
+        `;
+    }
+
+    async function renderNode(node, parentEl) {
+        const li = document.createElement("li");
+        li.className = `node ${node.isFolder ? "folder" : "variable"}`;
+        li.textContent = node.displayName;
+
+        if (node.isFolder) {
+            const spinner = document.createElement("span");
+            spinner.className = "spinner";
+            spinner.textContent = "▶";
+            li.prepend(spinner);
+
+            li.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                if (li.dataset.loaded) {
+                    const ul = li.querySelector("ul");
+                    ul.style.display = ul.style.display === "none" ? "block" : "none";
+                    spinner.textContent = ul.style.display === "none" ? "▶" : "▼";
+                    return;
+                }
+
+                spinner.textContent = "⏳";
+                try {
+                    const children = await fetchChildren(node.nodeId);
+                    const ul = document.createElement("ul");
+                    for (const child of children) {
+                        await renderNode(child, ul);
+                    }
+                    li.appendChild(ul);
+                    li.dataset.loaded = "true";
+                    spinner.textContent = "▼";
+                } catch (err) {
+                    spinner.textContent = "⚠️";
+                    console.error("Failed to load children:", err);
+                }
+            });
+        } else {
+            li.addEventListener("click", (e) => {
+                e.stopPropagation();
+                showNodeDetails(node);
+            });
+        }
+
+        parentEl.appendChild(li);
+    }
+
+    async function initTree() {
+        const tree = document.getElementById("opc-tree");
+        const ul = document.createElement("ul");
+
+        const rootNodeId = "ns=2;s=1:Archive/OPCuser";
+        const rootChildren = await fetchChildren(rootNodeId);
+
+        for (const node of rootChildren) {
+            await renderNode(node, ul);
+        }
+
+        tree.appendChild(ul);
+    }
+
+    // // Initialize the tree when page loads
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     initTree();
+    //     updateControls();
+    // });
+
+    document.getElementById("toggle-tree-checkbox").addEventListener("change", async function () {
+        const treeContainer = document.getElementById("tree-container");
+
+        if (this.checked) {
+            treeContainer.style.display = "block";
+
+            if (!document.getElementById("opc-tree").hasChildNodes()) {
+                // Only fetch once if tree hasn't been loaded
+                await initTree();
+            }
+        } else {
+            treeContainer.style.display = "none";
+        }
+    });
+
+    // Clean up on page unload
+    window.addEventListener("beforeunload", () => {
+        if (eventSource) eventSource.close();
+    });
+
+    document.getElementById("test-python-btn").addEventListener("click", async () => {
+        const output = document.getElementById("python-output");
+        output.textContent = "⏳ Running Python script...";
+
+        try {
+            const res = await fetch("/api/test-python", {method: "POST"});
+            const data = await res.json();
+
+            if (data.success) {
+                output.textContent = `✅ Output:\n${data.output}`;
+                if (data.stderr) {
+                    output.textContent += `\n⚠️ stderr:\n${data.stderr}`;
+                }
+            } else {
+                output.textContent = `❌ Error: ${data.error}`;
+            }
+        } catch (err) {
+            output.textContent = `❌ Request failed: ${err.message}`;
+        }
+    });
+</script>
+</body>
+</html>

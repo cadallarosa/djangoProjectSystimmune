@@ -1,0 +1,4 @@
+2025-05-21 13:34:23,770 - DEBUG - EOF in transport thread
+2025-05-21 13:36:18,530 - DEBUG - EOF in transport thread
+2025-05-21 13:36:36,962 - DEBUG - Sending global request "keepalive@lag.net"
+2025-05-21 13:36:41,866 - DEBUG - EOF in transport thread

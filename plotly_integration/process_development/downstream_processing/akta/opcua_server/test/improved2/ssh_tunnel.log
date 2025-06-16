@@ -1,0 +1,22 @@
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T21:19:07.840Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T21:19:08.187Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T21:19:08.191Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T21:20:46.674Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T21:26:14.303Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T21:26:14.897Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T21:26:14.901Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T21:31:24.424Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T21:35:22.816Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T21:35:23.147Z"}
+{"level":"info","message":"🚇 SSH Tunnel active: 127.0.0.1:3306 → 127.0.0.1:3306","timestamp":"2025-06-13T21:35:23.151Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T21:46:48.757Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T22:13:43.561Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T22:13:43.908Z"}
+{"address":"127.0.0.1","code":"EADDRINUSE","errno":-4091,"level":"error","message":"❌ Tunnel server error: listen EADDRINUSE: address already in use 127.0.0.1:3306","port":3306,"stack":"Error: listen EADDRINUSE: address already in use 127.0.0.1:3306\n    at Server.setupListenHandle [as _listen2] (node:net:1939:16)\n    at listenInCluster (node:net:1996:12)\n    at node:net:2205:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","syscall":"listen","timestamp":"2025-06-13T22:13:43.913Z"}
+{"address":"127.0.0.1","code":"EADDRINUSE","errno":-4091,"level":"error","message":"❌ Failed to create SSH tunnel: listen EADDRINUSE: address already in use 127.0.0.1:3306","port":3306,"stack":"Error: listen EADDRINUSE: address already in use 127.0.0.1:3306\n    at Server.setupListenHandle [as _listen2] (node:net:1939:16)\n    at listenInCluster (node:net:1996:12)\n    at node:net:2205:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","syscall":"listen","timestamp":"2025-06-13T22:13:43.913Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:14:11.454Z"}
+{"level":"info","message":"🔐 Connecting to SSH server 10.0.0.235:22","timestamp":"2025-06-13T22:14:14.881Z"}
+{"level":"info","message":"✅ SSH connection established","timestamp":"2025-06-13T22:14:15.375Z"}
+{"address":"127.0.0.1","code":"EADDRINUSE","errno":-4091,"level":"error","message":"❌ Tunnel server error: listen EADDRINUSE: address already in use 127.0.0.1:3306","port":3306,"stack":"Error: listen EADDRINUSE: address already in use 127.0.0.1:3306\n    at Server.setupListenHandle [as _listen2] (node:net:1939:16)\n    at listenInCluster (node:net:1996:12)\n    at node:net:2205:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","syscall":"listen","timestamp":"2025-06-13T22:14:15.381Z"}
+{"address":"127.0.0.1","code":"EADDRINUSE","errno":-4091,"level":"error","message":"❌ Failed to create SSH tunnel: listen EADDRINUSE: address already in use 127.0.0.1:3306","port":3306,"stack":"Error: listen EADDRINUSE: address already in use 127.0.0.1:3306\n    at Server.setupListenHandle [as _listen2] (node:net:1939:16)\n    at listenInCluster (node:net:1996:12)\n    at node:net:2205:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","syscall":"listen","timestamp":"2025-06-13T22:14:15.382Z"}
+{"level":"info","message":"🛑 Stopping SSH tunnel...","timestamp":"2025-06-13T22:14:58.404Z"}

@@ -1,0 +1,49 @@
+info: 🚀 Starting Optimized OPC UA Server... {"timestamp":"2025-06-13T21:19:07.878Z"}
+info: ✅ Certificate found {"timestamp":"2025-06-13T21:19:07.885Z"}
+info: 🌐 Server running on http://localhost:3000 {"timestamp":"2025-06-13T21:19:07.887Z"}
+info: 📋 Ready to accept requests {"timestamp":"2025-06-13T21:19:07.887Z"}
+info: 
+API Endpoints: {"timestamp":"2025-06-13T21:19:07.887Z"}
+info:   POST /api/traverse/start-optimized - Start traversal {"timestamp":"2025-06-13T21:19:07.888Z"}
+info:   GET  /api/traverse/status - Get traversal status {"timestamp":"2025-06-13T21:19:07.888Z"}
+info:   GET  /api/database/status - Get database status {"timestamp":"2025-06-13T21:19:07.888Z"}
+info:   GET  /api/health - Health check {"timestamp":"2025-06-13T21:19:07.888Z"}
+info: 🚀 Starting optimized traversal with 1 parallel workers... {"timestamp":"2025-06-13T21:19:14.493Z"}
+info: 🛑 Shutting down... {"timestamp":"2025-06-13T21:20:46.676Z"}
+info: 🚀 Starting Optimized OPC UA Server... {"timestamp":"2025-06-13T21:26:14.344Z"}
+info: ✅ Certificate found {"timestamp":"2025-06-13T21:26:14.349Z"}
+info: 🌐 Server running on http://localhost:3000 {"timestamp":"2025-06-13T21:26:14.351Z"}
+info: 📋 Ready to accept requests {"timestamp":"2025-06-13T21:26:14.351Z"}
+info: 
+API Endpoints: {"timestamp":"2025-06-13T21:26:14.351Z"}
+info:   POST /api/traverse/start-optimized - Start traversal {"timestamp":"2025-06-13T21:26:14.351Z"}
+info:   GET  /api/traverse/status - Get traversal status {"timestamp":"2025-06-13T21:26:14.351Z"}
+info:   GET  /api/database/status - Get database status {"timestamp":"2025-06-13T21:26:14.352Z"}
+info:   GET  /api/health - Health check {"timestamp":"2025-06-13T21:26:14.352Z"}
+info: 🚀 Starting optimized traversal with 1 parallel workers... {"timestamp":"2025-06-13T21:26:20.669Z"}
+info: 🛑 Shutting down... {"timestamp":"2025-06-13T21:31:24.427Z"}
+info: 🚀 Starting Optimized OPC UA Server... {"timestamp":"2025-06-13T22:13:43.602Z"}
+info: ✅ Certificate found {"timestamp":"2025-06-13T22:13:43.608Z"}
+info: 🌐 Server running on http://localhost:3000 {"timestamp":"2025-06-13T22:13:43.610Z"}
+info: 📋 Ready to accept requests {"timestamp":"2025-06-13T22:13:43.610Z"}
+info: 
+API Endpoints: {"timestamp":"2025-06-13T22:13:43.610Z"}
+info:   POST /api/traverse/start-optimized - Start traversal {"timestamp":"2025-06-13T22:13:43.611Z"}
+info:   GET  /api/traverse/status - Get traversal status {"timestamp":"2025-06-13T22:13:43.611Z"}
+info:   GET  /api/database/status - Get database status {"timestamp":"2025-06-13T22:13:43.611Z"}
+info:   GET  /api/health - Health check {"timestamp":"2025-06-13T22:13:43.611Z"}
+info: 🚀 Starting optimized traversal with 1 parallel workers... {"timestamp":"2025-06-13T22:13:50.468Z"}
+info: 🛑 Shutting down... {"timestamp":"2025-06-13T22:14:11.456Z"}
+info: 🚀 Starting Optimized OPC UA Server... {"timestamp":"2025-06-13T22:14:14.918Z"}
+info: ✅ Certificate found {"timestamp":"2025-06-13T22:14:14.922Z"}
+info: 🌐 Server running on http://localhost:3000 {"timestamp":"2025-06-13T22:14:14.924Z"}
+info: 📋 Ready to accept requests {"timestamp":"2025-06-13T22:14:14.924Z"}
+info: 
+API Endpoints: {"timestamp":"2025-06-13T22:14:14.924Z"}
+info:   POST /api/traverse/start-optimized - Start traversal {"timestamp":"2025-06-13T22:14:14.925Z"}
+info:   GET  /api/traverse/status - Get traversal status {"timestamp":"2025-06-13T22:14:14.925Z"}
+info:   GET  /api/database/status - Get database status {"timestamp":"2025-06-13T22:14:14.925Z"}
+info:   GET  /api/health - Health check {"timestamp":"2025-06-13T22:14:14.926Z"}
+info: 🚀 Starting optimized traversal with 1 parallel workers... {"timestamp":"2025-06-13T22:14:23.749Z"}
+error: ❌ Traversal failed: Transaction has timed out ( timeout = 15000 ms , request = CreateSessionRequest) {"stack":"Error: Transaction has timed out ( timeout = 15000 ms , request = CreateSessionRequest)\n    at Timeout._onTimeout (C:\\Users\\cdallarosa\\DataAlchemy\\djangoProject\\node_modules\\node-opcua-secure-channel\\dist\\source\\client\\client_secure_channel_layer.js:1044:27)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)","timestamp":"2025-06-13T22:14:39.080Z"}
+info: 🛑 Shutting down... {"timestamp":"2025-06-13T22:14:58.405Z"}

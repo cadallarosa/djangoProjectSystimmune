@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enhanced OPC UA Browser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .controls-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .status-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 12px;
+            position: relative;
+        }
+
+        .status-indicator::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .status-active {
+            background: #4CAF50;
+        }
+
+        .status-active::after {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .status-idle {
+            background: #9E9E9E;
+        }
+
+        .status-idle::after {
+            background: rgba(158, 158, 158, 0.3);
+        }
+
+        .status-error {
+            background: #f44336;
+        }
+
+        .status-error::after {
+            background: rgba(244, 67, 54, 0.3);
+        }
+
+        .progress-bar {
+            height: 35px;
+            background: #e0e0e0;
+            border-radius: 17px;
+            overflow: hidden;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .health-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .health-score {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .health-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .health-good { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .health-medium { background: linear-gradient(135deg, #FF9800, #f57c00); }
+        .health-poor { background: linear-gradient(135deg, #f44336, #d32f2f); }
+
+        .log-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Cascadia Code', 'Fira Code', 'Monaco', monospace;
+            font-size: 13px;
+            height: 350px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .log-entry {
+            margin: 3px 0;
+            padding: 2px 0;
+        }
+
+        .log-time {
+            color: #569cd6;
+        }
+
+        .log-info { color: #4EC9B0; }
+        .log-success { color: #B5CEA8; }
+        .log-error { color: #F48771; }
+        .log-warning { color: #DCDCAA; }
+
+        .current-path {
+            background: rgba(0,0,0,0.05);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+            margin-top: 15px;
+            word-break: break-all;
+            border-left: 4px solid #667eea;
+        }
+
+        .db-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .db-connected {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2E7D32;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .db-fallback {
+            background: rgba(255, 152, 0, 0.1);
+            color: #E65100;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .db-disconnected {
+            background: rgba(244, 67, 54, 0.1);
+            color: #C62828;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.6);
+            border-radius: 4px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.8);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Enhanced OPC UA Browser</h1>
+            <p class="subtitle">Intelligent traversal with adaptive error handling and progress persistence</p>
+        </div>
+
+        <div class="controls-section">
+            <div class="controls">
+                <button id="startBtn" class="btn-primary" onclick="startTraversal()">
+                    🚀 Start Enhanced Traversal
+                </button>
+                <button id="pauseBtn" class="btn-secondary" onclick="pauseTraversal()" disabled>
+                    ⏸️ Pause
+                </button>
+                <button id="resumeBtn" class="btn-secondary" onclick="resumeTraversal()" disabled>
+                    ▶️ Resume
+                </button>
+                <button id="stopBtn" class="btn-danger" onclick="stopTraversal()" disabled>
+                    ⏹️ Stop
+                </button>
+                <span id="dbStatus" class="db-status db-disconnected">Database: Checking...</span>
+            </div>
+        </div>
+
+        <div class="status-panel">
+            <div class="status-header">
+                <span id="statusIndicator" class="status-indicator status-idle"></span>
+                <h2>Status: <span id="statusText">Idle</span></h2>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill" style="width: 0%">0%</div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="processedNodes">0</div>
+                    <div class="stat-label">Nodes Processed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="discoveredVariables">0</div>
+                    <div class="stat-label">Variables Discovered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="insertedRecords">0</div>
+                    <div class="stat-label">Records Inserted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="elapsedTime">0s</div>
+                    <div class="stat-label">Elapsed Time</div>
+                </div>
+            </div>
+
+            <div class="current-path">
+                <strong>Current Path:</strong>
+                <div id="currentPath">-</div>
+            </div>
+        </div>
+
+        <div class="health-panel">
+            <h3>🏥 Server Health Monitor</h3>
+            <div class="health-score">
+                <div id="healthCircle" class="health-circle health-good">100%</div>
+                <div>
+                    <div><strong>Health Score:</strong> <span id="healthScore">100</span>%</div>
+                    <div><strong>Queue Length:</strong> <span id="queueLength">0</span></div>
+                    <div><strong>Consecutive Errors:</strong> <span id="consecutiveErrors">0</span></div>
+                    <div><strong>Dynamic Delay:</strong> <span id="dynamicDelay">500</span>ms</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="log-panel">
+            <h2>📋 Activity Log</h2>
+            <div class="log-container scrollbar" id="logContainer">
+                <div class="log-entry log-info">
+                    <span class="log-time">[00:00:00]</span> Enhanced OPC UA Browser ready
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let progressInterval = null;
+        let healthInterval = null;
+        let startTime = null;
+
+        function log(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function startTraversal() {
+            try {
+                updateButtonStates(true, false, false, false);
+                log('🚀 Starting enhanced traversal...', 'info');
+
+                const response = await fetch('/api/traverse/start', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('✅ Enhanced traversal started successfully', 'success');
+                    updateStatus('Running', true);
+                    startTime = Date.now();
+                    startProgressPolling();
+                    startHealthMonitoring();
+                } else {
+                    log(`❌ Failed to start: ${result.error}`, 'error');
+                    updateButtonStates(false, false, false, false);
+                }
+            } catch (error) {
+                log(`❌ Network error: ${error.message}`, 'error');
+                updateButtonStates(false, false, false, false);
+            }
+        }
+
+        async function pauseTraversal() {
+            try {
+                const response = await fetch('/api/traverse/pause', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('⏸️ Traversal paused', 'warning');
+                    updateStatus('Paused', true);
+                    updateButtonStates(false, false, true, true);
+                }
+            } catch (error) {
+                log(`❌ Pause error: ${error.message}`, 'error');
+            }
+        }
+
+        async function resumeTraversal() {
+            try {
+                const response = await fetch('/api/traverse/resume', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('▶️ Traversal resumed', 'success');
+                    updateStatus('Running', true);
+                    updateButtonStates(false, true, false, true);
+                }
+            } catch (error) {
+                log(`❌ Resume error: ${error.message}`, 'error');
+            }
+        }
+
+        async function stopTraversal() {
+            try {
+                log('⏹️ Stopping traversal...', 'warning');
+
+                const response = await fetch('/api/traverse/stop', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    log('✅ Traversal stopped successfully', 'info');
+                    stopAllMonitoring();
+                }
+            } catch (error) {
+                log(`❌ Stop error: ${error.message}`, 'error');
+            }
+        }
+
+        function startProgressPolling() {
+            if (progressInterval) clearInterval(progressInterval);
+
+            progressInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/traverse/progress');
+                    const progress = await response.json();
+                    updateProgress(progress);
+
+                    if (!progress.isRunning || progress.status === 'completed') {
+                        stopAllMonitoring();
+
+                        if (progress.status === 'completed') {
+                            log('🎉 Traversal completed successfully!', 'success');
+                            updateStatus('Completed', false);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Progress poll error:', error);
+                }
+            }, 2000);
+        }
+
+        function startHealthMonitoring() {
+            if (healthInterval) clearInterval(healthInterval);
+
+            healthInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/health');
+                    const health = await response.json();
+                    updateHealthDisplay(health);
+                } catch (error) {
+                    console.error('Health check error:', error);
+                }
+            }, 5000);
+        }
+
+        function stopAllMonitoring() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            if (healthInterval) {
+                clearInterval(healthInterval);
+                healthInterval = null;
+            }
+            updateButtonStates(false, false, false, false);
+        }
+
+        function updateProgress(progress) {
+            // Update main stats
+            document.getElementById('processedNodes').textContent = progress.processedNodes || 0;
+            document.getElementById('discoveredVariables').textContent = progress.discoveredVariables || 0;
+            document.getElementById('insertedRecords').textContent = progress.insertedRecords || 0;
+            document.getElementById('currentPath').textContent = progress.currentPath || '-';
+
+            // Update elapsed time
+            if (startTime) {
+                const elapsed = Math.round((Date.now() - startTime) / 1000);
+                document.getElementById('elapsedTime').textContent = `${elapsed}s`;
+            }
+
+            // Update progress bar (estimate based on processed nodes)
+            const estimatedProgress = Math.min(100, Math.round((progress.processedNodes || 0) / 10)); // Rough estimate
+            document.getElementById('progressFill').style.width = `${estimatedProgress}%`;
+            document.getElementById('progressFill').textContent = `${estimatedProgress}%`;
+
+            // Update status
+            updateStatus(progress.status || 'Running', progress.isRunning);
+
+            // Update server health if available
+            if (progress.serverHealth) {
+                updateHealthDisplay({ health: progress.serverHealth });
+            }
+        }
+
+        function updateHealthDisplay(healthData) {
+            if (!healthData.health) return;
+
+            const health = healthData.health;
+            const score = health.healthScore || 100;
+
+            document.getElementById('healthScore').textContent = score;
+            document.getElementById('queueLength').textContent = health.queueLength || 0;
+            document.getElementById('consecutiveErrors').textContent = health.consecutiveErrors || 0;
+            document.getElementById('dynamicDelay').textContent = health.dynamicDelay || 500;
+
+            const circle = document.getElementById('healthCircle');
+            circle.textContent = `${score}%`;
+
+            circle.className = 'health-circle ' +
+                (score >= 80 ? 'health-good' :
+                 score >= 50 ? 'health-medium' : 'health-poor');
+        }
+
+        function updateStatus(text, active) {
+            document.getElementById('statusText').textContent = text;
+            const indicator = document.getElementById('statusIndicator');
+
+            if (active) {
+                indicator.className = 'status-indicator status-active';
+            } else if (text.toLowerCase().includes('error')) {
+                indicator.className = 'status-indicator status-error';
+            } else {
+                indicator.className = 'status-indicator status-idle';
+            }
+        }
+
+        function updateButtonStates(start, pause, resume, stop) {
+            document.getElementById('startBtn').disabled = start;
+            document.getElementById('pauseBtn').disabled = !pause;
+            document.getElementById('resumeBtn').disabled = !resume;
+            document.getElementById('stopBtn').disabled = !stop;
+        }
+
+        async function checkDatabaseStatus() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+
+                const dbStatusEl = document.getElementById('dbStatus');
+
+                if (data.status === 'connected') {
+                    dbStatusEl.textContent = 'Database: Connected';
+                    dbStatusEl.className = 'db-status db-connected';
+                } else {
+                    dbStatusEl.textContent = 'Database: Disconnected';
+                    dbStatusEl.className = 'db-status db-disconnected';
+                }
+            } catch (error) {
+                console.error('DB status check error:', error);
+                const dbStatusEl = document.getElementById('dbStatus');
+                dbStatusEl.textContent = 'Database: Error';
+                dbStatusEl.className = 'db-status db-disconnected';
+            }
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            log('🔧 Initializing enhanced OPC UA browser...', 'info');
+            checkDatabaseStatus();
+            setInterval(checkDatabaseStatus, 10000);
+        });
+
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            stopAllMonitoring();
+        });
+    </script>
+</body>
+</html>
