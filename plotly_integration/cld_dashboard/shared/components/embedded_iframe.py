@@ -1,206 +1,125 @@
-# shared/components/embedded_iframe.py
-"""
-Embedded iframe component for integrating external Dash apps
-"""
-
-from dash import html, dcc
 import dash_bootstrap_components as dbc
-from urllib.parse import urlencode
+from dash import html
 
 
-def create_embedded_iframe(src_url, height="800px", title="Embedded App", **kwargs):
+def create_embedded_iframe(src_url, title="Embedded Application", height="800px", show_controls=True):
     """
-    Create an embedded iframe component
+    Create an embedded iframe component for external Dash apps
 
     Args:
         src_url (str): URL of the app to embed
-        height (str): Height of the iframe
         title (str): Title for the iframe
-        **kwargs: Additional iframe attributes
+        height (str): Height of the iframe
+        show_controls (bool): Whether to show header controls
 
     Returns:
-        dash component with iframe
+        dbc.Card: Card containing the embedded iframe
     """
-    default_style = {
-        'width': '100%',
-        'height': height,
-        'border': '1px solid #ddd',
-        'border-radius': '8px'
-    }
+    header_content = [html.H5(title, className="mb-0")]
 
-    # Merge any custom styles
-    iframe_style = {**default_style, **kwargs.get('style', {})}
-
-    return html.Div([
-        html.Iframe(
-            src=src_url,
-            style=iframe_style,
-            title=title,
-            **{k: v for k, v in kwargs.items() if k != 'style'}
+    if show_controls:
+        header_content.append(
+            dbc.ButtonGroup([
+                dbc.Button([
+                    html.I(className="fas fa-external-link-alt me-1"),
+                    "Open in New Tab"
+                ],
+                    href=src_url,
+                    target="_blank",
+                    color="outline-primary",
+                    size="sm"),
+                dbc.Button([
+                    html.I(className="fas fa-sync-alt me-1"),
+                    "Refresh"
+                ],
+                    id={"type": "iframe-refresh", "index": title},
+                    color="outline-secondary",
+                    size="sm")
+            ], className="float-end")
         )
-    ])
+
+    return dbc.Card([
+        dbc.CardHeader(header_content) if show_controls else None,
+        dbc.CardBody([
+            html.Iframe(
+                id={"type": "embedded-iframe", "index": title},
+                src=src_url,
+                style={
+                    "width": "100%",
+                    "height": height,
+                    "border": "none",
+                    "border-radius": "5px" if not show_controls else "0 0 5px 5px"
+                }
+            )
+        ], style={"padding": "0"})
+    ], className="shadow")
 
 
-def create_sec_report_iframe(sample_ids=None, report_id=None, hide_report_tab=True):
+def create_loading_iframe(title="Loading Application...", height="800px"):
     """
-    Create an iframe specifically for SEC Report App
+    Create a loading placeholder for iframe content
 
     Args:
-        sample_ids (list): List of sample IDs to pre-load
-        report_id (int): Specific report ID to load
-        hide_report_tab (bool): Whether to hide the report selection tab
+        title (str): Loading message
+        height (str): Height of the loading area
 
     Returns:
-        Embedded iframe for SEC analysis
+        dbc.Card: Card with loading spinner
     """
-    base_url = "/plotly_integration/dash-app/app/SecReportApp2/"
-    params = {}
-
-    if report_id:
-        params['report_id'] = report_id
-
-    if hide_report_tab:
-        params['hide_report_tab'] = 'true'
-
-    # If sample_ids provided, we'll use sample view mode
-    if sample_ids:
-        # This will trigger the SecReportApp2 to create a temporary report
-        params['samples'] = ','.join(sample_ids)
-        params['mode'] = 'samples'
-
-    # Build URL with parameters
-    if params:
-        url = f"{base_url}?{urlencode(params)}"
-    else:
-        url = base_url
-
-    return create_embedded_iframe(
-        src_url=url,
-        height="900px",
-        title="SEC Analysis Report"
-    )
-
-
-def create_loading_iframe_placeholder():
-    """Create a loading placeholder for iframe content"""
     return dbc.Card([
         dbc.CardBody([
-            dbc.Spinner([
-                html.Div([
-                    html.H4("Loading SEC Analysis...", className="text-center mb-3"),
-                    html.P("Please wait while the analysis application loads.",
-                           className="text-center text-muted")
-                ])
-            ], size="lg", color="primary")
-        ], className="text-center p-5")
-    ], style={'height': '400px', 'display': 'flex', 'align-items': 'center'})
+            html.Div([
+                dbc.Spinner(
+                    html.Div(id="loading-content"),
+                    size="lg",
+                    color="primary",
+                    type="border"
+                ),
+                html.H5(title, className="mt-3 text-muted")
+            ],
+                style={
+                    "height": height,
+                    "display": "flex",
+                    "flex-direction": "column",
+                    "justify-content": "center",
+                    "align-items": "center",
+                    "text-align": "center"
+                })
+        ])
+    ], className="shadow")
 
 
-def create_iframe_with_loading(src_url, loading_timeout=3000, **kwargs):
+def create_error_iframe(error_message="Application failed to load", height="800px"):
     """
-    Create iframe with loading state
+    Create an error display for failed iframe loading
 
     Args:
-        src_url (str): URL to embed
-        loading_timeout (int): Timeout for loading state in ms
-        **kwargs: Additional iframe parameters
-    """
-    return html.Div([
-        # Loading placeholder
-        html.Div(
-            create_loading_iframe_placeholder(),
-            id="iframe-loading-placeholder",
-            style={'display': 'block'}
-        ),
-
-        # Actual iframe (hidden initially)
-        html.Div(
-            create_embedded_iframe(src_url, **kwargs),
-            id="iframe-content",
-            style={'display': 'none'}
-        ),
-
-        # JavaScript to handle loading
-        dcc.Interval(
-            id="iframe-loading-interval",
-            interval=loading_timeout,
-            n_intervals=0,
-            max_intervals=1
-        )
-    ])
-
-
-def create_error_iframe_placeholder(error_message="Failed to load application"):
-    """Create an error placeholder for failed iframe loads"""
-    return dbc.Alert([
-        html.H4([
-            html.I(className="fas fa-exclamation-triangle me-2"),
-            "Application Load Error"
-        ], className="alert-heading"),
-        html.P(error_message),
-        html.Hr(),
-        dbc.Button(
-            "Retry Loading",
-            id="retry-iframe-btn",
-            color="warning",
-            outline=True
-        )
-    ], color="warning")
-
-
-def create_sec_analysis_embed_layout(sample_set_data):
-    """
-    Create complete layout for embedded SEC analysis
-
-    Args:
-        sample_set_data (dict): Data about the sample set including:
-            - sample_ids: List of sample IDs
-            - project: Project name
-            - sip_number: SIP number
-            - development_stage: Development stage
+        error_message (str): Error message to display
+        height (str): Height of the error area
 
     Returns:
-        Complete layout with header and embedded SEC app
+        dbc.Card: Card with error message
     """
-    sample_ids = sample_set_data.get('sample_ids', [])
-    project = sample_set_data.get('project', 'Unknown')
-    sip = sample_set_data.get('sip_number', 'Unknown')
-    dev_stage = sample_set_data.get('development_stage', 'Unknown')
-
-    return html.Div([
-        # Header section
-        dbc.Card([
-            dbc.CardBody([
-                dbc.Row([
-                    dbc.Col([
-                        html.H4([
-                            html.I(className="fas fa-microscope me-2"),
-                            "SEC Analysis"
-                        ], className="text-primary mb-1"),
-                        html.P([
-                            html.Strong("Project: "), project, " | ",
-                            html.Strong("SIP: "), sip, " | ",
-                            html.Strong("Stage: "), dev_stage
-                        ], className="text-muted mb-2"),
-                        html.P([
-                            html.Strong("Samples: "),
-                            ", ".join(sample_ids[:5]),
-                            f" (+{len(sample_ids) - 5} more)" if len(sample_ids) > 5 else ""
-                        ], className="small text-info")
-                    ], md=8),
-                    dbc.Col([
-                        dbc.Button([
-                            html.I(className="fas fa-arrow-left me-2"),
-                            "Back to Sample Sets"
-                        ],
-                            href="/sec/sample-sets",
-                            color="outline-secondary",
-                            size="sm")
-                    ], md=4, className="text-end")
-                ])
-            ])
-        ], className="mb-3"),
-
-        # Embedded SEC app
-        create_sec_report_iframe(sample_ids=sample_ids, hide_report_tab=True)
-    ])
+    return dbc.Card([
+        dbc.CardBody([
+            html.Div([
+                html.I(className="fas fa-exclamation-triangle fa-3x text-danger mb-3"),
+                html.H5("Application Error", className="text-danger"),
+                html.P(error_message, className="text-muted"),
+                dbc.Button([
+                    html.I(className="fas fa-redo me-1"),
+                    "Retry"
+                ],
+                    color="outline-primary",
+                    id="retry-iframe-btn")
+            ],
+                style={
+                    "height": height,
+                    "display": "flex",
+                    "flex-direction": "column",
+                    "justify-content": "center",
+                    "align-items": "center",
+                    "text-align": "center"
+                })
+        ])
+    ], className="shadow")

@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="opcua_browse" type="NodeJSConfigurationType" path-to-js-file="$PROJECT_DIR$/plotly_integration/process_development/downstream_processing/akta/opcua_server/test/js/opcua_browse_server.js" working-dir="$PROJECT_DIR$/">
-    <method v="2" />
-  </configuration>
-</component>

@@ -69,6 +69,7 @@ class PlotlyIntegrationConfig(AppConfig):
                 import plotly_integration.process_development.lims.cld_sample_manager.app
 
                 import plotly_integration.process_development.lims.cld_dashboard.CLDDashboardApp2
+                import plotly_integration.cld_dashboard.main_app
 
 
 

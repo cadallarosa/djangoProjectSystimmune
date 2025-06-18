@@ -1,340 +1,197 @@
-# config/analysis_types.py
-"""
-Analysis type constants and configuration for CLD Dashboard
-"""
+# Analysis type constants and configurations
 
-from enum import Enum
-from dataclasses import dataclass
-from typing import Dict, List, Optional
-
-
-class AnalysisType(Enum):
-    """Analysis type enumeration"""
-    SEC = 1
-    TITER = 2
-    MASS_CHECK = 3
-    GLYCAN = 4
-    CE_SDS = 5
-    CIEF = 6
-    HCP = 7
-    PROA = 8
-
-
-class AnalysisStatus(Enum):
-    """Analysis status enumeration"""
-    NOT_REQUESTED = "not_requested"
-    REQUESTED = "requested"
-    IN_PROGRESS = "in_progress"
-    PARTIAL = "partial"
-    COMPLETE = "complete"
-    ERROR = "error"
-    REVIEW = "review"
-
-
-@dataclass
-class AnalysisConfig:
-    """Configuration for an analysis type"""
-    id: int
-    name: str
-    display_name: str
-    description: str
-    icon: str
-    color: str
-    app_url: str
-    model_name: str
-    result_fields: List[str]
-    required_fields: List[str]
-    optional_fields: List[str]
-
-
-# Analysis type configurations
-ANALYSIS_CONFIGS: Dict[AnalysisType, AnalysisConfig] = {
-    AnalysisType.SEC: AnalysisConfig(
-        id=1,
-        name="sec",
-        display_name="SEC Analysis",
-        description="Size Exclusion Chromatography analysis for protein aggregation",
-        icon="fa-microscope",
-        color="primary",
-        app_url="/plotly_integration/dash-app/app/SecReportApp2/",
-        model_name="LimsSecResult",
-        result_fields=["main_peak", "hmw", "lmw"],
-        required_fields=["sample_id"],
-        optional_fields=["peak_data", "qc_pass", "report"]
-    ),
-
-    AnalysisType.TITER: AnalysisConfig(
-        id=2,
-        name="titer",
-        display_name="Titer Analysis",
-        description="Protein titer determination",
-        icon="fa-flask",
-        color="success",
-        app_url="/plotly_integration/dash-app/app/TiterReportApp/",
-        model_name="LimsTiterResult",
-        result_fields=["titer"],
-        required_fields=["sample_id"],
-        optional_fields=["qc_pass"]
-    ),
-
-    AnalysisType.MASS_CHECK: AnalysisConfig(
-        id=3,
-        name="mass_check",
-        display_name="Mass Check",
-        description="Protein mass verification by LC-MS",
-        icon="fa-balance-scale",
-        color="info",
-        app_url="/plotly_integration/dash-app/app/MassCheckApp/",
-        model_name="LimsMassCheckResult",
-        result_fields=["expected_mass", "observed_mass"],
-        required_fields=["sample_id", "expected_mass", "observed_mass"],
-        optional_fields=["notes"]
-    ),
-
-    AnalysisType.GLYCAN: AnalysisConfig(
-        id=4,
-        name="glycan",
-        display_name="Glycan Analysis",
-        description="Released N-glycan profiling by LC-MS",
-        icon="fa-sugar",
-        color="warning",
-        app_url="/plotly_integration/dash-app/app/GlycanApp/",
-        model_name="LimsReleasedGlycanResult",
-        result_fields=["glycan_profile", "major_species"],
-        required_fields=["sample_id", "glycan_profile"],
-        optional_fields=["major_species", "notes"]
-    ),
-
-    AnalysisType.CE_SDS: AnalysisConfig(
-        id=5,
-        name="ce_sds",
-        display_name="CE-SDS",
-        description="Capillary Electrophoresis SDS analysis",
-        icon="fa-wave-square",
-        color="secondary",
-        app_url="/plotly_integration/dash-app/app/CESDSApp/",
-        model_name="LimsCeSdsResult",
-        result_fields=["purity"],
-        required_fields=["sample_id", "purity"],
-        optional_fields=["band_pattern", "notes"]
-    ),
-
-    AnalysisType.CIEF: AnalysisConfig(
-        id=6,
-        name="cief",
-        display_name="cIEF",
-        description="Capillary Isoelectric Focusing",
-        icon="fa-chart-area",
-        color="dark",
-        app_url="/plotly_integration/dash-app/app/cIEFApp/",
-        model_name="LimsCiefResult",
-        result_fields=["main_peak", "acidic_variants", "basic_variants"],
-        required_fields=["sample_id", "main_peak", "acidic_variants", "basic_variants"],
-        optional_fields=["notes"]
-    ),
-
-    AnalysisType.HCP: AnalysisConfig(
-        id=7,
-        name="hcp",
-        display_name="HCP",
-        description="Host Cell Protein quantification",
-        icon="fa-virus",
-        color="danger",
-        app_url="/plotly_integration/dash-app/app/HCPApp/",
-        model_name="LimsHcpResult",
-        result_fields=["hcp_level"],
-        required_fields=["sample_id", "hcp_level"],
-        optional_fields=["unit", "notes"]
-    ),
-
-    AnalysisType.PROA: AnalysisConfig(
-        id=8,
-        name="proa",
-        display_name="Protein A",
-        description="Protein A leachate quantification",
-        icon="fa-dna",
-        color="info",
-        app_url="/plotly_integration/dash-app/app/ProAApp/",
-        model_name="LimsProaResult",
-        result_fields=["proa_level"],
-        required_fields=["sample_id", "proa_level"],
-        optional_fields=["unit", "notes"]
-    )
-}
-
-
-def get_analysis_config(analysis_type: AnalysisType) -> AnalysisConfig:
-    """Get configuration for an analysis type"""
-    return ANALYSIS_CONFIGS.get(analysis_type)
-
-
-def get_analysis_config_by_id(analysis_id: int) -> Optional[AnalysisConfig]:
-    """Get configuration by analysis ID"""
-    for analysis_type, config in ANALYSIS_CONFIGS.items():
-        if config.id == analysis_id:
-            return config
-    return None
-
-
-def get_analysis_config_by_name(name: str) -> Optional[AnalysisConfig]:
-    """Get configuration by analysis name"""
-    for analysis_type, config in ANALYSIS_CONFIGS.items():
-        if config.name == name:
-            return config
-    return None
-
-
-# Status display configurations
-STATUS_DISPLAY = {
-    AnalysisStatus.NOT_REQUESTED: {
-        "icon": "⚪",
-        "text": "Not Requested",
-        "color": "secondary",
-        "description": "Analysis has not been requested for this sample"
+ANALYSIS_TYPES = {
+    'SEC': {
+        'name': 'Size Exclusion Chromatography',
+        'code': 'SEC',
+        'app_name': 'SecReportApp2',
+        'icon': 'fa-microscope',
+        'color': 'primary',
+        'description': 'Protein size and aggregation analysis',
+        'data_table': 'sec_metadata',  # Table name where data is stored
+        'supports_embedding': True,
+        'typical_turnaround': '2-3 days'
     },
-    AnalysisStatus.REQUESTED: {
-        "icon": "📋",
-        "text": "Requested",
-        "color": "info",
-        "description": "Analysis has been requested but not started"
+    'TITER': {
+        'name': 'Titer Analysis',
+        'code': 'TITER',
+        'app_name': 'TiterReportApp',
+        'icon': 'fa-flask',
+        'color': 'success',
+        'description': 'Protein concentration measurement',
+        'data_table': 'titer_metadata',
+        'supports_embedding': True,
+        'typical_turnaround': '1-2 days'
     },
-    AnalysisStatus.IN_PROGRESS: {
-        "icon": "🔄",
-        "text": "In Progress",
-        "color": "warning",
-        "description": "Analysis is currently being performed"
+    'AKTA': {
+        'name': 'AKTA Analysis',
+        'code': 'AKTA',
+        'app_name': 'AKTAReportApp',
+        'icon': 'fa-chart-area',
+        'color': 'info',
+        'description': 'Chromatography purification analysis',
+        'data_table': 'akta_metadata',
+        'supports_embedding': False,
+        'typical_turnaround': '1 day'
     },
-    AnalysisStatus.PARTIAL: {
-        "icon": "🔄",
-        "text": "Partial",
-        "color": "warning",
-        "description": "Analysis is partially complete"
+    'CE_SDS': {
+        'name': 'CE-SDS Analysis',
+        'code': 'CE_SDS',
+        'app_name': 'CESDSReportApp',
+        'icon': 'fa-chart-line',
+        'color': 'warning',
+        'description': 'Capillary electrophoresis purity analysis',
+        'data_table': 'ce_sds_metadata',
+        'supports_embedding': True,
+        'typical_turnaround': '2-3 days'
     },
-    AnalysisStatus.COMPLETE: {
-        "icon": "✅",
-        "text": "Complete",
-        "color": "success",
-        "description": "Analysis has been completed successfully"
-    },
-    AnalysisStatus.ERROR: {
-        "icon": "❌",
-        "text": "Error",
-        "color": "danger",
-        "description": "An error occurred during analysis"
-    },
-    AnalysisStatus.REVIEW: {
-        "icon": "👁️",
-        "text": "Under Review",
-        "color": "info",
-        "description": "Analysis results are being reviewed"
+    'CIEF': {
+        'name': 'cIEF Analysis',
+        'code': 'CIEF',
+        'app_name': 'CIEFReportApp',
+        'icon': 'fa-wave-square',
+        'color': 'danger',
+        'description': 'Isoelectric focusing charge analysis',
+        'data_table': 'cief_metadata',
+        'supports_embedding': True,
+        'typical_turnaround': '2-3 days'
     }
 }
 
+# Status configurations
+STATUS_COLORS = {
+    'REQUESTED': 'warning',
+    'DATA_AVAILABLE': 'info',
+    'REPORT_CREATED': 'success',
+    'COMPLETED': 'success',
+    'ERROR': 'danger',
+    'PENDING': 'secondary',
+    'CANCELLED': 'dark'
+}
 
-def get_status_display(status: AnalysisStatus) -> Dict[str, str]:
-    """Get display configuration for an analysis status"""
-    return STATUS_DISPLAY.get(status, STATUS_DISPLAY[AnalysisStatus.ERROR])
+STATUS_ICONS = {
+    'REQUESTED': 'fa-clock',
+    'DATA_AVAILABLE': 'fa-database',
+    'REPORT_CREATED': 'fa-file-alt',
+    'COMPLETED': 'fa-check-circle',
+    'ERROR': 'fa-exclamation-triangle',
+    'PENDING': 'fa-hourglass-half',
+    'CANCELLED': 'fa-times-circle'
+}
 
+STATUS_DESCRIPTIONS = {
+    'REQUESTED': 'Analysis has been requested',
+    'DATA_AVAILABLE': 'Sample data is available for analysis',
+    'REPORT_CREATED': 'Analysis report has been generated',
+    'COMPLETED': 'Analysis is complete and reviewed',
+    'ERROR': 'Error occurred during analysis',
+    'PENDING': 'Waiting for sample or data',
+    'CANCELLED': 'Analysis request was cancelled'
+}
 
-def format_status_display(status: AnalysisStatus, include_icon: bool = True) -> str:
-    """Format status for display"""
-    display = get_status_display(status)
-    if include_icon:
-        return f"{display['icon']} {display['text']}"
-    return display['text']
-
+# Priority levels for analysis requests
+PRIORITY_LEVELS = {
+    'LOW': {
+        'name': 'Low Priority',
+        'color': 'secondary',
+        'icon': 'fa-arrow-down',
+        'order': 3
+    },
+    'NORMAL': {
+        'name': 'Normal Priority',
+        'color': 'primary',
+        'icon': 'fa-minus',
+        'order': 2
+    },
+    'HIGH': {
+        'name': 'High Priority',
+        'color': 'warning',
+        'icon': 'fa-arrow-up',
+        'order': 1
+    },
+    'URGENT': {
+        'name': 'Urgent',
+        'color': 'danger',
+        'icon': 'fa-exclamation',
+        'order': 0
+    }
+}
 
 # Sample type configurations
 SAMPLE_TYPES = {
-    1: {
-        "name": "UP",
-        "display_name": "Upstream",
-        "description": "Upstream process samples",
-        "prefix": "UP"
+    'FB': {
+        'name': 'Fed-Batch',
+        'code': 'FB',
+        'icon': 'fa-flask',
+        'color': 'primary',
+        'description': 'Cell line development samples'
     },
-    2: {
-        "name": "FB",
-        "display_name": "Fed Batch",
-        "description": "Fed batch cell culture samples",
-        "prefix": "FB"
+    'UP': {
+        'name': 'Upstream',
+        'code': 'UP',
+        'icon': 'fa-arrow-up',
+        'color': 'success',
+        'description': 'Upstream process samples'
     },
-    3: {
-        "name": "PD",
-        "display_name": "Process Development",
-        "description": "Process development samples",
-        "prefix": "PD"
+    'PD': {
+        'name': 'Process Development',
+        'code': 'PD',
+        'icon': 'fa-cogs',
+        'color': 'info',
+        'description': 'Process development samples'
     }
 }
 
 
-def get_sample_type_config(sample_type_id: int) -> Optional[Dict]:
-    """Get sample type configuration"""
-    return SAMPLE_TYPES.get(sample_type_id)
+def get_analysis_config(analysis_type):
+    """
+    Get configuration for a specific analysis type
+
+    Args:
+        analysis_type (str): Analysis type code
+
+    Returns:
+        dict: Analysis configuration or None if not found
+    """
+    return ANALYSIS_TYPES.get(analysis_type.upper())
 
 
-def format_sample_id(sample_number: int, sample_type_id: int) -> str:
-    """Format sample ID with appropriate prefix"""
-    config = get_sample_type_config(sample_type_id)
-    if config:
-        return f"{config['prefix']}{sample_number}"
-    return str(sample_number)
+def get_status_badge_props(status):
+    """
+    Get badge properties for a status
 
+    Args:
+        status (str): Status code
 
-# Analysis priority configurations
-ANALYSIS_PRIORITIES = {
-    "high": {
-        "name": "High",
-        "color": "danger",
-        "icon": "fa-exclamation",
-        "description": "High priority analysis"
-    },
-    "medium": {
-        "name": "Medium",
-        "color": "warning",
-        "icon": "fa-minus",
-        "description": "Medium priority analysis"
-    },
-    "low": {
-        "name": "Low",
-        "color": "secondary",
-        "icon": "fa-minus",
-        "description": "Low priority analysis"
+    Returns:
+        dict: Badge properties (color, icon, description)
+    """
+    return {
+        'color': STATUS_COLORS.get(status, 'secondary'),
+        'icon': STATUS_ICONS.get(status, 'fa-question'),
+        'description': STATUS_DESCRIPTIONS.get(status, 'Unknown status')
     }
-}
-
-# Validation rules for analysis results
-VALIDATION_RULES = {
-    AnalysisType.SEC: {
-        "main_peak": {"min": 0, "max": 100, "unit": "%"},
-        "hmw": {"min": 0, "max": 100, "unit": "%"},
-        "lmw": {"min": 0, "max": 100, "unit": "%"}
-    },
-    AnalysisType.TITER: {
-        "titer": {"min": 0, "max": 10000, "unit": "mg/L"}
-    },
-    AnalysisType.HCP: {
-        "hcp_level": {"min": 0, "max": 10000, "unit": "ng/mg"}
-    },
-    AnalysisType.PROA: {
-        "proa_level": {"min": 0, "max": 10000, "unit": "ng/mg"}
-    }
-}
 
 
-def validate_analysis_result(analysis_type: AnalysisType, field: str, value: float) -> bool:
-    """Validate analysis result value"""
-    rules = VALIDATION_RULES.get(analysis_type, {})
-    field_rules = rules.get(field, {})
+def get_available_analysis_types():
+    """
+    Get list of available analysis types
 
-    if not field_rules:
-        return True  # No validation rules defined
+    Returns:
+        list: List of analysis type configurations
+    """
+    return list(ANALYSIS_TYPES.values())
 
-    min_val = field_rules.get("min")
-    max_val = field_rules.get("max")
 
-    if min_val is not None and value < min_val:
-        return False
-    if max_val is not None and value > max_val:
-        return False
+def supports_embedding(analysis_type):
+    """
+    Check if analysis type supports embedding
 
-    return True
+    Args:
+        analysis_type (str): Analysis type code
+
+    Returns:
+        bool: True if embedding is supported
+    """
+    config = get_analysis_config(analysis_type)
+    return config.get('supports_embedding', False) if config else False

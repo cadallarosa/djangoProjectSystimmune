@@ -1,115 +1,108 @@
-# shared/utils/url_helpers.py
-"""
-URL generation helpers for the CLD Dashboard
-"""
-
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 import json
 
 
-def build_url(base_path, **params):
+def build_sec_report_url(sample_ids=None, report_id=None, mode="samples", hide_report_tab=True):
     """
-    Build a URL with query parameters
-
-    Args:
-        base_path (str): Base URL path
-        **params: Query parameters to add
-
-    Returns:
-        str: Complete URL with parameters
-    """
-    if params:
-        query_string = urlencode(params, doseq=True)
-        return f"{base_path}?{query_string}"
-    return base_path
-
-
-def build_sec_report_url(sample_ids=None, report_id=None, hide_report_tab=True, mode=None):
-    """
-    Build URL for SEC Report App with appropriate parameters
+    Build URL for SEC analysis with specific parameters
 
     Args:
         sample_ids (list): List of sample IDs to analyze
         report_id (int): Specific report to view
+        mode (str): Analysis mode ('samples', 'report', 'create')
         hide_report_tab (bool): Hide the report selection tab
-        mode (str): View mode ('samples' or 'report')
 
     Returns:
-        str: Complete SEC report URL
+        str: Complete SEC analysis URL
     """
     base_url = "/plotly_integration/dash-app/app/SecReportApp2/"
     params = {}
 
     if report_id:
-        params['report_id'] = report_id
-
+        params["report_id"] = str(report_id)
     if sample_ids:
-        params['samples'] = ','.join(sample_ids)
-        if not mode:
-            mode = 'samples'
-
+        if isinstance(sample_ids, list):
+            params["samples"] = ",".join(str(sid) for sid in sample_ids)
+        else:
+            params["samples"] = str(sample_ids)
     if mode:
-        params['mode'] = mode
-
+        params["mode"] = mode
     if hide_report_tab:
-        params['hide_report_tab'] = 'true'
+        params["hide_report_tab"] = "true"
 
-    return build_url(base_url, **params)
+    if params:
+        return f"{base_url}?{urlencode(params)}"
+    return base_url
 
 
-def build_dashboard_url(page=None, **params):
+def build_sample_set_url(project, sip_number=None, development_stage=None):
     """
-    Build URL for dashboard pages
+    Build URL for sample set view
 
     Args:
-        page (str): Dashboard page ('samples', 'sec', 'reports', etc.)
-        **params: Additional parameters
+        project (str): Project identifier
+        sip_number (str): SIP number (optional)
+        development_stage (str): Development stage (optional)
 
     Returns:
-        str: Dashboard URL
+        str: Sample set view URL
     """
-    if page:
-        base_url = f"/{page}"
-    else:
-        base_url = "/"
+    params = {'project': project}
 
-    return build_url(base_url, **params)
+    if sip_number:
+        params['sip'] = sip_number
+    if development_stage:
+        params['stage'] = development_stage
+
+    return f"/sample-sets/view?{urlencode(params)}"
 
 
-def build_sample_set_action_url(action, sample_ids):
+def build_analysis_request_url(analysis_type, sample_set_id=None, request_id=None):
     """
-    Build URL for sample set actions
+    Build URL for analysis request management
 
     Args:
-        action (str): Action type ('request_sec', 'view_sec', etc.)
-        sample_ids (list): List of sample IDs
+        analysis_type (str): Type of analysis (SEC, TITER, etc.)
+        sample_set_id (int): Sample set ID (optional)
+        request_id (int): Analysis request ID (optional)
 
     Returns:
-        str: Action URL
+        str: Analysis request URL
     """
-    sample_param = ','.join(sample_ids)
+    base_path = f"/analysis/{analysis_type.lower()}"
+    params = {}
 
-    if action == 'request_sec':
-        return f"/sec/request?samples={sample_param}"
-    elif action == 'view_sec':
-        return build_sec_report_url(sample_ids=sample_ids)
-    elif action == 'create_sec':
-        return build_sec_report_url(sample_ids=sample_ids, hide_report_tab=True)
-    else:
-        return f"/action/{action}?samples={sample_param}"
+    if sample_set_id:
+        params['sample_set_id'] = str(sample_set_id)
+    if request_id:
+        params['request_id'] = str(request_id)
+
+    if params:
+        return f"{base_path}?{urlencode(params)}"
+    return base_path
 
 
-def encode_sample_set_data(sample_set_dict):
+def encode_sample_set_data(project, sip_number, development_stage, sample_ids):
     """
     Encode sample set data for URL transmission
 
     Args:
-        sample_set_dict (dict): Sample set data
+        project (str): Project name
+        sip_number (str): SIP number
+        development_stage (str): Development stage
+        sample_ids (list): List of sample IDs
 
     Returns:
-        str: Encoded data for URL
+        str: URL-encoded sample set data
     """
-    return json.dumps(sample_set_dict).replace('"', '%22').replace(' ', '%20')
+    sample_set_data = {
+        "project": project,
+        "sip": sip_number,
+        "development_stage": development_stage,
+        "sample_ids": sample_ids
+    }
+
+    return quote(json.dumps(sample_set_data))
 
 
 def decode_sample_set_data(encoded_data):
@@ -117,151 +110,67 @@ def decode_sample_set_data(encoded_data):
     Decode sample set data from URL
 
     Args:
-        encoded_data (str): Encoded data from URL
+        encoded_data (str): URL-encoded sample set data
 
     Returns:
         dict: Decoded sample set data
     """
     try:
-        decoded = encoded_data.replace('%22', '"').replace('%20', ' ')
-        return json.loads(decoded)
-    except (json.JSONDecodeError, AttributeError):
+        return json.loads(encoded_data)
+    except (json.JSONDecodeError, TypeError):
         return {}
 
 
-def get_external_app_urls():
+def build_dashboard_url(page_name, **params):
     """
-    Get URLs for external applications
+    Build internal dashboard URLs
+
+    Args:
+        page_name (str): Name of the dashboard page
+        **params: Additional URL parameters
 
     Returns:
-        dict: Mapping of app names to URLs
+        str: Dashboard page URL
     """
-    return {
-        'sec_report': '/plotly_integration/dash-app/app/SecReportApp2/',
-        'sec_report_v3': '/plotly_integration/dash-app/app/SecReportApp3/',
-        'titer_report': '/plotly_integration/dash-app/app/TiterReportApp/',
-        'column_analysis': '/plotly_integration/dash-app/app/ColumnUsageApp/',
-        'database_manager': '/plotly_integration/dash-app/app/DatabaseManagerApp/',
-        'create_report': '/plotly_integration/dash-app/app/ReportApp/',
-        'cld_sample_manager': '/plotly_integration/dash-app/app/CLDSampleManagementApp/',
-        'upstream_sample_manager': '/plotly_integration/dash-app/app/UPSampleManagementApp/'
+    page_routes = {
+        'home': '/',
+        'samples_view': '/samples/view',
+        'samples_create': '/samples/create',
+        'sample_sets': '/sample-sets',
+        'sample_sets_table': '/sample-sets/table',
+        'sec_dashboard': '/analysis/sec',
+        'sec_reports': '/analysis/sec/reports',
+        'settings': '/settings'
     }
 
+    base_url = page_routes.get(page_name, '/')
 
-def build_external_app_url(app_name, **params):
+    if params:
+        return f"{base_url}?{urlencode(params)}"
+    return base_url
+
+
+def extract_url_params(search_string):
     """
-    Build URL for external applications
+    Extract parameters from URL search string
 
     Args:
-        app_name (str): Name of the external app
-        **params: Query parameters
+        search_string (str): URL search string (e.g., "?param1=value1&param2=value2")
 
     Returns:
-        str: Complete external app URL
+        dict: Dictionary of URL parameters
     """
-    urls = get_external_app_urls()
-    base_url = urls.get(app_name)
+    if not search_string:
+        return {}
 
-    if not base_url:
-        raise ValueError(f"Unknown app name: {app_name}")
+    # Remove leading '?' if present
+    if search_string.startswith('?'):
+        search_string = search_string[1:]
 
-    return build_url(base_url, **params)
+    params = {}
+    for param_pair in search_string.split('&'):
+        if '=' in param_pair:
+            key, value = param_pair.split('=', 1)
+            params[key] = value
 
-
-def parse_sample_ids_from_url(sample_param):
-    """
-    Parse sample IDs from URL parameter
-
-    Args:
-        sample_param (str): Comma-separated sample IDs
-
-    Returns:
-        list: List of sample IDs
-    """
-    if not sample_param:
-        return []
-
-    return [s.strip() for s in sample_param.split(',') if s.strip()]
-
-
-def build_markdown_link(text, url, target="_blank"):
-    """
-    Build markdown link for DataTable
-
-    Args:
-        text (str): Link text
-        url (str): Link URL
-        target (str): Link target
-
-    Returns:
-        str: Markdown formatted link
-    """
-    if target:
-        return f"[{text}]({url})"
-    else:
-        return f"[{text}]({url})"
-
-
-def build_action_buttons_markdown(sample_ids, current_status="not_requested"):
-    """
-    Build action buttons in markdown format based on SEC status
-
-    Args:
-        sample_ids (list): List of sample IDs
-        current_status (str): Current SEC analysis status
-
-    Returns:
-        str: Markdown formatted action buttons
-    """
-    sample_param = ','.join(sample_ids)
-
-    if current_status == "not_requested":
-        return f"[📊 Request SEC Analysis](/sec/request?samples={sample_param})"
-
-    elif current_status == "complete":
-        return f"[📈 View SEC Report]({build_sec_report_url(sample_ids=sample_ids)})"
-
-    elif current_status in ["in_progress", "partial"]:
-        request_url = f"/sec/request?samples={sample_param}"
-        view_url = build_sec_report_url(sample_ids=sample_ids)
-        return f"[📊 Complete Request]({request_url}) | [📈 View Analysis]({view_url})"
-
-    else:
-        return f"[📈 Analyze]({build_sec_report_url(sample_ids=sample_ids)})"
-
-
-def get_breadcrumb_links(current_page):
-    """
-    Generate breadcrumb navigation links
-
-    Args:
-        current_page (str): Current page identifier
-
-    Returns:
-        list: List of breadcrumb items
-    """
-    breadcrumbs = [
-        {"text": "Dashboard", "url": "/", "active": False}
-    ]
-
-    if current_page.startswith("fb-samples"):
-        breadcrumbs.append({"text": "FB Samples", "url": "/fb-samples/view", "active": False})
-
-        if "sets" in current_page:
-            breadcrumbs.append({"text": "Sample Sets", "url": "/fb-samples/sets", "active": True})
-        elif "create" in current_page:
-            breadcrumbs.append({"text": "Create Samples", "url": "/fb-samples/create", "active": True})
-        else:
-            breadcrumbs[-1]["active"] = True
-
-    elif current_page.startswith("sec"):
-        breadcrumbs.append({"text": "SEC Analytics", "url": "/sec/dashboard", "active": False})
-
-        if "sample-sets" in current_page:
-            breadcrumbs.append({"text": "SEC Sample Sets", "url": "/sec/sample-sets", "active": True})
-        elif "reports" in current_page:
-            breadcrumbs.append({"text": "SEC Reports", "url": "/sec/reports", "active": True})
-        else:
-            breadcrumbs[-1]["active"] = True
-
-    return breadcrumbs
+    return params

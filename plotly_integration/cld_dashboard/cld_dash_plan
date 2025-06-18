@@ -16,43 +16,76 @@ python manage.py migrate
 
 ### 2. Core Infrastructure
 ```
-cld_dashboard/
-├── shared/
-│   ├── styles/common_styles.py          # Create table styles, constants
-│   ├── components/embedded_iframe.py    # Create iframe component
-│   └── utils/url_helpers.py             # Create URL generation helpers
+plotly_integration/
+├── __init__.py
+├── models.py                            # Add new models here
+├── urls.py
+├── views.py
 │
-├── core/
-│   ├── routing.py                       # Enhanced routing with SEC paths
-│   └── dashboard_home.py                # Updated dashboard with SEC stats
+├── cld_dashboard/                       # NEW CLD Dashboard (CLDDashboardApp3)
+│   ├── __init__.py
+│   ├── main_app.py                      # Main entry point
+│   │
+│   ├── shared/
+│   │   ├── __init__.py
+│   │   ├── styles/
+│   │   │   ├── __init__.py
+│   │   │   └── common_styles.py
+│   │   ├── components/
+│   │   │   ├── __init__.py
+│   │   │   └── embedded_iframe.py
+│   │   └── utils/
+│   │       ├── __init__.py
+│   │       └── url_helpers.py
+│   │
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── routing.py
+│   │   └── dashboard_home.py
+│   │
+│   ├── config/
+│   │   ├── __init__.py
+│   │   ├── analysis_types.py
+│   │   └── app_urls.py
+│   │
+│   ├── samples/
+│   │   ├── __init__.py
+│   │   ├── layouts/
+│   │   │   ├── __init__.py
+│   │   │   ├── sample_sets.py
+│   │   │   ├── view_samples.py
+│   │   │   └── create_samples.py
+│   │   └── callbacks/
+│   │       ├── __init__.py
+│   │       ├── sample_sets.py
+│   │       ├── view_samples.py
+│   │       ├── create_samples.py
+│   │       └── analysis_requests.py
+│   │
+│   └── embedded_apps/
+│       ├── __init__.py
+│       └── sec_integration/
+│           ├── __init__.py
+│           ├── sec_dashboard.py
+│           ├── sec_embedder.py
+│           ├── sec_data_monitor.py
+│           └── sec_callbacks.py
 │
-└── config/
-    ├── analysis_types.py                # Define SEC analysis constants
-    └── app_urls.py                      # URLs for embedded apps
-```
-
-### 3. Sample Management Updates
-```
-samples/
-├── layouts/
-│   └── sample_sets.py                   # Enhanced with SEC request buttons
-└── callbacks/
-    ├── sample_sets.py                   # Auto-create SampleSet records
-    └── analysis_requests.py             # Handle SEC analysis requests
-```
-
-### 4. SEC Integration Core
-```
-embedded_apps/sec_integration/
-├── sec_dashboard.py                     # SEC analysis overview
-├── sec_embedder.py                      # Iframe embedding component
-├── sec_data_monitor.py                  # Monitor SEC data availability
-└── sec_callbacks.py                    # All SEC-specific callbacks
-```
-
-### 5. Main App Update
-```
-main_app.py                              # Updated entry point with SEC integration
+└── process_development/
+    └── downstream_processing/
+        └── empower/
+            └── sec_report_app/             # EXISTING SEC App (SecReportApp2)
+                ├── __init__.py
+                ├── app.py                  # SecReportApp2 (keep as-is)
+                ├── layout/
+                │   ├── __init__.py
+                │   └── layout.py
+                └── callbacks/
+                    ├── __init__.py
+                    ├── report_selection.py
+                    ├── plotting.py
+                    ├── table_data.py
+                    └── utils.py
 ```
 
 ## Key Features in Phase 1

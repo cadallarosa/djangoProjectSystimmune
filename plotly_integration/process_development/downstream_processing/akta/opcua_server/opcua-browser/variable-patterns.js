@@ -4,7 +4,7 @@ const variablePatterns = {
     // Core variable patterns - now more flexible
     run_log: /run\s*log/i,
     fraction: /fraction(?!.*(?:table|pool))/i,
-    uv_1: /uv\s*1[\s_]*(280|nm)?|uv[\s_]*280/i,
+    uv_1: /^UV\s+1_280$/i,
     uv_2: /uv\s*2[\s_]*(0|nm)?|uv[\s_]*2(?!80)/i,
     uv_3: /uv\s*3[\s_]*(0|nm)?|uv[\s_]*3/i,
     cond: /^cond(?!.*temp)|conductivity(?!.*temp)/i,
