@@ -418,6 +418,134 @@ def calculate_recoveries_on_change(table_data):
         print(f"Error calculating recoveries: {e}")
         return table_data, f"❌ Calculation error: {str(e)}"
 
+#
+# @app.callback(
+#     Output("save-up-status", "children"),
+#     Input("save-up-table", "n_clicks"),
+#     [State("up-sample-table", "data"),
+#      State("up-project-dropdown", "value"),
+#      State("up-vessel-type", "value"),
+#      State("cld-dev-stage", "value"),
+#      State("cld-analyst", "value"),
+#      State("sip-number", "value"),
+#      State("unifi-number", "value")],
+#     prevent_initial_call=True
+# )
+# def save_up_samples(n_clicks, table_data, project, vessel_type, dev_stage, analyst, sip_number, unifi_number):
+#     """Save UP samples to CLD database"""
+#     if not n_clicks:
+#         return no_update
+#
+#     if not table_data:
+#         return dbc.Alert("❌ No data to save.", color="warning", dismissable=True)
+#     if not project or not vessel_type:
+#         return dbc.Alert("⚠️ Please fill in Project and Vessel Type.", color="warning", dismissable=True)
+#
+#     print(f"💾 Saving UP samples for project '{project}' | vessel: {vessel_type}")
+#
+#     created, updated, skipped, errors = 0, 0, 0, 0
+#     error_details = []
+#
+#     for row in table_data:
+#         try:
+#             sample_number = row.get("sample_number")
+#             if not sample_number:
+#                 skipped += 1
+#                 continue
+#
+#             # Prepare data for saving
+#             sample_data = {
+#                 "project": project,
+#                 "vessel_type": vessel_type,
+#                 "sip_number": sip_number,
+#                 "unifi_number": unifi_number,
+#                 "development_stage": dev_stage,
+#                 "analyst": analyst,
+#                 "cell_line": row.get("cell_line") or "",
+#                 "note": row.get("note") or "",
+#             }
+#
+#             # Handle numeric fields
+#             numeric_fields = [
+#                 "hf_octet_titer", "pro_aqa_hf_titer", "pro_aqa_e_titer",
+#                 "proa_eluate_a280_conc", "hccf_loading_volume", "proa_eluate_volume"
+#             ]
+#
+#             for field in numeric_fields:
+#                 value = row.get(field)
+#                 if value and str(value).strip():
+#                     try:
+#                         sample_data[field] = float(value)
+#                     except (ValueError, TypeError):
+#                         sample_data[field] = None
+#                 else:
+#                     sample_data[field] = None
+#
+#             # Handle date field
+#             harvest_date = row.get("harvest_date")
+#             if harvest_date and str(harvest_date).strip():
+#                 try:
+#                     sample_data["harvest_date"] = datetime.strptime(harvest_date, "%Y-%m-%d").date()
+#                 except ValueError:
+#                     sample_data["harvest_date"] = None
+#             else:
+#                 sample_data["harvest_date"] = None
+#
+#             # Save to database
+#             sample, created_flag = LimsUpstreamSamples.objects.update_or_create(
+#                 sample_number=sample_number,
+#                 sample_type=2,
+#                 defaults=sample_data
+#             )
+#
+#             # Create/update analysis record
+#             LimsSampleAnalysis.objects.update_or_create(
+#                 sample_id=f'FB{sample_number}',
+#                 sample_type=2,
+#                 defaults={
+#                     "sample_date": sample_data["harvest_date"],
+#                     "project_id": project,
+#                     "description": row.get("description", ""),
+#                     "notes": sample_data["note"],
+#                     "dn": None,
+#                     "a280_result": sample_data.get("proa_eluate_a280_conc")
+#                 }
+#             )
+#
+#             if created_flag:
+#                 created += 1
+#             else:
+#                 updated += 1
+#
+#         except Exception as e:
+#             error_msg = f"Sample {row.get('sample_number', 'Unknown')}: {str(e)}"
+#             error_details.append(error_msg)
+#             print(f"❌ Error saving sample {row.get('sample_number')}: {e}")
+#             errors += 1
+#
+#     # Create comprehensive status message
+#     if errors == 0:
+#         return dbc.Alert([
+#             html.H6("✅ Save Successful!", className="alert-heading"),
+#             html.P([
+#                 f"📝 Created: {created} samples | ",
+#                 f"🔄 Updated: {updated} samples | ",
+#                 f"⏭️ Skipped: {skipped} empty rows"
+#             ], className="mb-0")
+#         ], color="success", dismissable=True)
+#     else:
+#         return dbc.Alert([
+#             html.H6("⚠️ Save Completed with Issues", className="alert-heading"),
+#             html.P([
+#                 f"✅ Created: {created} | 🔄 Updated: {updated} | ",
+#                 f"❌ Errors: {errors} | ⏭️ Skipped: {skipped}"
+#             ]),
+#             html.Hr(),
+#             html.H6("Error Details:", className="small"),
+#             html.Ul([html.Li(error, className="small") for error in error_details[:5]]),
+#             html.P(f"... and {len(error_details) - 5} more errors", className="small text-muted") if len(
+#                 error_details) > 5 else ""
+#         ], color="warning", dismissable=True)
 
 @app.callback(
     Output("save-up-status", "children"),
@@ -445,6 +573,7 @@ def save_up_samples(n_clicks, table_data, project, vessel_type, dev_stage, analy
 
     created, updated, skipped, errors = 0, 0, 0, 0
     error_details = []
+    saved_sample_ids = []  # Track successfully saved samples for set creation
 
     for row in table_data:
         try:
@@ -499,7 +628,7 @@ def save_up_samples(n_clicks, table_data, project, vessel_type, dev_stage, analy
             )
 
             # Create/update analysis record
-            LimsSampleAnalysis.objects.update_or_create(
+            sample_analysis, _ = LimsSampleAnalysis.objects.update_or_create(
                 sample_id=f'FB{sample_number}',
                 sample_type=2,
                 defaults={
@@ -507,10 +636,13 @@ def save_up_samples(n_clicks, table_data, project, vessel_type, dev_stage, analy
                     "project_id": project,
                     "description": row.get("description", ""),
                     "notes": sample_data["note"],
+                    "analyst": analyst or "",
                     "dn": None,
                     "a280_result": sample_data.get("proa_eluate_a280_conc")
                 }
             )
+
+            saved_sample_ids.append(f'FB{sample_number}')
 
             if created_flag:
                 created += 1
@@ -523,16 +655,77 @@ def save_up_samples(n_clicks, table_data, project, vessel_type, dev_stage, analy
             print(f"❌ Error saving sample {row.get('sample_number')}: {e}")
             errors += 1
 
+    # Create/update sample set if samples were saved successfully
+    set_created = False
+    set_name = ""
+
+    if saved_sample_ids and (created > 0 or updated > 0):
+        try:
+            # Generate sample set name
+            set_name_parts = [project]
+            if sip_number:
+                set_name_parts.append(f"SIP{sip_number}")
+            if dev_stage:
+                set_name_parts.append(dev_stage)
+            set_name = "_".join(set_name_parts)
+
+            # Create or get sample set
+            from plotly_integration.models import LimsSampleSet, LimsSampleSetMembership
+
+            sample_set, set_created = LimsSampleSet.objects.get_or_create(
+                project_id=project,
+                sip_number=sip_number or "",
+                development_stage=dev_stage or "",
+                defaults={
+                    'set_name': set_name,
+                    'created_by': analyst or "system"
+                }
+            )
+
+            # Add samples to set membership
+            membership_created = 0
+            for sample_id in saved_sample_ids:
+                try:
+                    sample_analysis = LimsSampleAnalysis.objects.get(sample_id=sample_id)
+                    _, was_created = LimsSampleSetMembership.objects.get_or_create(
+                        sample_set=sample_set,
+                        sample=sample_analysis
+                    )
+                    if was_created:
+                        membership_created += 1
+                except LimsSampleAnalysis.DoesNotExist:
+                    print(f"Warning: LimsSampleAnalysis not found for {sample_id}")
+
+            # Update sample count
+            sample_set.sample_count = sample_set.members.count()
+            sample_set.save()
+
+            print(
+                f"✅ Sample set '{set_name}' {'created' if set_created else 'updated'} with {sample_set.sample_count} samples")
+
+        except Exception as e:
+            print(f"Error creating/updating sample set: {e}")
+            # Don't fail the whole operation if sample set creation fails
+
     # Create comprehensive status message
     if errors == 0:
-        return dbc.Alert([
+        status_parts = [
             html.H6("✅ Save Successful!", className="alert-heading"),
             html.P([
                 f"📝 Created: {created} samples | ",
                 f"🔄 Updated: {updated} samples | ",
                 f"⏭️ Skipped: {skipped} empty rows"
             ], className="mb-0")
-        ], color="success", dismissable=True)
+        ]
+
+        if set_created:
+            status_parts.append(html.Hr())
+            status_parts.append(html.P([
+                html.I(className="fas fa-layer-group me-2"),
+                f"Created new sample set: {set_name}"
+            ], className="text-success mb-0"))
+
+        return dbc.Alert(status_parts, color="success", dismissable=True)
     else:
         return dbc.Alert([
             html.H6("⚠️ Save Completed with Issues", className="alert-heading"),

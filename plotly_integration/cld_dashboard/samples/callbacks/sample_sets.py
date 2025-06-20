@@ -1,459 +1,1132 @@
-# # Sample sets callbacks for CLD Dashboard - Connected to real data
+# # cld_dashboard/samples/callbacks/sample_sets_callbacks.py
 #
-# from dash import Input, Output, State, callback, html, no_update
+# from dash import Input, Output, State, callback, html, no_update, ALL
 # import dash_bootstrap_components as dbc
-# import pandas as pd
-# from django.db.models import Count, Q
-# from plotly_integration.models import LimsUpstreamSamples, LimsSampleAnalysis, Report, LimsProjectInformation
-# from ...config.analysis_types import ANALYSIS_TYPES, STATUS_COLORS
-# from ...shared.styles.common_styles import COLORS
-# import json
-# from datetime import datetime, timedelta
-#
-#
-# @callback(
-#     [Output("sample-sets-grid", "children"),
-#      Output("sample-sets-loading-output", "children")],
-#     [Input("apply-filters-btn", "n_clicks"),
-#      Input("refresh-sample-sets-btn", "n_clicks"),
-#      Input("parsed-pathname", "data")],
-#     [State("project-filter", "value"),
-#      State("status-filter", "value"),
-#      State("search-sample-sets", "value")]
+# from django.db.models import Count, Q, Prefetch
+# from plotly_integration.models import (
+#     LimsSampleSet, LimsSampleSetMembership,
+#     LimsSampleAnalysis, LimsAnalysisRequest,
+#     LimsSecResult, LimsTiterResult, LimsCeSdsResult,
+#     LimsCiefResult, LimsMassCheckResult, LimsReleasedGlycanResult,
+#     LimsHcpResult, LimsProaResult, Report
 # )
-# def update_sample_sets_grid(apply_clicks, refresh_clicks, pathname, project_filter, status_filter, search_term):
-#     """Update the sample sets grid based on filters"""
+# from datetime import datetime
+# import json
+#
+# # Import the app instance
+# from plotly_integration.cld_dashboard.main_app import app
+#
+#
+# @app.callback(
+#     [Output("sample-sets-grid", "children"),
+#      Output("total-sets-metric", "children"),
+#      Output("pending-metric", "children"),
+#      Output("in-progress-metric", "children"),
+#      Output("completed-metric", "children")],
+#     [Input("refresh-sample-sets-btn", "n_clicks"),
+#      Input("search-sample-sets", "value"),
+#      Input("project-filter", "value"),
+#      Input("status-filter", "value"),
+#      Input("parsed-pathname", "data")]  # Add this to trigger on page load
+# )
+# def update_sample_sets_display(n_clicks, search_term, project_filter, status_filter, pathname):
+#     """Load and display sample sets with analysis status"""
+#
+#     # Only run on sample-sets page
 #     if pathname != "/sample-sets":
-#         return no_update, no_update
+#         return no_update, no_update, no_update, no_update, no_update
 #
 #     try:
-#         # Get sample sets data from CLD database
-#         sample_sets_data = get_sample_sets_data_from_db(project_filter, status_filter, search_term)
+#         # Query sample sets
+#         sample_sets = LimsSampleSet.objects.filter(active=True)
 #
-#         if not sample_sets_data:
-#             return dbc.Alert([
-#                 html.I(className="fas fa-info-circle me-2"),
-#                 "No sample sets found. Check your filters or create some samples first."
-#             ], color="info"), ""
-#
-#         # Create grid cards
-#         grid_cards = []
-#         for i in range(0, len(sample_sets_data), 3):  # 3 cards per row
-#             row_cards = sample_sets_data[i:i + 3]
-#             grid_cards.append(
-#                 dbc.Row([
-#                     dbc.Col([
-#                         create_sample_set_card(card_data)
-#                     ], md=4) for card_data in row_cards
-#                 ], className="mb-3")
+#         # Apply filters
+#         if search_term:
+#             sample_sets = sample_sets.filter(
+#                 Q(set_name__icontains=search_term) |
+#                 Q(project_id__icontains=search_term) |
+#                 Q(sip_number__icontains=search_term) |
+#                 Q(development_stage__icontains=search_term)
 #             )
 #
-#         return html.Div(grid_cards), ""
+#         if project_filter and project_filter != "all":
+#             sample_sets = sample_sets.filter(project_id=project_filter)
+#
+#         # Prefetch related data
+#         sample_sets = sample_sets.prefetch_related(
+#             'members__sample',
+#             'analysis_requests'
+#         ).order_by('-created_at')
+#
+#         # Create cards and calculate metrics
+#         cards = []
+#         total_pending = 0
+#         total_in_progress = 0
+#         total_completed = 0
+#
+#         for sample_set in sample_sets:
+#             # Get analysis status
+#             analysis_status = get_analysis_status_for_set(sample_set)
+#
+#             # Apply status filter
+#             if status_filter == "pending" and not any(s == 'requested' for s in analysis_status.values()):
+#                 continue
+#             elif status_filter == "complete" and not all(
+#                     s == 'completed' for s in analysis_status.values() if s != 'not_requested'):
+#                 continue
+#             elif status_filter == "none" and any(s != 'not_requested' for s in analysis_status.values()):
+#                 continue
+#
+#             # Count statuses
+#             pending_count = sum(1 for s in analysis_status.values() if s == 'requested')
+#             in_progress_count = sum(1 for s in analysis_status.values() if s == 'in_progress')
+#             completed_count = sum(1 for s in analysis_status.values() if s == 'completed')
+#
+#             total_pending += pending_count
+#             total_in_progress += in_progress_count
+#             total_completed += completed_count
+#
+#             # Create card - now full width (1 per row)
+#             from ..layouts.sample_sets import create_sample_set_card
+#             card = create_sample_set_card(sample_set, analysis_status)
+#             cards.append(card)
+#
+#         if not cards:
+#             cards = [dbc.Alert("No sample sets found. Create some samples to get started!",
+#                                color="info", className="w-100")]
+#
+#         # Count total sample sets
+#         total_sets = len([s for s in sample_sets])
+#
+#         return (
+#             html.Div(cards),  # Changed from dbc.Row to html.Div
+#             str(total_sets),
+#             str(total_pending),
+#             str(total_in_progress),
+#             str(total_completed)
+#         )
 #
 #     except Exception as e:
-#         error_msg = f"Error loading sample sets: {str(e)}"
-#         return dbc.Alert([
-#             html.I(className="fas fa-exclamation-triangle me-2"),
-#             error_msg
-#         ], color="danger"), ""
+#         print(f"Error in update_sample_sets_display: {e}")
+#         error_msg = dbc.Alert(f"Error loading sample sets: {str(e)}", color="danger")
+#         return error_msg, "Error", "Error", "Error", "Error"
 #
 #
-# @callback(
-#     Output("sample-sets-table", "data"),
-#     [Input("apply-filters-btn", "n_clicks"),
-#      Input("refresh-sample-sets-btn", "n_clicks"),
-#      Input("parsed-pathname", "data")],
-#     [State("project-filter", "value"),
-#      State("status-filter", "value"),
-#      State("search-sample-sets", "value")]
+# def get_analysis_status_for_set(sample_set):
+#     """Get status of each analysis type for a sample set"""
+#     analysis_types = ['SEC', 'Titer', 'CE-SDS', 'cIEF', 'Mass Check', 'Glycan', 'HCP', 'ProA']
+#     status_dict = {}
+#
+#     # Get all analysis requests
+#     requests = {req.analysis_type: req for req in sample_set.analysis_requests.all()}
+#
+#     # Get member samples
+#     member_samples = sample_set.members.select_related('sample').all()
+#     sample_ids = [m.sample.sample_id for m in member_samples]
+#
+#     for analysis_type in analysis_types:
+#         if analysis_type in requests:
+#             status_dict[analysis_type] = requests[analysis_type].status
+#         else:
+#             # Check if any data exists in result tables
+#             has_data = check_analysis_data_exists(analysis_type, sample_ids)
+#             if has_data:
+#                 status_dict[analysis_type] = 'completed'
+#             else:
+#                 status_dict[analysis_type] = 'not_requested'
+#
+#     # Special check for SEC - also look for reports
+#     sec_reports = Report.objects.filter(
+#         analysis_type=1,  # SEC
+#         project_id=sample_set.project_id
+#     ).exists()
+#     if sec_reports:
+#         status_dict['SEC'] = 'completed'
+#
+#     return status_dict
+#
+#
+# def check_analysis_data_exists(analysis_type, sample_ids):
+#     """Check if analysis data exists for any samples"""
+#     if not sample_ids:
+#         return False
+#
+#     # Map analysis types to result models and field names
+#     model_map = {
+#         'SEC': ('sec_result', LimsSecResult),
+#         'Titer': ('titer_result', LimsTiterResult),
+#         'CE-SDS': ('ce_sds_result', LimsCeSdsResult),
+#         'cIEF': ('cief_result', LimsCiefResult),
+#         'Mass Check': ('mass_check_result', LimsMassCheckResult),
+#         'Glycan': ('glycan_result', LimsReleasedGlycanResult),
+#         'HCP': ('hcp_result', LimsHcpResult),
+#         'ProA': ('proa_result', LimsProaResult)
+#     }
+#
+#     field_name, model = model_map.get(analysis_type, (None, None))
+#     if field_name:
+#         # Check if any samples have results
+#         return LimsSampleAnalysis.objects.filter(
+#             sample_id__in=sample_ids
+#         ).exclude(
+#             **{field_name: None}
+#         ).exists()
+#
+#     return False
+#
+#
+# @app.callback(
+#     [Output("analysis-request-modal", "is_open"),
+#      Output("modal-sample-set-info", "children"),
+#      Output("selected-sample-set", "data")],
+#     [Input({"type": "request-analysis-btn", "index": ALL}, "n_clicks"),
+#      Input("cancel-analysis-request", "n_clicks")],
+#     [State("analysis-request-modal", "is_open"),
+#      State({"type": "request-analysis-btn", "index": ALL}, "id")]
 # )
-# def update_sample_sets_table(apply_clicks, refresh_clicks, pathname, project_filter, status_filter, search_term):
-#     """Update the sample sets table data"""
-#     if pathname != "/sample-sets/table":
+# def toggle_analysis_modal(request_clicks, cancel_clicks, is_open, button_ids):
+#     """Handle opening/closing of analysis request modal"""
+#
+#     # Check if cancel button was clicked
+#     if cancel_clicks:
+#         return False, "", {}
+#
+#     # Check if any request button was clicked
+#     if request_clicks and any(request_clicks):
+#         # Find which button was clicked by checking which n_clicks is not None and > 0
+#         for i, (n_clicks, button_id) in enumerate(zip(request_clicks, button_ids)):
+#             if n_clicks and n_clicks > 0:
+#                 sample_set_id = button_id["index"]
+#
+#                 try:
+#                     sample_set = LimsSampleSet.objects.get(id=sample_set_id)
+#
+#                     # Get sample IDs for this set
+#                     sample_ids = [m.sample.sample_id for m in sample_set.members.all()]
+#
+#                     info = html.Div([
+#                         html.H6(f"Sample Set: {sample_set.set_name}"),
+#                         html.P([
+#                             html.Strong("Project: "), sample_set.project_id, html.Br(),
+#                             html.Strong("Samples: "), f"{sample_set.sample_count} samples", html.Br(),
+#                             html.Strong("Sample IDs: "), ", ".join(sample_ids[:5]),
+#                             "..." if len(sample_ids) > 5 else ""
+#                         ], className="mb-0")
+#                     ])
+#
+#                     return True, info, {
+#                         "id": sample_set_id,
+#                         "name": sample_set.set_name,
+#                         "sample_ids": sample_ids
+#                     }
+#
+#                 except LimsSampleSet.DoesNotExist:
+#                     return False, "Sample set not found", {}
+#
+#     return False, "", {}
+#
+#
+# @app.callback(
+#     Output("sample-sets-notifications", "children"),
+#     [Input("submit-analysis-request", "n_clicks")],
+#     [State("selected-sample-set", "data"),
+#      State("analysis-type-checklist", "value"),
+#      State("analysis-priority", "value"),
+#      State("analysis-notes", "value")],
+#     prevent_initial_call=True
+# )
+# def submit_analysis_request(n_clicks, selected_set, analysis_types, priority, notes):
+#     """Submit analysis requests for a sample set"""
+#     if not n_clicks or not selected_set or not analysis_types:
 #         return no_update
 #
 #     try:
-#         sample_sets_data = get_sample_sets_data_from_db(project_filter, status_filter, search_term)
+#         sample_set = LimsSampleSet.objects.get(id=selected_set["id"])
+#         created_count = 0
 #
-#         # Format data for table
-#         table_data = []
-#         for set_data in sample_sets_data:
-#             table_data.append({
-#                 "set_name": set_data["set_name"],
-#                 "project": set_data["project"],
-#                 "sip_number": set_data["sip_number"] or "",
-#                 "development_stage": set_data["development_stage"] or "",
-#                 "sample_count": set_data["sample_count"],
-#                 "sec_status": create_status_badge_markdown(set_data["sec_status"]),
-#                 "actions": create_action_buttons_markdown(set_data)
-#             })
+#         # Get member samples
+#         member_samples = sample_set.members.select_related('sample').all()
 #
-#         return table_data
-#
-#     except Exception as e:
-#         return []
-#
-#
-# @callback(
-#     [Output("sample-set-info", "children"),
-#      Output("analysis-status-info", "children"),
-#      Output("samples-in-set-table", "children"),
-#      Output("sample-count-badge", "children")],
-#     [Input("url", "search")],
-#     [State("parsed-pathname", "data")]
-# )
-# def update_sample_set_detail(search, pathname):
-#     """Update sample set detail page"""
-#     if pathname != "/sample-sets/view":
-#         return no_update, no_update, no_update, no_update
-#
-#     # Parse query parameters
-#     from urllib.parse import parse_qs
-#     query_params = parse_qs(search.lstrip('?')) if search else {}
-#
-#     project = query_params.get('project', [''])[0]
-#     sip = query_params.get('sip', [''])[0]
-#     stage = query_params.get('stage', [''])[0]
-#
-#     if not project:
-#         return "No project specified", "", "", "0"
-#
-#     try:
-#         # Get samples in this set from CLD database
-#         filters = Q(project=project)
-#         if sip:
-#             filters &= Q(sip_number=sip)
-#         if stage:
-#             filters &= Q(development_stage=stage)
-#
-#         # Query LimsUpstreamSamples
-#         samples = LimsUpstreamSamples.objects.filter(filters).order_by('sample_number')
-#
-#         if not samples:
-#             return "No samples found", "", "", "0"
-#
-#         # Sample set information
-#         sample_info = html.Div([
-#             html.P([html.Strong("🧬 Project: "), project]),
-#             html.P([html.Strong("📋 SIP Number: "), sip or "N/A"]),
-#             html.P([html.Strong("🔬 Development Stage: "), stage or "N/A"]),
-#             html.P([html.Strong("🧪 Total Samples: "), str(len(samples))]),
-#             html.P([html.Strong("📅 Date Range: "), get_sample_date_range_from_db(samples)])
-#         ])
-#
-#         # Analysis status - check for SEC results
-#         sec_reports = Report.objects.filter(
-#             analysis_type=1,  # SEC
-#             project_id=project
-#         ).count()
-#
-#         # Also check LimsSampleAnalysis for SEC results
-#         sample_ids = [f"FB{s.sample_number}" for s in samples]
-#         sec_analysis_count = LimsSampleAnalysis.objects.filter(
-#             sample_id__in=sample_ids,
-#             sec_result__isnull=False
-#         ).count()
-#
-#         analysis_status = html.Div([
-#             create_analysis_status_item("🧪 SEC Analysis", sec_reports > 0 or sec_analysis_count > 0),
-#             create_analysis_status_item("🔬 Titer Analysis", False),
-#             create_analysis_status_item("📊 AKTA Analysis", False)
-#         ])
-#
-#         # Samples table
-#         samples_table = create_samples_in_set_table_from_db(samples)
-#
-#         return sample_info, analysis_status, samples_table, str(len(samples))
-#
-#     except Exception as e:
-#         error_msg = f"Error loading sample set: {str(e)}"
-#         return error_msg, "", "", "0"
-#
-#
-# def get_sample_sets_data_from_db(project_filter=None, status_filter=None, search_term=None):
-#     """Get sample sets data from CLD database"""
-#     try:
-#         # Get all UP samples (sample_type=2) and group them
-#         samples = LimsUpstreamSamples.objects.filter(sample_type=2)
-#
-#         if project_filter and project_filter != "all":
-#             samples = samples.filter(project=project_filter)
-#
-#         if search_term:
-#             samples = samples.filter(
-#                 Q(project__icontains=search_term) |
-#                 Q(sip_number__icontains=search_term) |
-#                 Q(development_stage__icontains=search_term) |
-#                 Q(cell_line__icontains=search_term)
+#         for analysis_type in analysis_types:
+#             # Create analysis request
+#             request, created = LimsAnalysisRequest.objects.get_or_create(
+#                 sample_set=sample_set,
+#                 analysis_type=analysis_type,
+#                 defaults={
+#                     'requested_by': 'current_user',  # Replace with actual user
+#                     'priority': priority,
+#                     'status': 'requested'
+#                 }
 #             )
 #
-#         # Group by project, sip_number, development_stage
-#         grouped_data = {}
-#         for sample in samples:
-#             key = (sample.project, sample.sip_number, sample.development_stage)
-#             if key not in grouped_data:
-#                 grouped_data[key] = []
-#             grouped_data[key].append(sample)
+#             if created:
+#                 created_count += 1
 #
-#         # Convert to sample sets format
-#         sample_sets = []
-#         for (project, sip, stage), samples_list in grouped_data.items():
-#             # Check SEC analysis status
-#             sample_ids = [f"FB{s.sample_number}" for s in samples_list]
+#                 # Create entries in result tables
+#                 create_result_entries(analysis_type, member_samples)
 #
-#             # Check for SEC reports
-#             sec_reports = Report.objects.filter(
-#                 analysis_type=1,
-#                 project_id=project
-#             ).count()
-#
-#             # Check for SEC results in LIMS
-#             sec_analysis = LimsSampleAnalysis.objects.filter(
-#                 sample_id__in=sample_ids,
-#                 sec_result__isnull=False
-#             ).count()
-#
-#             if sec_reports > 0 or sec_analysis > 0:
-#                 sec_status = "Completed"
-#             elif LimsSampleAnalysis.objects.filter(sample_id__in=sample_ids).exists():
-#                 sec_status = "Data Available"
-#             else:
-#                 sec_status = "No Analysis"
-#
-#             set_name = f"{project}"
-#             if sip:
-#                 set_name += f"_SIP{sip}"
-#             if stage:
-#                 set_name += f"_{stage}"
-#
-#             sample_sets.append({
-#                 "set_name": set_name,
-#                 "project": project,
-#                 "sip_number": sip,
-#                 "development_stage": stage,
-#                 "sample_count": len(samples_list),
-#                 "sec_status": sec_status,
-#                 "sample_ids": sample_ids,
-#                 "last_updated": max([s.created_at for s in samples_list if s.created_at], default=datetime.now())
-#             })
-#
-#         # Apply status filter
-#         if status_filter and status_filter != "all":
-#             if status_filter == "none":
-#                 sample_sets = [s for s in sample_sets if s["sec_status"] == "No Analysis"]
-#             elif status_filter == "completed":
-#                 sample_sets = [s for s in sample_sets if s["sec_status"] == "Completed"]
-#             elif status_filter == "available":
-#                 sample_sets = [s for s in sample_sets if s["sec_status"] == "Data Available"]
-#
-#         return sorted(sample_sets, key=lambda x: x["last_updated"], reverse=True)
+#         return dbc.Toast([
+#             html.P(f"✅ Successfully requested {created_count} analyses for {selected_set['name']}")
+#         ],
+#             header="Analysis Requested",
+#             is_open=True,
+#             dismissable=True,
+#             duration=4000,
+#             color="success",
+#             style={"position": "fixed", "top": 66, "right": 10}
+#         )
 #
 #     except Exception as e:
-#         print(f"Error getting sample sets data: {e}")
-#         return []
+#         return dbc.Toast([
+#             html.P(f"❌ Error: {str(e)}")
+#         ],
+#             header="Request Failed",
+#             is_open=True,
+#             dismissable=True,
+#             duration=4000,
+#             color="danger",
+#             style={"position": "fixed", "top": 66, "right": 10}
+#         )
 #
 #
-# def create_sample_set_card(set_data):
-#     """Create a card for displaying sample set information"""
-#     set_name = set_data.get('set_name', 'Unknown Set')
-#     project = set_data.get('project', '')
-#     sip = set_data.get('sip_number', '')
-#     stage = set_data.get('development_stage', '')
-#     sample_count = set_data.get('sample_count', 0)
-#     sec_status = set_data.get('sec_status', 'No Analysis')
-#
-#     # Determine status color and icon
-#     status_color = "secondary"
-#     status_icon = "fa-question"
-#
-#     if sec_status == "Completed":
-#         status_color = "success"
-#         status_icon = "fa-check-circle"
-#     elif sec_status == "In Progress":
-#         status_color = "warning"
-#         status_icon = "fa-clock"
-#     elif sec_status == "Data Available":
-#         status_color = "info"
-#         status_icon = "fa-database"
-#
-#     return dbc.Card([
-#         dbc.CardHeader([
-#             html.Div([
-#                 html.H6([
-#                     html.I(className="fas fa-layer-group me-2 text-primary"),
-#                     set_name
-#                 ], className="mb-0"),
-#                 dbc.Badge([
-#                     html.I(className=f"fas {status_icon} me-1"),
-#                     sec_status
-#                 ], color=status_color, className="float-end")
-#             ])
-#         ]),
-#         dbc.CardBody([
-#             html.P([
-#                 html.I(className="fas fa-project-diagram text-primary me-2"),
-#                 html.Strong("Project: "), project, html.Br(),
-#                 html.I(className="fas fa-hashtag text-info me-2"),
-#                 html.Strong("SIP: "), sip or "N/A", html.Br(),
-#                 html.I(className="fas fa-flask text-success me-2"),
-#                 html.Strong("Stage: "), stage or "N/A", html.Br(),
-#                 html.I(className="fas fa-vial text-warning me-2"),
-#                 html.Strong("Samples: "), f"{sample_count} samples"
-#             ], className="small"),
-#
-#             dbc.ButtonGroup([
-#                 dbc.Button([
-#                     html.I(className="fas fa-eye me-1"),
-#                     "View"
-#                 ],
-#                     href=f"#!/sample-sets/view?project={project}&sip={sip}&stage={stage}",
-#                     color="outline-primary",
-#                     size="sm"),
-#                 dbc.Button([
-#                     html.I(className="fas fa-microscope me-1"),
-#                     "SEC"
-#                 ],
-#                     id={"type": "request-sec-btn", "index": set_name},
-#                     color="primary" if sec_status == "No Analysis" else "outline-success",
-#                     size="sm",
-#                     disabled=(sec_status == "Completed"))
-#             ], size="sm")
-#         ])
-#     ], className="mb-3 shadow-sm")
-#
-#
-# def create_status_badge_markdown(status):
-#     """Create markdown for status badge in table"""
-#     color_map = {
-#         "No Analysis": "secondary",
-#         "Requested": "warning",
-#         "In Progress": "info",
-#         "Data Available": "info",
-#         "Completed": "success"
+# def create_result_entries(analysis_type, member_samples):
+#     """Create entries in the appropriate result table"""
+#     # Map analysis types to result models
+#     model_map = {
+#         'SEC': LimsSecResult,
+#         'Titer': LimsTiterResult,
+#         'CE-SDS': LimsCeSdsResult,
+#         'cIEF': LimsCiefResult,
+#         'Mass Check': LimsMassCheckResult,
+#         'Glycan': LimsReleasedGlycanResult,
+#         'HCP': LimsHcpResult,
+#         'ProA': LimsProaResult
 #     }
-#     color = color_map.get(status, "secondary")
-#     return f'<span class="badge bg-{color}">{status}</span>'
+#
+#     model = model_map.get(analysis_type)
+#     if not model:
+#         return
+#
+#     # Create result entries for each sample
+#     for membership in member_samples:
+#         sample_analysis = membership.sample
+#
+#         # For SEC, check if we need special handling
+#         if analysis_type == 'SEC':
+#             # Just create a placeholder - actual data will come from SEC app
+#             result, created = model.objects.get_or_create(
+#                 sample_id=sample_analysis.sample_id,
+#                 defaults={
+#                     'created_at': datetime.now()
+#                 }
+#             )
+#         else:
+#             # Create result entry if it doesn't exist
+#             result, created = model.objects.get_or_create(
+#                 sample_id=sample_analysis.sample_id,
+#                 defaults={
+#                     'status': 'pending',
+#                     'created_at': datetime.now()
+#                 }
+#             )
+#
+#         # Link to sample analysis
+#         if created:
+#             field_map = {
+#                 'SEC': 'sec_result',
+#                 'Titer': 'titer_result',
+#                 'CE-SDS': 'ce_sds_result',
+#                 'cIEF': 'cief_result',
+#                 'Mass Check': 'mass_check_result',
+#                 'Glycan': 'glycan_result',
+#                 'HCP': 'hcp_result',
+#                 'ProA': 'proa_result'
+#             }
+#
+#             field_name = field_map.get(analysis_type)
+#             if field_name:
+#                 setattr(sample_analysis, field_name, result)
+#                 sample_analysis.save()
 #
 #
-# def create_action_buttons_markdown(set_data):
-#     """Create markdown for action buttons in table"""
-#     project = set_data.get('project', '')
-#     sip = set_data.get('sip_number', '')
-#     stage = set_data.get('development_stage', '')
+# @app.callback(
+#     Output("project-filter", "options"),
+#     [Input("refresh-sample-sets-btn", "n_clicks"),
+#      Input("parsed-pathname", "data")]
+# )
+# def update_project_filter(n_clicks, pathname):
+#     """Update project filter dropdown options"""
+#     if pathname != "/sample-sets":
+#         return no_update
 #
-#     view_url = f"#!/sample-sets/view?project={project}&sip={sip}&stage={stage}"
-#     return f'[👁️ View]({view_url}) [🔬 SEC](#!/analysis/sec)'
+#     try:
+#         projects = LimsSampleSet.objects.values_list('project_id', flat=True).distinct()
+#         options = [{"label": "All Projects", "value": "all"}]
 #
+#         for project in sorted(projects):
+#             if project:
+#                 options.append({"label": project, "value": project})
 #
-# def create_analysis_status_item(analysis_name, has_data):
-#     """Create analysis status display item"""
-#     if has_data:
-#         icon = "fa-check-circle"
-#         color = "success"
-#         status = "Available"
-#     else:
-#         icon = "fa-clock"
-#         color = "warning"
-#         status = "Pending"
-#
-#     return html.Div([
-#         html.I(className=f"fas {icon} text-{color} me-2"),
-#         html.Strong(analysis_name),
-#         f": {status}"
-#     ], className="mb-2")
+#         return options
+#     except:
+#         return [{"label": "All Projects", "value": "all"}]
 #
 #
-# def create_samples_in_set_table_from_db(samples):
-#     """Create table showing samples in the set from CLD database"""
+# # UPDATED CALLBACK: Handle SEC view button clicks
+# # This creates a link button instead of navigation
+# @app.callback(
+#     Output("dummy-output", "children", allow_duplicate=True),
+#     [Input({"type": "view-sec-btn", "index": ALL}, "n_clicks")],
+#     prevent_initial_call=True
+# )
+# def handle_view_sec_click(n_clicks_list):
+#     """This callback is just to prevent errors - actual navigation is handled by href in the button"""
+#     return ""
+#
+#
+# # NEW CALLBACK: Handle details view
+# @app.callback(
+#     [Output("sample-set-details-modal", "is_open"),
+#      Output("modal-sample-set-details", "children")],
+#     [Input({"type": "view-details-btn", "index": ALL}, "n_clicks"),
+#      Input("close-details-modal", "n_clicks")],
+#     [State({"type": "view-details-btn", "index": ALL}, "id")],
+#     prevent_initial_call=True
+# )
+# def handle_view_details(view_clicks, close_clicks, button_ids):
+#     """Show detailed information about a sample set"""
+#
+#     # Check if close button was clicked
+#     if close_clicks:
+#         return False, ""
+#
+#     # Check if any details button was clicked
+#     if view_clicks and any(view_clicks):
+#         # Find which button was clicked
+#         for i, (n_clicks, button_id) in enumerate(zip(view_clicks, button_ids)):
+#             if n_clicks and n_clicks > 0:
+#                 sample_set_id = button_id["index"]
+#
+#                 try:
+#                     sample_set = LimsSampleSet.objects.get(id=sample_set_id)
+#
+#                     # Get all samples in this set
+#                     members = sample_set.members.select_related('sample').all()
+#
+#                     # Get analysis status
+#                     analysis_status = get_analysis_status_for_set(sample_set)
+#
+#                     # Check for SEC reports - FIX: use date_created instead of created_at
+#                     sample_ids = [m.sample.sample_id for m in members]
+#                     sec_reports = Report.objects.filter(
+#                         analysis_type=1,  # SEC
+#                         project_id=sample_set.project_id
+#                     ).order_by('-date_created')[:5]  # Last 5 reports - FIXED field name
+#
+#                     details = html.Div([
+#                         dbc.Row([
+#                             dbc.Col([
+#                                 html.H4(sample_set.set_name),
+#                                 html.Hr()
+#                             ])
+#                         ]),
+#
+#                         dbc.Row([
+#                             # Basic Information
+#                             dbc.Col([
+#                                 html.H6("Basic Information", className="text-primary"),
+#                                 html.P([
+#                                     html.Strong("Project ID: "), sample_set.project_id, html.Br(),
+#                                     html.Strong("SIP Number: "), sample_set.sip_number or "N/A", html.Br(),
+#                                     html.Strong("Development Stage: "), sample_set.development_stage or "N/A",
+#                                     html.Br(),
+#                                     html.Strong("Total Samples: "), str(sample_set.sample_count), html.Br(),
+#                                     html.Strong("Created: "), sample_set.created_at.strftime(
+#                                         "%Y-%m-%d %H:%M") if sample_set.created_at else "Unknown", html.Br(),
+#                                     html.Strong("Created By: "), sample_set.created_by or "Unknown"
+#                                 ])
+#                             ], md=4),
+#
+#                             # Analysis Status
+#                             dbc.Col([
+#                                 html.H6("Analysis Status", className="text-primary"),
+#                                 html.Div([
+#                                     html.Div([
+#                                         html.Strong(f"{analysis_type}: "),
+#                                         create_status_badge(status)
+#                                     ], className="mb-1")
+#                                     for analysis_type, status in analysis_status.items()
+#                                 ])
+#                             ], md=4),
+#
+#                             # Recent Reports
+#                             dbc.Col([
+#                                 html.H6("Recent SEC Reports", className="text-primary"),
+#                                 html.Div([
+#                                     html.Ul([
+#                                         html.Li([
+#                                             html.A(
+#                                                 f"Report #{report.report_id} - {report.date_created.strftime('%Y-%m-%d')}",
+#                                                 href=f"/plotly_integration/dash-app/app/SecReportApp2/?report_id={report.report_id}",
+#                                                 target="_blank"
+#                                             )
+#                                         ])
+#                                         for report in sec_reports
+#                                     ]) if sec_reports else html.P("No SEC reports found", className="text-muted")
+#                                 ])
+#                             ], md=4)
+#                         ]),
+#
+#                         html.Hr(),
+#
+#                         # Samples Table
+#                         html.H6("Samples in Set", className="text-primary mt-3"),
+#                         create_samples_table(members),
+#
+#                         html.Hr(),
+#
+#                         # Action Buttons
+#                         dbc.Row([
+#                             dbc.Col([
+#                                 dbc.ButtonGroup([
+#                                     dbc.Button([
+#                                         html.I(className="fas fa-microscope me-2"),
+#                                         "Request New Analysis"
+#                                     ],
+#                                         id={"type": "request-analysis-from-details", "index": sample_set.id},
+#                                         color="primary"),
+#
+#                                     dbc.Button([
+#                                         html.I(className="fas fa-chart-line me-2"),
+#                                         "Open SEC App"
+#                                     ],
+#                                         href="/plotly_integration/dash-app/app/SecReportApp2/",
+#                                         target="_blank",
+#                                         color="success"),
+#
+#                                     dbc.Button([
+#                                         html.I(className="fas fa-file-export me-2"),
+#                                         "Export Data"
+#                                     ],
+#                                         id={"type": "export-sample-set", "index": sample_set.id},
+#                                         color="outline-info")
+#                                 ])
+#                             ])
+#                         ], className="mt-3")
+#                     ])
+#
+#                     return True, details
+#
+#                 except LimsSampleSet.DoesNotExist:
+#                     return False, "Sample set not found"
+#
+#     return False, ""
+#
+#
+# def create_status_badge(status):
+#     """Create a status badge"""
+#     status_config = {
+#         'not_requested': {'color': 'secondary', 'text': 'Not Requested'},
+#         'requested': {'color': 'warning', 'text': 'Requested'},
+#         'in_progress': {'color': 'info', 'text': 'In Progress'},
+#         'completed': {'color': 'success', 'text': 'Completed'}
+#     }
+#
+#     config = status_config.get(status, status_config['not_requested'])
+#
+#     return dbc.Badge(config['text'], color=config['color'])
+#
+#
+# def create_samples_table(members):
+#     """Create a table of samples in the set"""
+#     if not members:
+#         return html.P("No samples found", className="text-muted")
+#
 #     from dash import dash_table
 #
-#     table_data = []
-#     for sample in samples:
-#         # Check if SEC data exists
-#         sample_id = f"FB{sample.sample_number}"
-#         try:
-#             analysis = LimsSampleAnalysis.objects.filter(sample_id=sample_id).first()
-#             has_sec = analysis and hasattr(analysis, 'sec_result') and analysis.sec_result
-#         except:
-#             has_sec = False
-#
-#         table_data.append({
-#             "sample_id": sample_id,
-#             "sample_number": sample.sample_number,
-#             "cell_line": sample.cell_line or "",
-#             "harvest_date": sample.harvest_date.strftime("%Y-%m-%d") if sample.harvest_date else "",
-#             "analyst": sample.analyst or "",
-#             "sec_data": "✅" if has_sec else "❌"
+#     data = []
+#     for member in members:
+#         sample = member.sample
+#         data.append({
+#             "Sample ID": sample.sample_id,
+#             "Project": sample.project_id,
+#             "Sample Date": sample.sample_date.strftime("%Y-%m-%d") if sample.sample_date else "N/A",
+#             "Analyst": sample.analyst or "N/A",
+#             "Status": sample.status or "N/A"
 #         })
 #
 #     return dash_table.DataTable(
-#         columns=[
-#             {"name": "Sample ID", "id": "sample_id", "type": "text"},
-#             {"name": "Sample #", "id": "sample_number", "type": "numeric"},
-#             {"name": "Cell Line", "id": "cell_line", "type": "text"},
-#             {"name": "Harvest Date", "id": "harvest_date", "type": "text"},
-#             {"name": "Analyst", "id": "analyst", "type": "text"},
-#             {"name": "SEC Data", "id": "sec_data", "type": "text"}
-#         ],
-#         data=table_data,
-#         sort_action="native",
-#         page_action="native",
-#         page_size=10,
+#         data=data,
+#         columns=[{"name": i, "id": i} for i in data[0].keys()] if data else [],
 #         style_cell={'textAlign': 'left', 'fontSize': '12px'},
-#         style_header={'backgroundColor': '#1976d2', 'fontWeight': 'bold', 'color': 'white'},
-#         style_data_conditional=[
-#             {
-#                 'if': {'filter_query': '{sec_data} = ✅'},
-#                 'backgroundColor': '#e8f5e8',
-#                 'color': 'green'
-#             },
-#             {
-#                 'if': {'filter_query': '{sec_data} = ❌'},
-#                 'backgroundColor': '#ffeaea',
-#                 'color': 'red'
-#             }
-#         ]
+#         style_header={'backgroundColor': '#007bff', 'color': 'white', 'fontWeight': 'bold'},
+#         page_size=10,
+#         sort_action="native"
 #     )
-#
-#
-# def get_sample_date_range_from_db(samples):
-#     """Get date range for samples from CLD database"""
-#     dates = [s.harvest_date for s in samples if s.harvest_date]
-#     if not dates:
-#         dates = [s.created_at for s in samples if s.created_at]
-#
-#     if not dates:
-#         return "N/A"
-#
-#     min_date = min(dates).strftime("%Y-%m-%d")
-#     max_date = max(dates).strftime("%Y-%m-%d")
-#
-#     if min_date == max_date:
-#         return min_date
-#     else:
-#         return f"{min_date} to {max_date}"
-#
-#
-# @callback(
-#     [Output("project-filter", "options"),
-#      Output("project-filter", "value")],
-#     [Input("parsed-pathname", "data")]
-# )
-# def populate_project_filter(pathname):
-#     """Populate project filter dropdown from CLD database"""
-#     if pathname != "/sample-sets":
-#         return [], "all"
-#
-#     try:
-#         # Get unique projects from CLD database
-#         projects = LimsUpstreamSamples.objects.values_list('project', flat=True).distinct()
-#         projects = [p for p in projects if p]  # Remove None values
-#
-#         options = [{"label": "All Projects", "value": "all"}]
-#         for project in sorted(projects):
-#             options.append({"label": f"🧬 {project}", "value": project})
-#
-#         return options, "all"
-#     except Exception as e:
-#         print(f"Error loading projects: {e}")
-#         return [{"label": "All Projects", "value": "all"}], "all"
+
+
+# cld_dashboard/samples/callbacks/sample_sets.py - COMPLETE CALLBACKS
+
+from dash import Input, Output, State, callback, html, no_update, ALL
+import dash_bootstrap_components as dbc
+from django.db.models import Count, Q, Prefetch
+from plotly_integration.models import (
+    LimsSampleSet, LimsSampleSetMembership,
+    LimsSampleAnalysis, LimsAnalysisRequest,
+    LimsSecResult, LimsTiterResult, LimsCeSdsResult,
+    LimsCiefResult, LimsMassCheckResult, LimsReleasedGlycanResult,
+    LimsHcpResult, LimsProaResult, Report
+)
+from datetime import datetime
+import json
+
+# Import the app instance
+from plotly_integration.cld_dashboard.main_app import app
+
+
+@app.callback(
+    [Output("sample-sets-grid", "children"),
+     Output("total-sets-metric", "children"),
+     Output("pending-metric", "children"),
+     Output("in-progress-metric", "children"),
+     Output("completed-metric", "children")],
+    [Input("refresh-sample-sets-btn", "n_clicks"),
+     Input("search-sample-sets", "value"),
+     Input("project-filter", "value"),
+     Input("status-filter", "value"),
+     Input("parsed-pathname", "data")]  # Add this to trigger on page load
+)
+def update_sample_sets_display(n_clicks, search_term, project_filter, status_filter, pathname):
+    """Load and display sample sets with analysis status"""
+
+    # Only run on sample-sets page
+    if pathname != "/sample-sets":
+        return no_update, no_update, no_update, no_update, no_update
+
+    try:
+        # Query sample sets
+        sample_sets = LimsSampleSet.objects.filter(active=True)
+
+        # Apply filters
+        if search_term:
+            sample_sets = sample_sets.filter(
+                Q(set_name__icontains=search_term) |
+                Q(project_id__icontains=search_term) |
+                Q(sip_number__icontains=search_term) |
+                Q(development_stage__icontains=search_term)
+            )
+
+        if project_filter and project_filter != "all":
+            sample_sets = sample_sets.filter(project_id=project_filter)
+
+        # Prefetch related data
+        sample_sets = sample_sets.prefetch_related(
+            'members__sample',
+            'analysis_requests'
+        ).order_by('-created_at')
+
+        # Create cards and calculate metrics
+        cards = []
+        total_pending = 0
+        total_in_progress = 0
+        total_completed = 0
+
+        for sample_set in sample_sets:
+            # Get analysis status
+            analysis_status = get_analysis_status_for_set(sample_set)
+
+            # Apply status filter
+            if status_filter == "pending" and not any(s == 'requested' for s in analysis_status.values()):
+                continue
+            elif status_filter == "complete" and not all(
+                    s == 'completed' for s in analysis_status.values() if s != 'not_requested'):
+                continue
+            elif status_filter == "none" and any(s != 'not_requested' for s in analysis_status.values()):
+                continue
+
+            # Count statuses
+            pending_count = sum(1 for s in analysis_status.values() if s == 'requested')
+            in_progress_count = sum(1 for s in analysis_status.values() if s == 'in_progress')
+            completed_count = sum(1 for s in analysis_status.values() if s == 'completed')
+
+            total_pending += pending_count
+            total_in_progress += in_progress_count
+            total_completed += completed_count
+
+            # Create card - now full width (1 per row)
+            from ..layouts.sample_sets import create_sample_set_card
+            card = create_sample_set_card(sample_set, analysis_status)
+            cards.append(card)
+
+        if not cards:
+            cards = [dbc.Alert("No sample sets found. Create some samples to get started!",
+                               color="info", className="w-100")]
+
+        # Count total sample sets
+        total_sets = len([s for s in sample_sets])
+
+        return (
+            html.Div(cards),  # Changed from dbc.Row to html.Div
+            str(total_sets),
+            str(total_pending),
+            str(total_in_progress),
+            str(total_completed)
+        )
+
+    except Exception as e:
+        print(f"Error in update_sample_sets_display: {e}")
+        error_msg = dbc.Alert(f"Error loading sample sets: {str(e)}", color="danger")
+        return error_msg, "Error", "Error", "Error", "Error"
+
+
+def get_analysis_status_for_set(sample_set):
+    """Get status of each analysis type for a sample set"""
+    analysis_types = ['SEC', 'Titer', 'CE-SDS', 'cIEF', 'Mass Check', 'Glycan', 'HCP', 'ProA']
+    status_dict = {}
+
+    # Get all analysis requests
+    requests = {req.analysis_type: req for req in sample_set.analysis_requests.all()}
+
+    # Get member samples
+    member_samples = sample_set.members.select_related('sample').all()
+    sample_ids = [m.sample.sample_id for m in member_samples]
+
+    for analysis_type in analysis_types:
+        if analysis_type in requests:
+            status_dict[analysis_type] = requests[analysis_type].status
+        else:
+            # Check if any data exists in result tables
+            has_data = check_analysis_data_exists(analysis_type, sample_ids)
+            if has_data:
+                status_dict[analysis_type] = 'completed'
+            else:
+                status_dict[analysis_type] = 'not_requested'
+
+    # Special check for SEC - also look for reports
+    sec_reports = Report.objects.filter(
+        analysis_type=1,  # SEC
+        project_id=sample_set.project_id
+    ).exists()
+    if sec_reports:
+        status_dict['SEC'] = 'completed'
+
+    return status_dict
+
+
+def check_analysis_data_exists(analysis_type, sample_ids):
+    """Check if analysis data exists for any samples"""
+    if not sample_ids:
+        return False
+
+    # Map analysis types to result models and field names
+    model_map = {
+        'SEC': ('sec_result', LimsSecResult),
+        'Titer': ('titer_result', LimsTiterResult),
+        'CE-SDS': ('ce_sds_result', LimsCeSdsResult),
+        'cIEF': ('cief_result', LimsCiefResult),
+        'Mass Check': ('mass_check_result', LimsMassCheckResult),
+        'Glycan': ('glycan_result', LimsReleasedGlycanResult),
+        'HCP': ('hcp_result', LimsHcpResult),
+        'ProA': ('proa_result', LimsProaResult)
+    }
+
+    field_name, model = model_map.get(analysis_type, (None, None))
+    if field_name:
+        # Check if any samples have results
+        return LimsSampleAnalysis.objects.filter(
+            sample_id__in=sample_ids
+        ).exclude(
+            **{field_name: None}
+        ).exists()
+
+    return False
+
+
+@app.callback(
+    [Output("analysis-request-modal", "is_open"),
+     Output("modal-sample-set-info", "children"),
+     Output("selected-sample-set", "data")],
+    [Input({"type": "request-analysis-btn", "index": ALL}, "n_clicks"),
+     Input("cancel-analysis-request", "n_clicks")],
+    [State("analysis-request-modal", "is_open"),
+     State({"type": "request-analysis-btn", "index": ALL}, "id")]
+)
+def toggle_analysis_modal(request_clicks, cancel_clicks, is_open, button_ids):
+    """Handle opening/closing of analysis request modal"""
+
+    # Check if cancel button was clicked
+    if cancel_clicks:
+        return False, "", {}
+
+    # Check if any request button was clicked
+    if request_clicks and any(request_clicks):
+        # Find which button was clicked by checking which n_clicks is not None and > 0
+        for i, (n_clicks, button_id) in enumerate(zip(request_clicks, button_ids)):
+            if n_clicks and n_clicks > 0:
+                sample_set_id = button_id["index"]
+
+                try:
+                    sample_set = LimsSampleSet.objects.get(id=sample_set_id)
+
+                    # Get sample IDs for this set
+                    sample_ids = [m.sample.sample_id for m in sample_set.members.all()]
+
+                    info = html.Div([
+                        html.H6(f"Sample Set: {sample_set.set_name}"),
+                        html.P([
+                            html.Strong("Project: "), sample_set.project_id, html.Br(),
+                            html.Strong("Samples: "), f"{sample_set.sample_count} samples", html.Br(),
+                            html.Strong("Sample IDs: "), ", ".join(sample_ids[:5]),
+                            "..." if len(sample_ids) > 5 else ""
+                        ], className="mb-0")
+                    ])
+
+                    return True, info, {
+                        "id": sample_set_id,
+                        "name": sample_set.set_name,
+                        "sample_ids": sample_ids
+                    }
+
+                except LimsSampleSet.DoesNotExist:
+                    return False, "Sample set not found", {}
+
+    return False, "", {}
+
+
+@app.callback(
+    Output("sample-sets-notifications", "children"),
+    [Input("submit-analysis-request", "n_clicks")],
+    [State("selected-sample-set", "data"),
+     State("analysis-type-checklist", "value"),
+     State("analysis-priority", "value"),
+     State("analysis-notes", "value")],
+    prevent_initial_call=True
+)
+def submit_analysis_request(n_clicks, selected_set, analysis_types, priority, notes):
+    """Submit analysis requests for a sample set"""
+    if not n_clicks or not selected_set or not analysis_types:
+        return no_update
+
+    try:
+        sample_set = LimsSampleSet.objects.get(id=selected_set["id"])
+        created_count = 0
+
+        # Get member samples
+        member_samples = sample_set.members.select_related('sample').all()
+
+        for analysis_type in analysis_types:
+            # Create analysis request
+            request, created = LimsAnalysisRequest.objects.get_or_create(
+                sample_set=sample_set,
+                analysis_type=analysis_type,
+                defaults={
+                    'requested_by': 'current_user',  # Replace with actual user
+                    'priority': priority,
+                    'status': 'requested'
+                }
+            )
+
+            if created:
+                created_count += 1
+
+                # Create entries in result tables
+                create_result_entries(analysis_type, member_samples)
+
+        return dbc.Toast([
+            html.P(f"✅ Successfully requested {created_count} analyses for {selected_set['name']}")
+        ],
+            header="Analysis Requested",
+            is_open=True,
+            dismissable=True,
+            duration=4000,
+            color="success",
+            style={"position": "fixed", "top": 66, "right": 10}
+        )
+
+    except Exception as e:
+        return dbc.Toast([
+            html.P(f"❌ Error: {str(e)}")
+        ],
+            header="Request Failed",
+            is_open=True,
+            dismissable=True,
+            duration=4000,
+            color="danger",
+            style={"position": "fixed", "top": 66, "right": 10}
+        )
+
+
+def create_result_entries(analysis_type, member_samples):
+    """Create entries in the appropriate result table"""
+    # Map analysis types to result models
+    model_map = {
+        'SEC': LimsSecResult,
+        'Titer': LimsTiterResult,
+        'CE-SDS': LimsCeSdsResult,
+        'cIEF': LimsCiefResult,
+        'Mass Check': LimsMassCheckResult,
+        'Glycan': LimsReleasedGlycanResult,
+        'HCP': LimsHcpResult,
+        'ProA': LimsProaResult
+    }
+
+    model = model_map.get(analysis_type)
+    if not model:
+        return
+
+    # Create result entries for each sample
+    for membership in member_samples:
+        sample_analysis = membership.sample
+
+        # For SEC, check if we need special handling
+        if analysis_type == 'SEC':
+            # Just create a placeholder - actual data will come from SEC app
+            result, created = model.objects.get_or_create(
+                sample_id=sample_analysis.sample_id,
+                defaults={
+                    'created_at': datetime.now()
+                }
+            )
+        else:
+            # Create result entry if it doesn't exist
+            result, created = model.objects.get_or_create(
+                sample_id=sample_analysis.sample_id,
+                defaults={
+                    'status': 'pending',
+                    'created_at': datetime.now()
+                }
+            )
+
+        # Link to sample analysis
+        if created:
+            field_map = {
+                'SEC': 'sec_result',
+                'Titer': 'titer_result',
+                'CE-SDS': 'ce_sds_result',
+                'cIEF': 'cief_result',
+                'Mass Check': 'mass_check_result',
+                'Glycan': 'glycan_result',
+                'HCP': 'hcp_result',
+                'ProA': 'proa_result'
+            }
+
+            field_name = field_map.get(analysis_type)
+            if field_name:
+                setattr(sample_analysis, field_name, result)
+                sample_analysis.save()
+
+
+@app.callback(
+    Output("project-filter", "options"),
+    [Input("refresh-sample-sets-btn", "n_clicks"),
+     Input("parsed-pathname", "data")]
+)
+def update_project_filter(n_clicks, pathname):
+    """Update project filter dropdown options"""
+    if pathname != "/sample-sets":
+        return no_update
+
+    try:
+        projects = LimsSampleSet.objects.values_list('project_id', flat=True).distinct()
+        options = [{"label": "All Projects", "value": "all"}]
+
+        for project in sorted(projects):
+            if project:
+                options.append({"label": project, "value": project})
+
+        return options
+    except:
+        return [{"label": "All Projects", "value": "all"}]
+
+
+# UPDATED CALLBACK: Handle SEC view button clicks
+# This creates a link button instead of navigation
+@app.callback(
+    Output("dummy-output", "children", allow_duplicate=True),
+    [Input({"type": "view-sec-btn", "index": ALL}, "n_clicks")],
+    prevent_initial_call=True
+)
+def handle_view_sec_click(n_clicks_list):
+    """This callback is just to prevent errors - actual navigation is handled by href in the button"""
+    return ""
+
+
+# NEW CALLBACK: Handle details view
+@app.callback(
+    [Output("sample-set-details-modal", "is_open"),
+     Output("modal-sample-set-details", "children")],
+    [Input({"type": "view-details-btn", "index": ALL}, "n_clicks"),
+     Input("close-details-modal", "n_clicks")],
+    [State({"type": "view-details-btn", "index": ALL}, "id")],
+    prevent_initial_call=True
+)
+def handle_view_details(view_clicks, close_clicks, button_ids):
+    """Show detailed information about a sample set"""
+
+    # Check if close button was clicked
+    if close_clicks:
+        return False, ""
+
+    # Check if any details button was clicked
+    if view_clicks and any(view_clicks):
+        # Find which button was clicked
+        for i, (n_clicks, button_id) in enumerate(zip(view_clicks, button_ids)):
+            if n_clicks and n_clicks > 0:
+                sample_set_id = button_id["index"]
+
+                try:
+                    sample_set = LimsSampleSet.objects.get(id=sample_set_id)
+
+                    # Get all samples in this set
+                    members = sample_set.members.select_related('sample').all()
+
+                    # Get analysis status
+                    analysis_status = get_analysis_status_for_set(sample_set)
+
+                    # Check for SEC reports - FIX: use date_created instead of created_at
+                    sample_ids = [m.sample.sample_id for m in members]
+                    sec_reports = Report.objects.filter(
+                        analysis_type=1,  # SEC
+                        project_id=sample_set.project_id
+                    ).order_by('-date_created')[:5]  # Last 5 reports - FIXED field name
+
+                    details = html.Div([
+                        dbc.Row([
+                            dbc.Col([
+                                html.H4(sample_set.set_name),
+                                html.Hr()
+                            ])
+                        ]),
+
+                        dbc.Row([
+                            # Basic Information
+                            dbc.Col([
+                                html.H6("Basic Information", className="text-primary"),
+                                html.P([
+                                    html.Strong("Project ID: "), sample_set.project_id, html.Br(),
+                                    html.Strong("SIP Number: "), sample_set.sip_number or "N/A", html.Br(),
+                                    html.Strong("Development Stage: "), sample_set.development_stage or "N/A",
+                                    html.Br(),
+                                    html.Strong("Total Samples: "), str(sample_set.sample_count), html.Br(),
+                                    html.Strong("Created: "), sample_set.created_at.strftime(
+                                        "%Y-%m-%d %H:%M") if sample_set.created_at else "Unknown", html.Br(),
+                                    html.Strong("Created By: "), sample_set.created_by or "Unknown"
+                                ])
+                            ], md=4),
+
+                            # Analysis Status
+                            dbc.Col([
+                                html.H6("Analysis Status", className="text-primary"),
+                                html.Div([
+                                    html.Div([
+                                        html.Strong(f"{analysis_type}: "),
+                                        create_status_badge(status)
+                                    ], className="mb-1")
+                                    for analysis_type, status in analysis_status.items()
+                                ])
+                            ], md=4),
+
+                            # Recent Reports
+                            dbc.Col([
+                                html.H6("Recent SEC Reports", className="text-primary"),
+                                html.Div([
+                                    html.Ul([
+                                        html.Li([
+                                            html.A(
+                                                f"Report #{report.report_id} - {report.date_created.strftime('%Y-%m-%d')}",
+                                                href=f"#!/analysis/sec/report?report_id={report.report_id}",
+                                                target="_blank"
+                                            )
+                                        ])
+                                        for report in sec_reports
+                                    ]) if sec_reports else html.P("No SEC reports found", className="text-muted")
+                                ])
+                            ], md=4)
+                        ]),
+
+                        html.Hr(),
+
+                        # Samples Table
+                        html.H6("Samples in Set", className="text-primary mt-3"),
+                        create_samples_table(members),
+
+                        html.Hr(),
+
+                        # Action Buttons
+                        dbc.Row([
+                            dbc.Col([
+                                dbc.ButtonGroup([
+                                    dbc.Button([
+                                        html.I(className="fas fa-microscope me-2"),
+                                        "Request New Analysis"
+                                    ],
+                                        id={"type": "request-analysis-from-details", "index": sample_set.id},
+                                        color="primary"),
+
+                                    dbc.Button([
+                                        html.I(className="fas fa-chart-line me-2"),
+                                        "Open SEC App"
+                                    ],
+                                        href="/plotly_integration/dash-app/app/SecReportApp2/",
+                                        target="_blank",
+                                        color="success"),
+
+                                    dbc.Button([
+                                        html.I(className="fas fa-file-export me-2"),
+                                        "Export Data"
+                                    ],
+                                        id={"type": "export-sample-set", "index": sample_set.id},
+                                        color="outline-info")
+                                ])
+                            ])
+                        ], className="mt-3")
+                    ])
+
+                    return True, details
+
+                except LimsSampleSet.DoesNotExist:
+                    return False, "Sample set not found"
+
+    return False, ""
+
+
+def create_status_badge(status):
+    """Create a status badge"""
+    status_config = {
+        'not_requested': {'color': 'secondary', 'text': 'Not Requested'},
+        'requested': {'color': 'warning', 'text': 'Requested'},
+        'in_progress': {'color': 'info', 'text': 'In Progress'},
+        'completed': {'color': 'success', 'text': 'Completed'}
+    }
+
+    config = status_config.get(status, status_config['not_requested'])
+
+    return dbc.Badge(config['text'], color=config['color'])
+
+
+def create_samples_table(members):
+    """Create a table of samples in the set"""
+    if not members:
+        return html.P("No samples found", className="text-muted")
+
+    from dash import dash_table
+
+    data = []
+    for member in members:
+        sample = member.sample
+        data.append({
+            "Sample ID": sample.sample_id,
+            "Project": sample.project_id,
+            "Sample Date": sample.sample_date.strftime("%Y-%m-%d") if sample.sample_date else "N/A",
+            "Analyst": sample.analyst or "N/A",
+            "Status": sample.status or "N/A"
+        })
+
+    return dash_table.DataTable(
+        data=data,
+        columns=[{"name": i, "id": i} for i in data[0].keys()] if data else [],
+        style_cell={'textAlign': 'left', 'fontSize': '12px'},
+        style_header={'backgroundColor': '#007bff', 'color': 'white', 'fontWeight': 'bold'},
+        page_size=10,
+        sort_action="native"
+    )

@@ -1,108 +1,397 @@
-# Enhanced sample_sets.py with modern UI components
+# # cld_dashboard/samples/layouts/sample_sets.py
+#
+# import dash
+# from dash import html, dcc, dash_table
+# import dash_bootstrap_components as dbc
+#
+# # Make sure this import path is correct for your project structure
+# try:
+#     from ...shared.styles.common_styles import CARD_STYLE, COLORS
+# except ImportError:
+#     # Fallback if import fails
+#     CARD_STYLE = {}
+#     COLORS = {}
+#     print("Warning: Could not import common_styles")
+#
+#
+# def create_sample_sets_layout():
+#     """Create the sample sets management page"""
+#     return dbc.Container([
+#         # Header
+#         dbc.Row([
+#             dbc.Col([
+#                 html.H2([
+#                     html.I(className="fas fa-layer-group text-primary me-2"),
+#                     "Sample Sets Analysis Management"
+#                 ]),
+#                 html.P("Manage analysis requests and track progress for grouped samples",
+#                        className="text-muted")
+#             ], md=8),
+#             dbc.Col([
+#                 dbc.ButtonGroup([
+#                     dbc.Button([
+#                         html.I(className="fas fa-sync-alt me-1"),
+#                         "Refresh"
+#                     ], id="refresh-sample-sets-btn", color="outline-primary", size="sm"),
+#                     dbc.Button([
+#                         html.I(className="fas fa-file-export me-1"),
+#                         "Export"
+#                     ], id="export-sample-sets-btn", color="outline-info", size="sm")
+#                 ], className="float-end")
+#             ], md=4)
+#         ], className="mb-4"),
+#
+#         # Metrics Row
+#         dbc.Row([
+#             dbc.Col([
+#                 create_metric_card("Total Sets", "0", "fa-layer-group", "primary", "total-sets-metric")
+#             ], md=3),
+#             dbc.Col([
+#                 create_metric_card("Pending Analysis", "0", "fa-clock", "warning", "pending-metric")
+#             ], md=3),
+#             dbc.Col([
+#                 create_metric_card("In Progress", "0", "fa-spinner", "info", "in-progress-metric")
+#             ], md=3),
+#             dbc.Col([
+#                 create_metric_card("Completed", "0", "fa-check-circle", "success", "completed-metric")
+#             ], md=3)
+#         ], className="mb-4"),
+#
+#         # Filter Row
+#         dbc.Row([
+#             dbc.Col([
+#                 dbc.Card([
+#                     dbc.CardBody([
+#                         dbc.Row([
+#                             dbc.Col([
+#                                 html.Label("Search", className="fw-bold small"),
+#                                 dbc.Input(
+#                                     id="search-sample-sets",
+#                                     placeholder="Search by project, SIP, or stage...",
+#                                     type="text"
+#                                 )
+#                             ], md=4),
+#                             dbc.Col([
+#                                 html.Label("Project Filter", className="fw-bold small"),
+#                                 dcc.Dropdown(
+#                                     id="project-filter",
+#                                     options=[{"label": "All Projects", "value": "all"}],
+#                                     value="all",
+#                                     clearable=False
+#                                 )
+#                             ], md=4),
+#                             dbc.Col([
+#                                 html.Label("Status Filter", className="fw-bold small"),
+#                                 dcc.Dropdown(
+#                                     id="status-filter",
+#                                     options=[
+#                                         {"label": "All Status", "value": "all"},
+#                                         {"label": "Has Pending", "value": "pending"},
+#                                         {"label": "All Complete", "value": "complete"},
+#                                         {"label": "No Analysis", "value": "none"}
+#                                     ],
+#                                     value="all",
+#                                     clearable=False
+#                                 )
+#                             ], md=4)
+#                         ])
+#                     ])
+#                 ], className="shadow-sm")
+#             ])
+#         ], className="mb-4"),
+#
+#         # Sample Sets Grid
+#         dbc.Row([
+#             dbc.Col([
+#                 html.Div(id="sample-sets-grid", children=[
+#                     dbc.Spinner(
+#                         html.Div(style={"height": "200px"}),
+#                         color="primary"
+#                     )
+#                 ])
+#             ])
+#         ]),
+#
+#         # Analysis Request Modal
+#         create_analysis_request_modal(),
+#
+#         # Sample Set Details Modal
+#         create_sample_set_details_modal(),
+#
+#         # Toast notifications
+#         html.Div(id="sample-sets-notifications"),
+#
+#         # Hidden stores
+#         dcc.Store(id="selected-sample-set", data={}),
+#         dcc.Store(id="available-projects", data=[]),
+#
+#         # Dummy output for callbacks that don't need real output
+#         html.Div(id="dummy-output", style={"display": "none"})
+#
+#     ], fluid=True, style={"padding": "20px"})
+#
+#
+# def create_metric_card(title, metric_id, icon, color, card_id):
+#     """Create a metric display card"""
+#     return dbc.Card([
+#         dbc.CardBody([
+#             html.Div([
+#                 html.Div([
+#                     html.H3("0", id=card_id, className=f"text-{color} mb-0"),
+#                     html.P(title, className="text-muted mb-0 small")
+#                 ], className="flex-grow-1"),
+#                 html.Div([
+#                     html.I(className=f"fas {icon} fa-2x text-{color} opacity-75")
+#                 ], className="align-self-center")
+#             ], className="d-flex")
+#         ])
+#     ], className="shadow-sm h-100")
+#
+#
+# def create_sample_set_card(sample_set, analysis_status):
+#     """Create a card for a single sample set - now full width with properly configured SEC button"""
+#     # Determine overall status
+#     has_pending = any(status == 'requested' for status in analysis_status.values())
+#     has_in_progress = any(status == 'in_progress' for status in analysis_status.values())
+#     all_complete = all(status == 'completed' for status in analysis_status.values()
+#                        if status != 'not_requested')
+#
+#     if has_pending:
+#         overall_status = {"color": "warning", "icon": "fa-clock", "text": "Pending"}
+#     elif has_in_progress:
+#         overall_status = {"color": "info", "icon": "fa-spinner", "text": "In Progress"}
+#     elif all_complete and any(status == 'completed' for status in analysis_status.values()):
+#         overall_status = {"color": "success", "icon": "fa-check-circle", "text": "Completed"}
+#     else:
+#         overall_status = {"color": "secondary", "icon": "fa-circle", "text": "No Analysis"}
+#
+#     # Get sample IDs for this set
+#     sample_ids = [member.sample.sample_id for member in sample_set.members.all()]
+#
+#     # Check for existing SEC reports to determine button configuration
+#     from plotly_integration.models import Report
+#     sec_reports = Report.objects.filter(
+#         analysis_type=1,  # SEC
+#         project_id=sample_set.project_id
+#     ).order_by('-date_created')
+#
+#     # Determine SEC button href and appearance
+#     if sec_reports.exists():
+#         latest_report = sec_reports.first()
+#         sec_href = f"/plotly_integration/dash-app/app/SecReportApp2/?report_id={latest_report.report_id}"
+#         sec_button_text = "View SEC Report"
+#     else:
+#         sec_href = "/plotly_integration/dash-app/app/SecReportApp2/"
+#         sec_button_text = "Open SEC App"
+#
+#     return dbc.Card([
+#         dbc.CardBody([
+#             dbc.Row([
+#                 # Left section: Basic info
+#                 dbc.Col([
+#                     html.Div([
+#                         html.H5(sample_set.set_name, className="mb-1"),
+#                         html.P([
+#                             html.I(className="fas fa-vial text-primary me-2"),
+#                             f"{sample_set.sample_count} samples",
+#                             html.Span(" | ", className="text-muted"),
+#                             html.I(className="fas fa-calendar text-info me-2"),
+#                             f"Created: {sample_set.created_at.strftime('%Y-%m-%d')}" if sample_set.created_at else "Unknown"
+#                         ], className="mb-2 text-muted small"),
+#                     ])
+#                 ], md=3),
+#
+#                 # Middle section: Analysis badges
+#                 dbc.Col([
+#                     html.Div([
+#                         html.P("Analysis Status:", className="fw-bold small mb-2"),
+#                         html.Div([
+#                             create_analysis_badge(analysis_type, status)
+#                             for analysis_type, status in analysis_status.items()
+#                         ], className="d-flex flex-wrap gap-1")
+#                     ])
+#                 ], md=6),
+#
+#                 # Right section: Actions and overall status
+#                 dbc.Col([
+#                     html.Div([
+#                         dbc.Badge([
+#                             html.I(className=f"fas {overall_status['icon']} me-1"),
+#                             overall_status['text']
+#                         ], color=overall_status['color'], className="mb-2"),
+#
+#                         dbc.ButtonGroup([
+#                             dbc.Button([
+#                                 html.I(className="fas fa-microscope me-1"),
+#                                 "Request Analysis"
+#                             ],
+#                                 id={"type": "request-analysis-btn", "index": sample_set.id},
+#                                 color="primary",
+#                                 size="sm"),
+#
+#                             # SEC button configured as a link
+#                             html.A(
+#                                 dbc.Button([
+#                                     html.I(className="fas fa-chart-line me-1"),
+#                                     sec_button_text
+#                                 ],
+#                                     color="success" if analysis_status.get('SEC') == 'completed' else "outline-success",
+#                                     size="sm",
+#                                     disabled=False  # Always enabled now
+#                                 ),
+#                                 href=sec_href,
+#                                 target="_blank",
+#                                 style={"textDecoration": "none"}
+#                             ),
+#
+#                             dbc.Button([
+#                                 html.I(className="fas fa-info-circle me-1"),
+#                                 "Details"
+#                             ],
+#                                 id={"type": "view-details-btn", "index": sample_set.id},
+#                                 color="outline-info",
+#                                 size="sm")
+#                         ], size="sm")
+#                     ], className="text-end")
+#                 ], md=3)
+#             ])
+#         ])
+#     ], className="shadow-sm mb-3")
+#
+#
+# def create_analysis_badge(analysis_type, status):
+#     """Create a small badge showing analysis status"""
+#     status_config = {
+#         'not_requested': {'color': 'light', 'icon': 'fa-circle'},
+#         'requested': {'color': 'warning', 'icon': 'fa-clock'},
+#         'in_progress': {'color': 'info', 'icon': 'fa-spinner fa-spin'},
+#         'completed': {'color': 'success', 'icon': 'fa-check'}
+#     }
+#
+#     config = status_config.get(status, status_config['not_requested'])
+#
+#     return dbc.Badge([
+#         html.I(className=f"fas {config['icon']} me-1", style={"fontSize": "0.7rem"}),
+#         analysis_type
+#     ], color=config['color'], className="me-1", style={"fontSize": "0.75rem"})
+#
+#
+# def create_analysis_request_modal():
+#     """Create modal for requesting analyses"""
+#     return dbc.Modal([
+#         dbc.ModalHeader([
+#             html.H5("Request Analysis", className="text-primary")
+#         ]),
+#         dbc.ModalBody([
+#             html.Div(id="modal-sample-set-info", className="mb-3"),
+#             html.Hr(),
+#             html.H6("Select Analyses to Request:"),
+#             dbc.Checklist(
+#                 id="analysis-type-checklist",
+#                 options=[
+#                     {"label": "SEC - Size Exclusion Chromatography", "value": "SEC"},
+#                     {"label": "Titer - Protein Concentration", "value": "Titer"},
+#                     {"label": "CE-SDS - Capillary Electrophoresis", "value": "CE-SDS"},
+#                     {"label": "cIEF - Isoelectric Focusing", "value": "cIEF"},
+#                     {"label": "Mass Check - Mass Spectrometry", "value": "Mass Check"},
+#                     {"label": "Glycan - Glycan Analysis", "value": "Glycan"},
+#                     {"label": "HCP - Host Cell Protein", "value": "HCP"},
+#                     {"label": "ProA - Protein A", "value": "ProA"}
+#                 ],
+#                 value=[],
+#                 className="mb-3"
+#             ),
+#             html.Div([
+#                 html.Label("Priority", className="fw-bold"),
+#                 dbc.RadioItems(
+#                     id="analysis-priority",
+#                     options=[
+#                         {"label": "Normal", "value": 1},
+#                         {"label": "High", "value": 2},
+#                         {"label": "Urgent", "value": 3}
+#                     ],
+#                     value=1,
+#                     inline=True
+#                 )
+#             ], className="mb-3"),
+#             html.Div([
+#                 html.Label("Notes", className="fw-bold"),
+#                 dbc.Textarea(
+#                     id="analysis-notes",
+#                     placeholder="Add any special instructions...",
+#                     rows=3
+#                 )
+#             ])
+#         ]),
+#         dbc.ModalFooter([
+#             dbc.Button("Cancel", id="cancel-analysis-request", color="secondary"),
+#             dbc.Button([
+#                 html.I(className="fas fa-paper-plane me-2"),
+#                 "Submit Request"
+#             ], id="submit-analysis-request", color="primary")
+#         ])
+#     ], id="analysis-request-modal", size="lg")
+#
+#
+# def create_sample_set_details_modal():
+#     """Create modal for viewing sample set details"""
+#     return dbc.Modal([
+#         dbc.ModalHeader([
+#             html.H5("Sample Set Details", className="text-primary")
+#         ]),
+#         dbc.ModalBody([
+#             html.Div(id="modal-sample-set-details")
+#         ]),
+#         dbc.ModalFooter([
+#             dbc.Button("Close", id="close-details-modal", color="secondary")
+#         ])
+#     ], id="sample-set-details-modal", size="xl")
+
+# cld_dashboard/samples/layouts/sample_sets.py - COMPLETE VERSION WITH SEC EMBEDDING
+
 import dash
-from dash import html, dcc, dash_table, callback, Input, Output, State, ALL
+from dash import html, dcc, dash_table
 import dash_bootstrap_components as dbc
-import plotly.graph_objects as go
-import plotly.express as px
-from ...shared.styles.common_styles import TABLE_STYLE_CELL, TABLE_STYLE_HEADER, CARD_STYLE, COLORS
-from ...config.analysis_types import ANALYSIS_TYPES, STATUS_COLORS, STATUS_ICONS
-import json
+
+# Make sure this import path is correct for your project structure
+try:
+    from ...shared.styles.common_styles import CARD_STYLE, COLORS
+    from ...shared.utils.url_helpers import build_sec_report_url
+except ImportError:
+    # Fallback if import fails
+    CARD_STYLE = {}
+    COLORS = {}
+    print("Warning: Could not import common_styles or url_helpers")
 
 
-def create_sample_sets_overview_layout():
-    """Create the enhanced sample sets overview page with modern UI"""
+def create_sample_sets_layout():
+    """Create the sample sets management page"""
     return dbc.Container([
-        # Enhanced header with search and filters
+        # Header
         dbc.Row([
             dbc.Col([
-                html.H2("🧪 Sample Set Analytics", className="text-primary mb-1"),
-                html.P("Advanced sample grouping and intelligent analysis", className="text-muted")
-            ], md=6),
+                html.H2([
+                    html.I(className="fas fa-layer-group text-primary me-2"),
+                    "Sample Sets Analysis Management"
+                ]),
+                html.P("Manage analysis requests and track progress for grouped samples",
+                       className="text-muted")
+            ], md=8),
             dbc.Col([
-                dbc.InputGroup([
-                    dbc.InputGroupText(html.I(className="fas fa-search")),
-                    dbc.Input(
-                        id="sample-sets-search",
-                        placeholder="Search sample sets...",
-                        type="text"
-                    ),
-                    dbc.Button("Search", color="primary", outline=True)
-                ], size="sm")
-            ], md=6)
+                dbc.ButtonGroup([
+                    dbc.Button([
+                        html.I(className="fas fa-sync-alt me-1"),
+                        "Refresh"
+                    ], id="refresh-sample-sets-btn", color="outline-primary", size="sm"),
+                    dbc.Button([
+                        html.I(className="fas fa-file-export me-1"),
+                        "Export"
+                    ], id="export-sample-sets-btn", color="outline-info", size="sm")
+                ], className="float-end")
+            ], md=4)
         ], className="mb-4"),
 
-        # Advanced controls and metrics
-        dbc.Row([
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardBody([
-                        dbc.Row([
-                            dbc.Col([
-                                html.Label("Grouping Method", className="fw-bold small"),
-                                dcc.Dropdown(
-                                    id="grouping-method",
-                                    options=[
-                                        {"label": "🔬 By Project + SIP", "value": "project_sip"},
-                                        {"label": "📅 By Date Range", "value": "date_range"},
-                                        {"label": "👨‍🔬 By Analyst", "value": "analyst"},
-                                        {"label": "🧬 By Clone", "value": "clone"},
-                                        {"label": "🤖 Auto-Detect", "value": "auto"}
-                                    ],
-                                    value="project_sip",
-                                    clearable=False,
-                                    style={"fontSize": "14px"}
-                                )
-                            ], md=3),
-                            dbc.Col([
-                                html.Label("Analysis Status", className="fw-bold small"),
-                                dcc.Dropdown(
-                                    id="status-filter",
-                                    options=[
-                                        {"label": "🔍 All Status", "value": "all"},
-                                        {"label": "⚠️ Pending Analysis", "value": "pending"},
-                                        {"label": "🟡 In Progress", "value": "in_progress"},
-                                        {"label": "✅ Completed", "value": "completed"},
-                                        {"label": "❌ Failed", "value": "failed"}
-                                    ],
-                                    value="all",
-                                    clearable=False,
-                                    style={"fontSize": "14px"}
-                                )
-                            ], md=3),
-                            dbc.Col([
-                                html.Label("View Mode", className="fw-bold small"),
-                                dbc.RadioItems(
-                                    id="view-mode",
-                                    options=[
-                                        {"label": "Grid", "value": "grid"},
-                                        {"label": "Table", "value": "table"},
-                                        {"label": "Timeline", "value": "timeline"}
-                                    ],
-                                    value="grid",
-                                    inline=True,
-                                    style={"fontSize": "14px"}
-                                )
-                            ], md=3),
-                            dbc.Col([
-                                html.Label("Quick Actions", className="fw-bold small"),
-                                dbc.ButtonGroup([
-                                    dbc.Button([
-                                        html.I(className="fas fa-sync-alt me-1"),
-                                        "Refresh"
-                                    ], id="refresh-sample-sets-btn", color="outline-primary", size="sm"),
-                                    dbc.Button([
-                                        html.I(className="fas fa-magic me-1"),
-                                        "Auto-Group"
-                                    ], id="auto-group-btn", color="outline-info", size="sm")
-                                ])
-                            ], md=3)
-                        ])
-                    ])
-                ], className="shadow-sm")
-            ])
-        ], className="mb-4"),
-
-        # Metrics overview cards
+        # Metrics Row
         dbc.Row([
             dbc.Col([
                 create_metric_card("Total Sets", "0", "fa-layer-group", "primary", "total-sets-metric")
@@ -111,798 +400,430 @@ def create_sample_sets_overview_layout():
                 create_metric_card("Pending Analysis", "0", "fa-clock", "warning", "pending-metric")
             ], md=3),
             dbc.Col([
-                create_metric_card("Completed", "0", "fa-check-circle", "success", "completed-metric")
+                create_metric_card("In Progress", "0", "fa-spinner", "info", "in-progress-metric")
             ], md=3),
             dbc.Col([
-                create_metric_card("Total Samples", "0", "fa-vial", "info", "total-samples-metric")
+                create_metric_card("Completed", "0", "fa-check-circle", "success", "completed-metric")
             ], md=3)
         ], className="mb-4"),
 
-        # Main content area with view switching
+        # Filter Row
         dbc.Row([
             dbc.Col([
-                html.Div(id="sample-sets-content-area")
+                dbc.Card([
+                    dbc.CardBody([
+                        dbc.Row([
+                            dbc.Col([
+                                html.Label("Search", className="fw-bold small"),
+                                dbc.Input(
+                                    id="search-sample-sets",
+                                    placeholder="Search by project, SIP, or stage...",
+                                    type="text"
+                                )
+                            ], md=4),
+                            dbc.Col([
+                                html.Label("Project Filter", className="fw-bold small"),
+                                dcc.Dropdown(
+                                    id="project-filter",
+                                    options=[{"label": "All Projects", "value": "all"}],
+                                    value="all",
+                                    clearable=False
+                                )
+                            ], md=4),
+                            dbc.Col([
+                                html.Label("Status Filter", className="fw-bold small"),
+                                dcc.Dropdown(
+                                    id="status-filter",
+                                    options=[
+                                        {"label": "All Status", "value": "all"},
+                                        {"label": "Has Pending", "value": "pending"},
+                                        {"label": "All Complete", "value": "complete"},
+                                        {"label": "No Analysis", "value": "none"}
+                                    ],
+                                    value="all",
+                                    clearable=False
+                                )
+                            ], md=4)
+                        ])
+                    ])
+                ], className="shadow-sm")
+            ])
+        ], className="mb-4"),
+
+        # Sample Sets Grid
+        dbc.Row([
+            dbc.Col([
+                html.Div(id="sample-sets-grid", children=[
+                    dbc.Spinner(
+                        html.Div(style={"height": "200px"}),
+                        color="primary"
+                    )
+                ])
             ])
         ]),
 
-        # Batch operations panel
-        dbc.Row([
-            dbc.Col([
-                dbc.Collapse([
-                    dbc.Card([
-                        dbc.CardHeader([
-                            html.H6("🚀 Batch Operations", className="mb-0")
-                        ]),
-                        dbc.CardBody([
-                            create_batch_operations_panel()
-                        ])
-                    ], className="shadow-sm")
-                ], id="batch-operations-collapse", is_open=False)
-            ])
-        ], className="mt-3"),
+        # Analysis Request Modal
+        create_analysis_request_modal(),
 
-        # Modals and hidden components
-        create_sample_set_preview_modal(),
-        create_comparison_modal(),
-        dcc.Store(id="selected-sample-sets", data=[]),
-        dcc.Store(id="sample-sets-data", data=[]),
-        html.Div(id="sample-sets-notifications")
+        # Sample Set Details Modal
+        create_sample_set_details_modal(),
+
+        # Toast notifications
+        html.Div(id="sample-sets-notifications"),
+
+        # Hidden stores
+        dcc.Store(id="selected-sample-set", data={}),
+        dcc.Store(id="available-projects", data=[]),
+
+        # Dummy output for callbacks that don't need real output
+        html.Div(id="dummy-output", style={"display": "none"})
 
     ], fluid=True, style={"padding": "20px"})
 
 
-def create_metric_card(title, value_id, icon, color, metric_id):
-    """Create an enhanced metric card with animations"""
+def create_metric_card(title, metric_id, icon, color, card_id):
+    """Create a metric display card"""
     return dbc.Card([
         dbc.CardBody([
             html.Div([
                 html.Div([
-                    html.H4("0", id=metric_id, className=f"text-{color} mb-0 metric-value"),
-                    html.P(title, className="text-muted mb-0 fw-bold small"),
-                    html.Div(id=f"{metric_id}-trend", className="trend-indicator")
+                    html.H3("0", id=card_id, className=f"text-{color} mb-0"),
+                    html.P(title, className="text-muted mb-0 small")
                 ], className="flex-grow-1"),
                 html.Div([
                     html.I(className=f"fas {icon} fa-2x text-{color} opacity-75")
                 ], className="align-self-center")
-            ], className="d-flex"),
-            dbc.Progress(
-                id=f"{metric_id}-progress",
-                value=0,
-                color=color,
-                style={"height": "3px", "marginTop": "8px"},
-                className="progress-bar-animated"
-            )
+            ], className="d-flex")
         ])
-    ], className="shadow-sm card-hover h-100")
+    ], className="shadow-sm h-100")
 
 
-def create_sample_sets_grid_view(sample_sets_data):
-    """Create modern grid view of sample sets"""
-    if not sample_sets_data:
-        return dbc.Alert([
-            html.I(className="fas fa-info-circle me-2"),
-            "No sample sets found. Adjust your filters or create some samples."
-        ], color="info")
+def create_sample_set_card(sample_set, analysis_status):
+    """Create a card for a single sample set with SEC embedding"""
+    # Determine overall status
+    has_pending = any(status == 'requested' for status in analysis_status.values())
+    has_in_progress = any(status == 'in_progress' for status in analysis_status.values())
+    all_complete = all(status == 'completed' for status in analysis_status.values()
+                       if status != 'not_requested')
 
-    grid_cards = []
-    for i in range(0, len(sample_sets_data), 3):  # 3 cards per row
-        row_cards = sample_sets_data[i:i + 3]
-        grid_cards.append(
-            dbc.Row([
-                dbc.Col([
-                    create_enhanced_sample_set_card(card_data, index=i + j)
-                ], md=4) for j, card_data in enumerate(row_cards)
-            ], className="mb-3")
-        )
+    if has_pending:
+        overall_status = {"color": "warning", "icon": "fa-clock", "text": "Pending"}
+    elif has_in_progress:
+        overall_status = {"color": "info", "icon": "fa-spinner", "text": "In Progress"}
+    elif all_complete and any(status == 'completed' for status in analysis_status.values()):
+        overall_status = {"color": "success", "icon": "fa-check-circle", "text": "Completed"}
+    else:
+        overall_status = {"color": "secondary", "icon": "fa-circle", "text": "No Analysis"}
 
-    return html.Div(grid_cards)
+    # Get sample IDs for this set
+    sample_ids = [member.sample.sample_id for member in sample_set.members.all()]
 
+    # Check for existing SEC reports
+    from plotly_integration.models import Report
+    sec_reports = Report.objects.filter(
+        analysis_type=1,  # SEC
+        project_id=sample_set.project_id
+    ).order_by('-date_created')
 
-def create_enhanced_sample_set_card(set_data, index=0):
-    """Create an enhanced sample set card with modern design"""
-    set_name = set_data.get('set_name', 'Unknown Set')
-    project = set_data.get('project', '')
-    sip = set_data.get('sip_number', '')
-    stage = set_data.get('development_stage', '')
-    sample_count = set_data.get('sample_count', 0)
-    sec_status = set_data.get('sec_status', 'No Analysis')
-    sample_ids = set_data.get('sample_ids', [])
-
-    # Enhanced status styling
-    status_config = get_status_config(sec_status)
+    # Build SEC button with proper URL
+    if sample_ids:
+        # Check if SEC reports exist for this project
+        if sec_reports.exists():
+            latest_report = sec_reports.first()
+            # If report exists, use report_id
+            sec_embed_url = f"#!/analysis/sec/report?report_id={latest_report.report_id}"
+            sec_button_text = "View SEC Report"
+            sec_button_color = "success"
+        else:
+            # No reports yet - for now just open SEC app
+            # Later we'll add functionality to create reports with pre-selected samples
+            sec_embed_url = "#!/analysis/sec"
+            sec_button_text = "Create SEC Report"
+            sec_button_color = "outline-success"
+    else:
+        # No samples - just open SEC app
+        sec_embed_url = "#!/analysis/sec"
+        sec_button_text = "Open SEC App"
+        sec_button_color = "outline-secondary"
 
     return dbc.Card([
-        # Card header with status indicator
-        dbc.CardHeader([
-            html.Div([
-                html.Div([
-                    html.H6(set_name, className="mb-0 text-truncate"),
-                    html.Small(f"{sample_count} samples", className="text-muted")
-                ], className="flex-grow-1"),
-                dbc.Badge([
-                    html.I(className=f"fas {status_config['icon']} me-1"),
-                    sec_status
-                ], color=status_config['color'], className="status-badge")
-            ], className="d-flex align-items-center")
-        ], className="bg-light"),
-
-        # Card body with details
         dbc.CardBody([
-            # Project details
-            html.Div([
-                html.P([
-                    html.I(className="fas fa-project-diagram text-primary me-2"),
-                    html.Strong("Project: "), project
-                ], className="small mb-1"),
-                html.P([
-                    html.I(className="fas fa-hashtag text-info me-2"),
-                    html.Strong("SIP: "), sip or "N/A"
-                ], className="small mb-1"),
-                html.P([
-                    html.I(className="fas fa-flask text-success me-2"),
-                    html.Strong("Stage: "), stage or "N/A"
-                ], className="small mb-2")
-            ]),
+            dbc.Row([
+                # Left section: Basic info
+                dbc.Col([
+                    html.Div([
+                        html.H5(sample_set.set_name, className="mb-1"),
+                        html.P([
+                            html.I(className="fas fa-vial text-primary me-2"),
+                            f"{sample_set.sample_count} samples",
+                            html.Span(" | ", className="text-muted"),
+                            html.I(className="fas fa-calendar text-info me-2"),
+                            f"Created: {sample_set.created_at.strftime('%Y-%m-%d')}" if sample_set.created_at else "Unknown"
+                        ], className="mb-2 text-muted small"),
+                        # Show sample IDs preview
+                        html.P([
+                            html.Strong("Samples: "),
+                            ", ".join(sample_ids[:3]) + ("..." if len(sample_ids) > 3 else "")
+                        ], className="text-muted small mb-0")
+                    ])
+                ], md=3),
 
-            # Mini preview chart
-            html.Div([
-                create_mini_preview_chart(sample_ids),
-            ], className="mb-3"),
+                # Middle section: Analysis badges
+                dbc.Col([
+                    html.Div([
+                        html.P("Analysis Status:", className="fw-bold small mb-2"),
+                        html.Div([
+                            create_analysis_badge(analysis_type, status)
+                            for analysis_type, status in analysis_status.items()
+                        ], className="d-flex flex-wrap gap-1")
+                    ])
+                ], md=6),
 
-            # Action buttons
-            dbc.ButtonGroup([
-                dbc.Button([
-                    html.I(className="fas fa-eye me-1"),
-                    "View"
-                ],
-                    id={"type": "view-set-btn", "index": index},
-                    color="outline-primary",
-                    size="sm"),
-                dbc.Button([
-                    html.I(className="fas fa-microscope me-1"),
-                    "Analyze"
-                ],
-                    id={"type": "analyze-set-btn", "index": index},
-                    color="primary" if sec_status == "No Analysis" else "outline-success",
-                    size="sm"),
-                dbc.Button([
-                    html.I(className="fas fa-chart-line me-1")
-                ],
-                    id={"type": "preview-set-btn", "index": index},
-                    color="outline-info",
-                    size="sm",
-                    title="Quick Preview")
-            ], size="sm", className="w-100"),
+                # Right section: Actions and overall status
+                dbc.Col([
+                    html.Div([
+                        dbc.Badge([
+                            html.I(className=f"fas {overall_status['icon']} me-1"),
+                            overall_status['text']
+                        ], color=overall_status['color'], className="mb-2"),
 
-            # Selection checkbox
-            dbc.Checklist(
-                id={"type": "select-set-checkbox", "index": index},
-                options=[{"label": "", "value": set_name}],
-                value=[],
-                className="mt-2"
-            )
+                        dbc.ButtonGroup([
+                            dbc.Button([
+                                html.I(className="fas fa-microscope me-1"),
+                                "Request Analysis"
+                            ],
+                                id={"type": "request-analysis-btn", "index": sample_set.id},
+                                color="primary",
+                                size="sm"),
+
+                            # SEC button - properly configured with embedded URL
+                            dbc.Button([
+                                html.I(className="fas fa-chart-line me-1"),
+                                sec_button_text
+                            ],
+                                href=sec_embed_url,  # Use hash routing to embedded SEC
+                                color=sec_button_color,
+                                size="sm",
+                                disabled=False,
+                                id={"type": "sec-embed-btn", "index": sample_set.id}  # Add ID for debugging
+                            ),
+
+                            dbc.Button([
+                                html.I(className="fas fa-info-circle me-1"),
+                                "Details"
+                            ],
+                                id={"type": "view-details-btn", "index": sample_set.id},
+                                color="outline-info",
+                                size="sm")
+                        ], size="sm")
+                    ], className="text-end")
+                ], md=3)
+            ])
         ])
-    ], className="shadow-sm card-hover sample-set-card", style={"minHeight": "350px"})
+    ], className="shadow-sm mb-3")
 
 
-def create_mini_preview_chart(sample_ids):
-    """Create a mini preview chart for sample set"""
-    # Mock data for preview - replace with actual SEC data
-    if not sample_ids:
-        return html.Div("No data", className="text-muted text-center py-2")
+def create_analysis_badge(analysis_type, status):
+    """Create a small badge showing analysis status"""
+    status_config = {
+        'not_requested': {'color': 'light', 'icon': 'fa-circle'},
+        'requested': {'color': 'warning', 'icon': 'fa-clock'},
+        'in_progress': {'color': 'info', 'icon': 'fa-spinner fa-spin'},
+        'completed': {'color': 'success', 'icon': 'fa-check'}
+    }
 
-    # Create simple line chart
-    fig = go.Figure()
+    config = status_config.get(status, status_config['not_requested'])
 
-    # Mock chromatogram data
-    x_data = list(range(0, 20))
-    for i, sample_id in enumerate(sample_ids[:3]):  # Show first 3 samples
-        y_data = [0.1 + 0.05 * (i % 3) + 0.8 * (1 if 8 <= x <= 12 else 0.1) for x in x_data]
-        fig.add_trace(go.Scatter(
-            x=x_data,
-            y=y_data,
-            mode='lines',
-            name=sample_id,
-            line=dict(width=1.5),
-            showlegend=False
-        ))
-
-    fig.update_layout(
-        height=80,
-        margin=dict(l=0, r=0, t=0, b=0),
-        xaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
-        yaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
-    )
-
-    return dcc.Graph(figure=fig, config={'displayModeBar': False})
+    return dbc.Badge([
+        html.I(className=f"fas {config['icon']} me-1", style={"fontSize": "0.7rem"}),
+        analysis_type
+    ], color=config['color'], className="me-1", style={"fontSize": "0.75rem"})
 
 
-def create_sample_sets_table_view(sample_sets_data):
-    """Create enhanced table view with modern styling"""
-    if not sample_sets_data:
-        return dbc.Alert("No sample sets found", color="info")
-
-    return dash_table.DataTable(
-        id="sample-sets-table-enhanced",
-        columns=[
-            {"name": "Select", "id": "select", "type": "text", "presentation": "markdown"},
-            {"name": "Project", "id": "project", "type": "text"},
-            {"name": "Set Name", "id": "set_name", "type": "text"},
-            {"name": "SIP #", "id": "sip_number", "type": "text"},
-            {"name": "Stage", "id": "development_stage", "type": "text"},
-            {"name": "Samples", "id": "sample_count", "type": "numeric"},
-            {"name": "Status", "id": "sec_status", "type": "text", "presentation": "markdown"},
-            {"name": "Progress", "id": "progress", "type": "text", "presentation": "markdown"},
-            {"name": "Actions", "id": "actions", "type": "text", "presentation": "markdown"}
-        ],
-        data=prepare_table_data(sample_sets_data),
-        filter_action="native",
-        sort_action="native",
-        page_action="native",
-        page_size=15,
-        style_cell={
-            **TABLE_STYLE_CELL,
-            'minWidth': '100px',
-            'maxWidth': '200px',
-            'whiteSpace': 'normal'
-        },
-        style_header={
-            **TABLE_STYLE_HEADER,
-            'backgroundColor': '#495057',
-            'color': 'white'
-        },
-        style_data_conditional=[
-            {
-                'if': {'filter_query': '{sec_status} contains "Completed"'},
-                'backgroundColor': '#d4edda',
-                'color': '#155724'
-            },
-            {
-                'if': {'filter_query': '{sec_status} contains "Pending"'},
-                'backgroundColor': '#fff3cd',
-                'color': '#856404'
-            },
-            {
-                'if': {'filter_query': '{sec_status} contains "Progress"'},
-                'backgroundColor': '#d1ecf1',
-                'color': '#0c5460'
-            }
-        ],
-        style_table={'overflowX': 'auto'},
-        markdown_options={"link_target": "_blank"}
-    )
-
-
-def create_timeline_view(sample_sets_data):
-    """Create timeline view of sample sets"""
-    if not sample_sets_data:
-        return dbc.Alert("No sample sets found", color="info")
-
-    # Create timeline scatter plot
-    fig = go.Figure()
-
-    for set_data in sample_sets_data:
-        fig.add_trace(go.Scatter(
-            x=[f"2024-01-{hash(set_data['set_name']) % 30 + 1:02d}"],  # Mock dates
-            y=[set_data['project']],
-            mode='markers+text',
-            marker=dict(
-                size=set_data['sample_count'] * 2,
-                color=get_status_color(set_data['sec_status']),
-                line=dict(width=2, color='white')
-            ),
-            text=set_data['set_name'],
-            textposition="top center",
-            name=set_data['set_name'],
-            hovertemplate=f"<b>{set_data['set_name']}</b><br>" +
-                          f"Project: {set_data['project']}<br>" +
-                          f"Samples: {set_data['sample_count']}<br>" +
-                          f"Status: {set_data['sec_status']}<extra></extra>"
-        ))
-
-    fig.update_layout(
-        title="Sample Sets Timeline",
-        xaxis_title="Date",
-        yaxis_title="Project",
-        height=500,
-        showlegend=False,
-        hovermode='closest'
-    )
-
-    return dcc.Graph(figure=fig)
-
-
-def create_batch_operations_panel():
-    """Create batch operations panel"""
-    return html.Div([
-        dbc.Row([
-            dbc.Col([
-                html.H6("Selected Sets", className="text-muted"),
-                html.Div(id="selected-sets-display", children=[
-                    html.P("No sets selected", className="text-muted small")
-                ])
-            ], md=4),
-            dbc.Col([
-                html.H6("Available Operations", className="text-muted"),
-                dbc.Checklist(
-                    id="batch-operations-checklist",
-                    options=[
-                        {"label": "🔬 Create SEC Reports", "value": "create_sec"},
-                        {"label": "📊 Generate Analytics", "value": "generate_analytics"},
-                        {"label": "📤 Export Data", "value": "export_data"},
-                        {"label": "🔗 Link LIMS Data", "value": "link_lims"}
-                    ],
-                    value=[],
-                    className="small"
-                )
-            ], md=4),
-            dbc.Col([
-                html.H6("Execute", className="text-muted"),
-                dbc.Button([
-                    html.I(className="fas fa-rocket me-2"),
-                    "Run Operations"
-                ], id="execute-batch-btn", color="success", disabled=True, className="w-100"),
-                html.Div(id="batch-execution-status", className="mt-2")
-            ], md=4)
-        ])
-    ])
-
-
-def create_sample_set_preview_modal():
-    """Create modal for sample set preview"""
+def create_analysis_request_modal():
+    """Create modal for requesting analyses"""
     return dbc.Modal([
         dbc.ModalHeader([
-            html.H4("Sample Set Preview", className="text-primary")
+            html.H5("Request Analysis", className="text-primary")
         ]),
         dbc.ModalBody([
-            dbc.Row([
-                dbc.Col([
-                    html.H6("Set Information"),
-                    html.Div(id="preview-set-info")
-                ], md=4),
-                dbc.Col([
-                    html.H6("SEC Chromatogram Preview"),
-                    dcc.Graph(id="preview-chromatogram", style={"height": "300px"})
-                ], md=8)
-            ]),
+            html.Div(id="modal-sample-set-info", className="mb-3"),
             html.Hr(),
-            dbc.Row([
-                dbc.Col([
-                    html.H6("Sample Details"),
-                    html.Div(id="preview-sample-details")
-                ])
+            html.H6("Select Analyses to Request:"),
+            dbc.Checklist(
+                id="analysis-type-checklist",
+                options=[
+                    {"label": "SEC - Size Exclusion Chromatography", "value": "SEC"},
+                    {"label": "Titer - Protein Concentration", "value": "Titer"},
+                    {"label": "CE-SDS - Capillary Electrophoresis", "value": "CE-SDS"},
+                    {"label": "cIEF - Isoelectric Focusing", "value": "cIEF"},
+                    {"label": "Mass Check - Mass Spectrometry", "value": "Mass Check"},
+                    {"label": "Glycan - Glycan Analysis", "value": "Glycan"},
+                    {"label": "HCP - Host Cell Protein", "value": "HCP"},
+                    {"label": "ProA - Protein A", "value": "ProA"}
+                ],
+                value=[],
+                className="mb-3"
+            ),
+            html.Div([
+                html.Label("Priority", className="fw-bold"),
+                dbc.RadioItems(
+                    id="analysis-priority",
+                    options=[
+                        {"label": "Normal", "value": 1},
+                        {"label": "High", "value": 2},
+                        {"label": "Urgent", "value": 3}
+                    ],
+                    value=1,
+                    inline=True
+                )
+            ], className="mb-3"),
+            html.Div([
+                html.Label("Notes", className="fw-bold"),
+                dbc.Textarea(
+                    id="analysis-notes",
+                    placeholder="Add any special instructions...",
+                    rows=3
+                )
             ])
         ]),
         dbc.ModalFooter([
-            dbc.Button("Close", id="close-preview-modal", color="secondary"),
+            dbc.Button("Cancel", id="cancel-analysis-request", color="secondary"),
             dbc.Button([
-                html.I(className="fas fa-microscope me-2"),
-                "Open SEC Analysis"
-            ], id="open-sec-from-preview", color="primary")
+                html.I(className="fas fa-paper-plane me-2"),
+                "Submit Request"
+            ], id="submit-analysis-request", color="primary")
         ])
-    ], id="sample-set-preview-modal", size="xl")
+    ], id="analysis-request-modal", size="lg")
 
 
-def create_comparison_modal():
-    """Create modal for comparing sample sets"""
+def create_sample_set_details_modal():
+    """Create modal for viewing sample set details"""
     return dbc.Modal([
         dbc.ModalHeader([
-            html.H4("Compare Sample Sets", className="text-primary")
+            html.H5("Sample Set Details", className="text-primary")
         ]),
         dbc.ModalBody([
-            html.P("Select 2-4 sample sets to compare:", className="text-muted"),
-            html.Div(id="comparison-selection"),
-            html.Hr(),
-            html.Div(id="comparison-charts")
+            html.Div(id="modal-sample-set-details")
         ]),
         dbc.ModalFooter([
-            dbc.Button("Close", id="close-comparison-modal", color="secondary"),
-            dbc.Button("Generate Report", id="generate-comparison-report", color="info")
+            dbc.Button("Close", id="close-details-modal", color="secondary")
         ])
-    ], id="comparison-modal", size="xl")
+    ], id="sample-set-details-modal", size="xl")
 
 
-def prepare_table_data(sample_sets_data):
-    """Prepare data for table view with enhanced formatting"""
-    table_data = []
+def create_sec_button_with_samples(sample_ids, sample_set_name, existing_reports=None):
+    """Create SEC button that properly embeds the SEC app with selected samples
 
-    for i, set_data in enumerate(sample_sets_data):
-        # Create checkbox for selection
-        select_checkbox = f"☐"  # Will be handled by callback
+    Args:
+        sample_ids: List of sample IDs to analyze
+        sample_set_name: Name of the sample set
+        existing_reports: QuerySet of existing reports for this project
+    """
+    if not sample_ids:
+        return dbc.Button([
+            html.I(className="fas fa-chart-line me-1"),
+            "No Samples"
+        ], color="secondary", size="sm", disabled=True)
 
-        # Create status badge
-        status_config = get_status_config(set_data['sec_status'])
-        status_badge = f"<span style='color: {status_config['color_code']}'>" + \
-                       f"<i class='fas {status_config['icon']}'></i> {set_data['sec_status']}</span>"
+    # Build the embedded URL with sample IDs
+    samples_param = ",".join(str(sid) for sid in sample_ids)
 
-        # Create progress indicator
-        if set_data['sec_status'] == 'Completed':
-            progress = "![100%](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMjhhNzQ1Ii8+PC9zdmc+)"
-        elif 'Progress' in set_data['sec_status']:
-            progress = "![50%](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmMxMDciLz48L3N2Zz4=)"
-        else:
-            progress = "![0%](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIwIj48cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSIyMCIgZmlsbD0iIzZjNzU3ZCIvPjwvc3ZnPg==)"
+    # Use hash routing to embedded SEC report
+    if existing_reports and existing_reports.exists():
+        # If reports exist, show the latest one
+        latest_report = existing_reports.first()
+        embed_url = f"#!/analysis/sec/report?samples={samples_param}&report_id={latest_report.report_id}&mode=report"
+        button_text = "View SEC Report"
+        button_color = "success"
+    else:
+        # No reports yet - create new
+        embed_url = f"#!/analysis/sec/report?samples={samples_param}&mode=samples"
+        button_text = "Create SEC Report"
+        button_color = "primary"
 
-        # Create action buttons
-        actions = f"[👁️ View](#!/sample-sets/view?project={set_data['project']}) | " + \
-                  f"[🔬 Analyze](#!/analysis/sec?samples={','.join(set_data.get('sample_ids', []))}) | " + \
-                  f"[📊 Preview](#)"
-
-        table_data.append({
-            "select": select_checkbox,
-            "project": set_data['project'],
-            "set_name": set_data['set_name'],
-            "sip_number": set_data.get('sip_number', ''),
-            "development_stage": set_data.get('development_stage', ''),
-            "sample_count": set_data['sample_count'],
-            "sec_status": status_badge,
-            "progress": progress,
-            "actions": actions
-        })
-
-    return table_data
+    return dbc.Button([
+        html.I(className="fas fa-chart-line me-1"),
+        button_text
+    ],
+        href=embed_url,
+        color=button_color,
+        size="sm",
+        title=f"SEC analysis for {sample_set_name}"
+    )
 
 
-def get_status_config(status):
-    """Get configuration for status display"""
-    status_configs = {
-        'No Analysis': {
-            'color': 'secondary',
-            'color_code': '#6c757d',
-            'icon': 'fa-clock'
-        },
-        'Pending': {
-            'color': 'warning',
-            'color_code': '#ffc107',
-            'icon': 'fa-hourglass-half'
-        },
-        'In Progress': {
-            'color': 'info',
-            'color_code': '#17a2b8',
-            'icon': 'fa-spinner'
-        },
-        'Completed': {
-            'color': 'success',
-            'color_code': '#28a745',
-            'icon': 'fa-check-circle'
-        },
-        'Failed': {
-            'color': 'danger',
-            'color_code': '#dc3545',
-            'icon': 'fa-times-circle'
+def build_sec_embed_url(sample_set=None, report_id=None):
+    """
+    Build the URL for embedded SEC analysis
+
+    Args:
+        sample_set: Optional sample set object (for future use)
+        report_id: Report ID to view
+
+    Returns:
+        str: Hash-based URL for embedded SEC view
+    """
+    if report_id:
+        return f"#!/analysis/sec/report?report_id={report_id}"
+    else:
+        # No report - just go to SEC dashboard
+        return "#!/analysis/sec"
+
+
+def get_sec_button_config(sample_set):
+    """Get configuration for SEC button based on sample set"""
+    # Get sample IDs (for display purposes)
+    sample_ids = [member.sample.sample_id for member in sample_set.members.all()]
+
+    if not sample_ids:
+        return {
+            "url": "#!/analysis/sec",
+            "text": "No Samples",
+            "color": "secondary",
+            "disabled": True
         }
-    }
 
-    return status_configs.get(status, status_configs['No Analysis'])
+    # Check for existing reports
+    from plotly_integration.models import Report
+    sec_reports = Report.objects.filter(
+        analysis_type=1,  # SEC
+        project_id=sample_set.project_id
+    ).order_by('-date_created')
 
-
-def get_status_color(status):
-    """Get color for status in charts"""
-    color_map = {
-        'No Analysis': '#6c757d',
-        'Pending': '#ffc107',
-        'In Progress': '#17a2b8',
-        'Completed': '#28a745',
-        'Failed': '#dc3545'
-    }
-    return color_map.get(status, '#6c757d')
-
-
-# Enhanced callbacks for the sample sets page
-@callback(
-    [Output("sample-sets-content-area", "children"),
-     Output("total-sets-metric", "children"),
-     Output("pending-metric", "children"),
-     Output("completed-metric", "children"),
-     Output("total-samples-metric", "children")],
-    [Input("view-mode", "value"),
-     Input("grouping-method", "value"),
-     Input("status-filter", "value"),
-     Input("refresh-sample-sets-btn", "n_clicks"),
-     Input("auto-group-btn", "n_clicks")],
-    [State("sample-sets-search", "value")]
-)
-def update_sample_sets_content(view_mode, grouping_method, status_filter, refresh_clicks,
-                               auto_clicks, search_term):
-    """Update sample sets content based on user selections"""
-    try:
-        # Mock data - replace with actual database queries
-        sample_sets_data = [
-            {
-                "set_name": "PROJ001_SIP001_MP",
-                "project": "PROJ001",
-                "sip_number": "SIP001",
-                "development_stage": "MP",
-                "sample_count": 20,
-                "sec_status": "Completed",
-                "sample_ids": [f"FB{1000 + i}" for i in range(20)]
-            },
-            {
-                "set_name": "PROJ002_SIP002_BP",
-                "project": "PROJ002",
-                "sip_number": "SIP002",
-                "development_stage": "BP",
-                "sample_count": 15,
-                "sec_status": "In Progress",
-                "sample_ids": [f"FB{1020 + i}" for i in range(15)]
-            },
-            {
-                "set_name": "PROJ003_SIP003_pMP",
-                "project": "PROJ003",
-                "sip_number": "SIP003",
-                "development_stage": "pMP",
-                "sample_count": 25,
-                "sec_status": "Pending",
-                "sample_ids": [f"FB{1035 + i}" for i in range(25)]
-            }
-        ]
-
-        # Apply filters
-        if status_filter != "all":
-            if status_filter == "pending":
-                sample_sets_data = [s for s in sample_sets_data if "Pending" in s["sec_status"]]
-            elif status_filter == "completed":
-                sample_sets_data = [s for s in sample_sets_data if "Completed" in s["sec_status"]]
-            elif status_filter == "in_progress":
-                sample_sets_data = [s for s in sample_sets_data if "Progress" in s["sec_status"]]
-
-        # Apply search filter
-        if search_term:
-            sample_sets_data = [
-                s for s in sample_sets_data
-                if search_term.lower() in s["set_name"].lower() or
-                   search_term.lower() in s["project"].lower()
-            ]
-
-        # Calculate metrics
-        total_sets = len(sample_sets_data)
-        pending_count = len([s for s in sample_sets_data if "Pending" in s["sec_status"]])
-        completed_count = len([s for s in sample_sets_data if "Completed" in s["sec_status"]])
-        total_samples = sum(s["sample_count"] for s in sample_sets_data)
-
-        # Generate content based on view mode
-        if view_mode == "grid":
-            content = create_sample_sets_grid_view(sample_sets_data)
-        elif view_mode == "table":
-            content = create_sample_sets_table_view(sample_sets_data)
-        else:  # timeline
-            content = create_timeline_view(sample_sets_data)
-
-        return (
-            content,
-            f"{total_sets:,}",
-            f"{pending_count:,}",
-            f"{completed_count:,}",
-            f"{total_samples:,}"
-        )
-
-    except Exception as e:
-        error_content = dbc.Alert(f"Error loading sample sets: {str(e)}", color="danger")
-        return error_content, "Error", "Error", "Error", "Error"
+    if sec_reports.exists():
+        latest_report = sec_reports.first()
+        return {
+            "url": build_sec_embed_url(report_id=latest_report.report_id),
+            "text": f"View SEC Report #{latest_report.report_id}",
+            "color": "success",
+            "disabled": False
+        }
+    else:
+        return {
+            "url": "#!/analysis/sec",
+            "text": "Create SEC Report",
+            "color": "primary",
+            "disabled": False
+        }
 
 
-@callback(
-    Output("batch-operations-collapse", "is_open"),
-    Input({"type": "select-set-checkbox", "index": ALL}, "value"),
-    prevent_initial_call=True
-)
-def toggle_batch_operations(checkbox_values):
-    """Show/hide batch operations based on selections"""
-    selected_count = sum(len(val) for val in checkbox_values if val)
-    return selected_count > 0
-
-
-@callback(
-    [Output("selected-sets-display", "children"),
-     Output("execute-batch-btn", "disabled")],
-    [Input({"type": "select-set-checkbox", "index": ALL}, "value"),
-     Input("batch-operations-checklist", "value")]
-)
-def update_batch_operations_display(checkbox_values, selected_operations):
-    """Update batch operations display"""
-    selected_sets = []
-    for i, val in enumerate(checkbox_values):
-        if val:
-            selected_sets.extend(val)
-
-    if not selected_sets:
-        return html.P("No sets selected", className="text-muted small"), True
-
-    sets_display = html.Div([
-        dbc.Badge(f"{len(selected_sets)} sets selected", color="primary"),
-        html.Ul([
-                    html.Li(set_name, className="small") for set_name in selected_sets[:5]
-                ] + ([html.Li(f"... and {len(selected_sets) - 5} more", className="small text-muted")]
-                     if len(selected_sets) > 5 else []))
-    ])
-
-    button_disabled = not selected_sets or not selected_operations
-
-    return sets_display, button_disabled
-
-
-@callback(
-    Output("batch-execution-status", "children"),
-    Input("execute-batch-btn", "n_clicks"),
-    [State({"type": "select-set-checkbox", "index": ALL}, "value"),
-     State("batch-operations-checklist", "value")],
-    prevent_initial_call=True
-)
-def execute_batch_operations(n_clicks, checkbox_values, selected_operations):
-    """Execute selected batch operations"""
-    if not n_clicks:
-        return ""
-
-    selected_sets = []
-    for val in checkbox_values:
-        if val:
-            selected_sets.extend(val)
-
-    if not selected_sets or not selected_operations:
-        return dbc.Alert("No sets or operations selected", color="warning", dismissable=True)
-
-    # Mock execution - replace with actual operations
-    results = []
-    for operation in selected_operations:
-        if operation == "create_sec":
-            results.append(f"✅ Created SEC reports for {len(selected_sets)} sets")
-        elif operation == "generate_analytics":
-            results.append(f"📊 Generated analytics for {len(selected_sets)} sets")
-        elif operation == "export_data":
-            results.append(f"📤 Exported data for {len(selected_sets)} sets")
-        elif operation == "link_lims":
-            results.append(f"🔗 Linked LIMS data for {len(selected_sets)} sets")
-
-    return dbc.Alert([
-        html.H6("Batch Operations Completed", className="alert-heading"),
-        html.Hr(),
-        html.Ul([html.Li(result) for result in results])
-    ], color="success", dismissable=True)
-
-
-@callback(
-    [Output("sample-set-preview-modal", "is_open"),
-     Output("preview-set-info", "children"),
-     Output("preview-chromatogram", "figure")],
-    [Input({"type": "preview-set-btn", "index": ALL}, "n_clicks"),
-     Input("close-preview-modal", "n_clicks")],
-    prevent_initial_call=True
-)
-def handle_preview_modal(preview_clicks, close_clicks):
-    """Handle sample set preview modal"""
-    ctx = dash.callback_context
-
-    if not ctx.triggered:
-        return False, "", go.Figure()
-
-    trigger_id = ctx.triggered[0]["prop_id"]
-
-    if "close-preview-modal" in trigger_id:
-        return False, "", go.Figure()
-
-    if "preview-set-btn" in trigger_id:
-        # Mock preview data - replace with actual data
-        set_info = html.Div([
-            html.P([html.Strong("Project: "), "PROJ001"]),
-            html.P([html.Strong("SIP: "), "SIP001"]),
-            html.P([html.Strong("Stage: "), "MP"]),
-            html.P([html.Strong("Samples: "), "20"]),
-            html.P([html.Strong("Status: "),
-                    dbc.Badge("Completed", color="success")])
-        ])
-
-        # Mock chromatogram
-        fig = go.Figure()
-        for i in range(3):
-            x_data = list(range(0, 20))
-            y_data = [0.1 + 0.8 * (1 if 8 <= x <= 12 else 0.1) for x in x_data]
-            fig.add_trace(go.Scatter(
-                x=x_data, y=y_data, mode='lines',
-                name=f"Sample {i + 1}"
-            ))
-
-        fig.update_layout(
-            title="SEC Chromatogram Preview",
-            xaxis_title="Time (min)",
-            yaxis_title="UV280 (mAU)"
-        )
-
-        return True, set_info, fig
-
-    return False, "", go.Figure()
+# TABLE VIEW FUNCTIONS (if needed)
+def create_sample_sets_table_layout():
+    """Create table view of sample sets"""
+    return dbc.Container([
+        html.H2("Sample Sets - Table View"),
+        html.P("Table view of all sample sets"),
+        # Add table implementation here
+    ], fluid=True, style={"padding": "20px"})
 
 
 def create_sample_set_detail_layout(query_params):
-    """Create enhanced detailed view for a specific sample set"""
-    project = query_params.get('project', [''])[0]
-    sip = query_params.get('sip', [''])[0]
-    stage = query_params.get('stage', [''])[0]
+    """Create detailed view of a single sample set"""
+    sample_set_id = query_params.get('id', [''])[0]
 
     return dbc.Container([
-        # Enhanced header with breadcrumbs
-        dbc.Row([
-            dbc.Col([
-                dbc.Breadcrumb(items=[
-                    {"label": "Sample Sets", "href": "#!/sample-sets"},
-                    {"label": project, "active": True}
-                ]),
-                html.H2([
-                    html.I(className="fas fa-layer-group text-primary me-2"),
-                    f"Sample Set: {project}"
-                ]),
-                html.P(f"SIP: {sip} | Stage: {stage}" if sip or stage else "Sample set analysis",
-                       className="text-muted lead")
-            ], md=8),
-            dbc.Col([
-                dbc.ButtonGroup([
-                    dbc.Button([
-                        html.I(className="fas fa-arrow-left me-1"),
-                        "Back"
-                    ], href="#!/sample-sets", color="outline-secondary", size="sm"),
-                    dbc.Button([
-                        html.I(className="fas fa-microscope me-1"),
-                        "SEC Analysis"
-                    ], id="request-sec-analysis-btn", color="primary", size="sm"),
-                    dbc.Button([
-                        html.I(className="fas fa-download me-1"),
-                        "Export"
-                    ], id="export-set-btn", color="outline-info", size="sm")
-                ], className="float-end")
-            ], md=4)
-        ], className="mb-4"),
-
-        # Enhanced info cards with metrics
-        dbc.Row([
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("📋 Sample Information"),
-                    dbc.CardBody([
-                        html.Div(id="sample-set-info")
-                    ])
-                ], className="shadow-sm")
-            ], md=4),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("🔬 Analysis Status"),
-                    dbc.CardBody([
-                        html.Div(id="analysis-status-info")
-                    ])
-                ], className="shadow-sm")
-            ], md=4),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("📊 Quick Stats"),
-                    dbc.CardBody([
-                        html.Div(id="quick-stats-info")
-                    ])
-                ], className="shadow-sm")
-            ], md=4)
-        ], className="mb-4"),
-
-        # Enhanced samples table with SEC preview
-        dbc.Row([
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader([
-                        html.Div([
-                            html.H5("Samples in Set", className="mb-0"),
-                            html.Div([
-                                dbc.Badge(id="sample-count-badge", color="primary"),
-                                dbc.Button([
-                                    html.I(className="fas fa-chart-line me-1"),
-                                    "View All Chromatograms"
-                                ], id="view-all-chromatograms-btn",
-                                    color="outline-info", size="sm", className="ms-2")
-                            ], className="float-end")
-                        ], className="d-flex justify-content-between align-items-center")
-                    ]),
-                    dbc.CardBody([
-                        html.Div(id="samples-in-set-table")
-                    ])
-                ], className="shadow-sm")
-            ])
-        ])
-
+        html.H2(f"Sample Set Details - ID: {sample_set_id}"),
+        html.P("Detailed view will be implemented here"),
+        dbc.Button("Back to Sample Sets", href="#!/sample-sets", color="secondary")
     ], fluid=True, style={"padding": "20px"})

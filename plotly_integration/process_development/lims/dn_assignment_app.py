@@ -66,8 +66,9 @@ app.layout = html.Div([
                             {
                                 "name": label,
                                 "id": key,
-                                "presentation": "markdown" if key == "link" else None
-                            } for key, label in COLUMN_ORDER  # This works with tuples
+                                "presentation": "markdown" if key == "link" else None,
+                                "type": "numeric" if key == "dn" else "text"  # Add this line
+                            } for key, label in COLUMN_ORDER
                         ],
                         data=[],
                         editable=False,
@@ -80,7 +81,7 @@ app.layout = html.Div([
                         style_header=TABLE_STYLE_HEADER,
                         filter_action="native",
                         sort_action="native",
-                        markdown_options={"link_target": "_blank"},  # Add this line
+                        markdown_options={"link_target": "_blank"},
                         style_data_conditional=[]
                     ),
                 ], style={"padding": "10px"})

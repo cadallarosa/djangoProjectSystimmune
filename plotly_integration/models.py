@@ -906,6 +906,56 @@ class LimsSampleAnalysis(models.Model):
     class Meta:
         db_table = 'lims_sample_analysis'
 
+#Sample Set Creation and tables for monitoring analysis progress
+class LimsSampleSet(models.Model):
+    """Represents a grouped collection of samples"""
+    id = models.AutoField(primary_key=True)
+    set_name = models.CharField(max_length=200, unique=True)  # e.g., "PROJ001_SIP001_MP"
+    project_id = models.CharField(max_length=100)
+    sip_number = models.CharField(max_length=50, null=True, blank=True)
+    development_stage = models.CharField(max_length=50, null=True, blank=True)
+
+    # Metadata
+    sample_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.CharField(max_length=100, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # Status tracking
+    active = models.BooleanField(default=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        db_table = 'lims_sample_sets'
+        unique_together = ['project_id', 'sip_number', 'development_stage']
+        managed = True
+
+
+class LimsSampleSetMembership(models.Model):
+    """Links individual samples to sample sets"""
+    sample_set = models.ForeignKey(LimsSampleSet, on_delete=models.CASCADE, related_name='members')
+    sample = models.ForeignKey(LimsSampleAnalysis, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'lims_sample_set_membership'
+        unique_together = ['sample_set', 'sample']
+        managed = True
+
+
+class LimsAnalysisRequest(models.Model):
+    """Track analysis requests for sample sets"""
+    sample_set = models.ForeignKey(LimsSampleSet, on_delete=models.CASCADE, related_name='analysis_requests')
+    analysis_type = models.CharField(max_length=50)  # SEC, Titer, etc.
+    requested_by = models.CharField(max_length=100)
+    requested_at = models.DateTimeField(auto_now_add=True)
+    priority = models.IntegerField(default=1)
+    status = models.CharField(max_length=50, default='requested')
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'lims_analysis_requests'
+        managed = True
 
 # Lims Dn Assignment
 class LimsDnAssignment(models.Model):
